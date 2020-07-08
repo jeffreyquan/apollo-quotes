@@ -11,8 +11,6 @@
     "@types/jest": "^24.0.0",
     "@types/mongoose": "^5.7.30",
     "@types/node": "^12.12.48",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
     "apollo-boost": "^0.4.9",
     "apollo-server": "^2.15.1",
     "apollo-server-express": "^2.15.1",
@@ -44,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5"
   }
 }
