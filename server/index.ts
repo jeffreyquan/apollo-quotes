@@ -1,12 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import { ApolloServer } from "apollo-server-express";
+import { merge } from "lodash";
 import { typeDefs } from "./schema";
-import { resolvers } from "./resolvers";
 
 mongoose.Promise = global.Promise;
 
-const db = "";
+const db = "mongodb://127.0.0.1/apollo-quotes";
 
 mongoose.set("useFindAndModify", false);
 mongoose
@@ -18,7 +18,7 @@ mongoose
   .then(() => console.log("DB connected."))
   .catch((err) => console.log(err));
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs });
 
 const app = express();
 
