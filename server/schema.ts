@@ -28,7 +28,7 @@ export const typeDefs = gql`
 
   type Quote {
     id: ID!
-    user: User!
+    user: User
     content: String!
     author: String!
     likes: [Like!]!
