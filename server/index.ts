@@ -5,6 +5,8 @@ import { merge } from "lodash";
 import { typeDefs } from "./schema";
 import { resolvers as queryResolvers } from "./resolvers/Query";
 import { resolvers as mutationResolvers } from "./resolvers/Mutation";
+import Quote from "./models/Quote";
+import Like from "./models/Like";
 
 mongoose.Promise = global.Promise;
 
@@ -31,6 +33,10 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers: merge(resolvers, queryResolvers, mutationResolvers),
+  context: () => ({
+    like: Like,
+    quote: Quote,
+  }),
 });
 
 server.applyMiddleware({ app });
