@@ -1,11 +1,10 @@
-import Quote from "../models/Quote";
-
 export const resolvers = {
   Query: {
-    feed: async () => {
-      const quotes = await Quote.find({}).exec();
-
-      return quotes;
+    feed: async (parent, args, { quote }) => {
+      const quotes = await quote.find({}).exec();
+      return {
+        quotes,
+      };
     },
   },
 };
