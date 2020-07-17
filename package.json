@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.5",
+    "@apollo/client": "^3.0.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -12,7 +12,6 @@
     "@types/jest": "^24.0.0",
     "@types/mongoose": "^5.7.30",
     "@types/node": "^12.12.50",
-    "apollo-boost": "^0.4.9",
     "apollo-server": "^2.15.1",
     "apollo-server-express": "^2.15.1",
     "cors": "^2.8.5",
