@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Query {
@@ -11,13 +11,13 @@ export const typeDefs = gql`
 
   type Mutation {
     post(content: String!, author: String!, image: String): Quote!
-    signup(
+    login(username: String!, password: String!): AuthPayload!
+    createUser(
       name: String!
       username: String!
       password: String!
-      confirmationPassword: String!
       email: String!
-    ): AuthPayload
+    ): AuthPayload!
     like(quoteId: ID!): Quote!
   }
 
@@ -52,7 +52,7 @@ export const typeDefs = gql`
   }
 
   type AuthPayload {
-    token: String
-    user: User
+    userId: String!
+    token: String!
   }
 `;
