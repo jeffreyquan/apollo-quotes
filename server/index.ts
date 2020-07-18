@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import { ApolloServer } from "apollo-server-express";
 import { merge } from "lodash";
 import { typeDefs } from "./schema";
-import { resolvers as queryResolvers } from "./resolvers/Query";
-import { resolvers as mutationResolvers } from "./resolvers/Mutation";
+import { resolvers as quoteResolvers } from "./resolvers/Quote";
+import { resolvers as userResolvers } from "./resolvers/User";
 import Quote from "./models/Quote";
 import Like from "./models/Like";
+import User from "./models/User";
 
 mongoose.Promise = global.Promise;
 
@@ -26,16 +27,15 @@ const connectDatabase = () => {
   }
 };
 
-const resolvers = {};
-
 const app = express();
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: merge(resolvers, queryResolvers, mutationResolvers),
+  resolvers: merge(quoteResolvers, userResolvers),
   context: () => ({
-    like: Like,
-    quote: Quote,
+    Like,
+    Quote,
+    User,
   }),
 });
 
