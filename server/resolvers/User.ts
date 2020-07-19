@@ -27,7 +27,7 @@ export const resolvers = {
         });
       }
 
-      const salt = await bcrypt.genSaltSync(10);
+      const salt = await bcrypt.genSaltSync(12);
 
       const hash = await bcrypt.hash(password, salt);
 
