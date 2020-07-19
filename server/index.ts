@@ -5,6 +5,7 @@ import { merge } from "lodash";
 import { typeDefs } from "./schema";
 import { resolvers as quoteResolvers } from "./resolvers/Quote";
 import { resolvers as userResolvers } from "./resolvers/User";
+import UserAPI from "./datasources/user";
 import Quote from "./models/Quote";
 import Like from "./models/Like";
 import User from "./models/User";
@@ -36,6 +37,9 @@ const server = new ApolloServer({
     Like,
     Quote,
     User,
+  }),
+  dataSources: () => ({
+    userAPI: new UserAPI(),
   }),
 });
 
