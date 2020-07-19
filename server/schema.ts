@@ -52,7 +52,6 @@ export const typeDefs = gql`
   }
 
   type AuthPayload {
-    userId: String!
     token: String!
   }
 `;

@@ -38,23 +38,21 @@ export const resolvers = {
         password: hash,
       });
 
-      const result = await newUser.save();
+      await newUser.save();
 
       const secretKey = process.env.JWT_SECRET;
 
       const token = jwt.sign(
         {
-          id: result._id,
-          username: username,
-          email: email,
+          username,
         },
         secretKey,
         {
-          expiresIn: "7d",
+          expiresIn: "1 day",
         }
       );
 
-      return { userId: result._id, token };
+      return { token };
     },
   },
 };
