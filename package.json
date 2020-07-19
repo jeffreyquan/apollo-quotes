@@ -12,6 +12,7 @@
     "@types/jest": "^24.0.0",
     "@types/mongoose": "^5.7.30",
     "@types/node": "^12.12.50",
+    "apollo-datasource": "^0.7.2",
     "apollo-server": "^2.15.1",
     "apollo-server-express": "^2.15.1",
     "bcryptjs": "^2.4.3",
