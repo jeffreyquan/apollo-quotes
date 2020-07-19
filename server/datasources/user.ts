@@ -15,6 +15,19 @@ class UserAPI extends DataSource {
     console.log(this.context);
   }
 
+  generateToken(username) {
+    const secretKey = process.env.JWT_SECRET;
+    return jwt.sign(
+      {
+        username,
+      },
+      secretKey,
+      {
+        expiresIn: "1 day",
+      }
+    );
+  }
+
   async createUser({ name, username, email, password }) {
     try {
       const existingUsername = await User.findOne({ username }).exec();
@@ -45,22 +58,33 @@ class UserAPI extends DataSource {
 
       await newUser.save();
 
-      const secretKey = process.env.JWT_SECRET;
-
-      const token = jwt.sign(
-        {
-          username,
-        },
-        secretKey,
-        {
-          expiresIn: "1 day",
-        }
-      );
+      const token = this.generateToken(username);
 
       return { token };
     } catch (error) {
       throw error;
     }
+  }
+
+  async loginUser({ email, password }) {
+    const user = await User.findOne({ email }).exec();
+
+    if (!user) {
+      throw new UserInputError("User does not exist", {
+        invalidArg: "email",
+      });
+    }
+
+    const isEqual = bcrypt.compareSync(password, user.password);
+
+    if (!isEqual) {
+      throw new UserInputError("Password is incorrect", {
+        invalidArg: "password",
+      });
+    }
+
+    const token = await this.generateToken(user.username);
+    return { token };
   }
 }
 
