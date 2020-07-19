@@ -6,13 +6,13 @@ export const resolvers = {
       { dataSources }
     ) => {
       try {
-        const newUser = await dataSources.userAPI.createUser({
+        const token = await dataSources.userAPI.createUser({
           name,
           username,
           password,
           email,
         });
-        return newUser;
+        return token;
       } catch (error) {
         throw error;
       }
