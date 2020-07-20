@@ -61,8 +61,8 @@ class UserAPI extends DataSource {
       const token = this.generateToken(username);
 
       return { token };
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      throw err;
     }
   }
 
