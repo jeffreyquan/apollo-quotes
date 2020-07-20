@@ -7,9 +7,7 @@ import { resolvers as quoteResolvers } from "./resolvers/Quote";
 import { resolvers as userResolvers } from "./resolvers/User";
 import { resolvers as authResolvers } from "./resolvers/Auth";
 import UserAPI from "./datasources/user";
-import Quote from "./models/Quote";
-import Like from "./models/Like";
-import User from "./models/User";
+import { verifyUser } from "./middleware/auth";
 
 mongoose.Promise = global.Promise;
 
@@ -34,11 +32,12 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers: merge(authResolvers, quoteResolvers, userResolvers),
-  context: () => ({
-    Like,
-    Quote,
-    User,
-  }),
+  context: async ({ req, res }) => {
+    const token = req.headers.authorization || "";
+    let user = null;
+    if (token) user = await verifyUser(token);
+    return { user };
+  },
   dataSources: () => ({
     userAPI: new UserAPI(),
   }),
@@ -49,7 +48,7 @@ server.applyMiddleware({ app });
 const port = 5000;
 
 app.listen({ port }, async () => {
-  await connectDatabase();
+  connectDatabase();
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
   );
