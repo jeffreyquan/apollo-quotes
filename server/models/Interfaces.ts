@@ -6,6 +6,7 @@ export interface QuoteInterface extends mongoose.Document {
   image: string;
   user: UserInterface;
   likes: LikeInterface[];
+  tags: TagInterface[];
 }
 
 export interface UserInterface extends mongoose.Document {
@@ -20,4 +21,8 @@ export interface UserInterface extends mongoose.Document {
 export interface LikeInterface extends mongoose.Document {
   quote: QuoteInterface;
   user: UserInterface;
+}
+
+export interface TagInterface extends mongoose.Document {
+  name: string;
 }

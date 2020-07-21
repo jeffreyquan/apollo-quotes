@@ -26,6 +26,12 @@ const QuoteSchema = new Schema(
         ref: "Like",
       },
     ],
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
   },
   { collection: "quote" }
 );
