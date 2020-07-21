@@ -11,8 +11,8 @@ class QuoteAPI extends DataSource {
     this.context = config.context;
   }
 
-  async findTags(tags: TagInterface[]) {
-    return Promise.all(tags.map((tag) => Tag.findOne({ name: tag.name })));
+  async findTags(tags: string[]) {
+    return Promise.all(tags.map((tag) => Tag.findOne({ name: tag })));
   }
 
   async createPost({ content, author, image, tags }) {
@@ -27,19 +27,19 @@ class QuoteAPI extends DataSource {
       image,
     });
 
-    this.findTags(tags).then((data) => {
-      for (let i = 0; i < data.length; i++) {
-        if (!data[i]) {
-          const newTag = new Tag({
-            name: tags[i],
-          });
-          newTag.save();
-          newQuote.tags.push(newTag);
-        } else {
-          newQuote.tags.push(data[i]);
-        }
+    const data = await this.findTags(tags);
+
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i]) {
+        const newTag = new Tag({
+          name: tags[i],
+        });
+        newTag.save();
+        newQuote.tags.push(newTag);
+      } else {
+        newQuote.tags.push(data[i]);
       }
-    });
+    }
 
     newQuote.user = user._id;
     fetchedUser.quotes.push(newQuote);
