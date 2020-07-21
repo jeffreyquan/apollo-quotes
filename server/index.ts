@@ -7,6 +7,7 @@ import { resolvers as quoteResolvers } from "./resolvers/Quote";
 import { resolvers as userResolvers } from "./resolvers/User";
 import { resolvers as authResolvers } from "./resolvers/Auth";
 import UserAPI from "./datasources/user";
+import QuoteAPI from "./datasources/quote";
 import { verifyUser } from "./middleware/auth";
 
 mongoose.Promise = global.Promise;
@@ -36,10 +37,12 @@ const server = new ApolloServer({
     const token = req.headers.authorization || "";
     let user = null;
     if (token) user = await verifyUser(token);
+    console.log(user);
     return { user };
   },
   dataSources: () => ({
     userAPI: new UserAPI(),
+    quoteAPI: new QuoteAPI(),
   }),
 });
 
