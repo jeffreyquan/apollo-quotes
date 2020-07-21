@@ -8,15 +8,15 @@ export const resolvers = {
     },
   },
   Mutation: {
-    post: async (parent, { content, author, image }, { Quote }) => {
-      const newQuote = new Quote({
+    post: async (parent, { content, author, image, tags }, { dataSources }) => {
+      const quote = await dataSources.quoteAPI.createPost({
         content,
         author,
         image,
+        tags,
       });
 
-      await newQuote.save();
-      return newQuote;
+      return quote;
     },
   },
 };
