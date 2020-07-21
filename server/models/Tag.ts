@@ -8,6 +8,7 @@ const TagSchema = new Schema(
     name: {
       type: String,
       required: "Tag name cannot be blank",
+      unique: true,
     },
   },
   { collection: "tag" }

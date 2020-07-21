@@ -8,6 +8,7 @@ const QuoteSchema = new Schema(
     content: {
       type: String,
       required: "Quote cannot be blank",
+      unique: true,
     },
     author: {
       type: String,
