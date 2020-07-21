@@ -10,7 +10,12 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    post(content: String!, author: String!, image: String): Quote!
+    post(
+      content: String!
+      author: String!
+      image: String
+      tags: [String]
+    ): Quote
     login(email: String!, password: String!): AuthPayload!
     register(
       name: String!
@@ -28,11 +33,12 @@ export const typeDefs = gql`
 
   type Quote {
     id: ID!
-    user: User
+    user: User!
     content: String!
     author: String!
-    likes: [Like!]!
+    likes: [Like]!
     image: String
+    tags: [Tag]!
   }
 
   type User {
@@ -43,6 +49,11 @@ export const typeDefs = gql`
     email: String!
     quotes: [Quote]!
     likes: [Quote]!
+  }
+
+  type Tag {
+    id: ID!
+    name: String!
   }
 
   type Like {
