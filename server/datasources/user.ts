@@ -12,7 +12,6 @@ class UserAPI extends DataSource {
 
   initialize(config) {
     this.context = config.context;
-    console.log(this.context);
   }
 
   generateToken(username) {
