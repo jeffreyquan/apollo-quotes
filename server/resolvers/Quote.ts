@@ -1,7 +1,7 @@
 export const resolvers = {
   Query: {
-    feed: async (parent, args, { Quote }) => {
-      const quotes = await Quote.find({}).exec();
+    feed: async (parent, args, { dataSources }) => {
+      const quotes = dataSources.quoteAPI.fetchQuotes();
       return {
         quotes,
       };

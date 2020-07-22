@@ -15,6 +15,11 @@ class QuoteAPI extends DataSource {
     return Promise.all(tags.map((tag) => Tag.findOne({ name: tag })));
   }
 
+  async fetchQuotes() {
+    const quotes = await Quote.find({}).exec();
+    return quotes;
+  }
+
   async createPost({ content, author, image, tags }) {
     const { user } = this.context;
     if (!user) return null;
