@@ -36,6 +36,7 @@ export const typeDefs = gql`
     user: User!
     content: String!
     author: String!
+    slug: String!
     likes: [Like]!
     image: String
     tags: [Tag]!

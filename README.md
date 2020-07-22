@@ -35,7 +35,7 @@
 - [ ] Mutations
   - [ ] Quotes
     - [x] Create quote
-      - [ ] Create slug for when quote is being created to allow sharing on client
+      - [x] Create slug for when quote is being created to allow sharing on client
     - [ ] Update quote
     - [ ] Delete quote
     - [ ] Like a quote

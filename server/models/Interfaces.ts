@@ -4,6 +4,7 @@ export interface QuoteInterface extends mongoose.Document {
   author: string;
   content: string;
   image: string;
+  slug: string;
   user: UserInterface;
   likes: LikeInterface[];
   tags: TagInterface[];

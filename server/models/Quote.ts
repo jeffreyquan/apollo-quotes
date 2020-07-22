@@ -17,6 +17,11 @@ const QuoteSchema = new Schema(
     image: {
       type: String,
     },
+    slug: {
+      type: String,
+      required: "Slug cannot be blank",
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",

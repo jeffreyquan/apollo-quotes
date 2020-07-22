@@ -42,12 +42,53 @@ class QuoteAPI extends DataSource {
     }
 
     newQuote.user = user._id;
+
+    const authorSlug = author
+      .replace(/[^a-zA-Z ]/g, "")
+      .split(" ")
+      .join("-")
+      .toLowerCase();
+
+    const contentSlug = content
+      .replace(/[^a-zA-Z ]/g, "")
+      .split(" ")
+      .slice(0, 4)
+      .join("-")
+      .toLowerCase();
+
+    const authorContentSlug = `${authorSlug}-${contentSlug}`;
+
+    let slug;
+
+    while (true) {
+      slug = this.generateSlug(authorContentSlug);
+      const existingQuote = await Quote.findOne({ slug }).exec();
+      if (!existingQuote) {
+        break;
+      }
+    }
+
+    newQuote.slug = slug;
     fetchedUser.quotes.push(newQuote);
 
     fetchedUser.save();
     newQuote.save();
 
     return newQuote;
+  }
+
+  generateRandomChars() {
+    const set =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    return [...Array(5)]
+      .map((_) => set[~~(Math.random() * set.length)])
+      .join("");
+  }
+
+  generateSlug(partSlug: string) {
+    const randomSlug = this.generateRandomChars();
+    return `${partSlug}-${randomSlug}`;
   }
 }
 
