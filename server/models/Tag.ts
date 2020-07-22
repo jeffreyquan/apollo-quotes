@@ -10,6 +10,12 @@ const TagSchema = new Schema(
       required: "Tag name cannot be blank",
       unique: true,
     },
+    quotes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Quote",
+      },
+    ],
   },
   { collection: "tag" }
 );

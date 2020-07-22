@@ -8,6 +8,7 @@ import { resolvers as userResolvers } from "./resolvers/User";
 import { resolvers as authResolvers } from "./resolvers/Auth";
 import UserAPI from "./datasources/user";
 import QuoteAPI from "./datasources/quote";
+import TagAPI from "./datasources/tag";
 import { verifyUser } from "./middleware/auth";
 
 mongoose.Promise = global.Promise;
@@ -43,6 +44,7 @@ const server = new ApolloServer({
   dataSources: () => ({
     userAPI: new UserAPI(),
     quoteAPI: new QuoteAPI(),
+    tagAPI: new TagAPI(),
   }),
 });
 

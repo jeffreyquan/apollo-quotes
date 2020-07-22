@@ -3,6 +3,7 @@ import { gql } from "apollo-server";
 export const typeDefs = gql`
   type Query {
     feed: Feed!
+    feedByTagName(name: String!): Feed!
   }
 
   type Feed {
@@ -55,6 +56,7 @@ export const typeDefs = gql`
   type Tag {
     id: ID!
     name: String!
+    quotes: [Quote]!
   }
 
   type Like {

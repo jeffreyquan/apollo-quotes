@@ -1,7 +1,13 @@
 export const resolvers = {
   Query: {
     feed: async (parent, args, { dataSources }) => {
-      const quotes = dataSources.quoteAPI.fetchQuotes();
+      const quotes = await dataSources.quoteAPI.fetchQuotes();
+      return {
+        quotes,
+      };
+    },
+    feedByTagName: async (parent, { name }, { dataSources }) => {
+      const quotes = await dataSources.tagAPI.fetchQuotesByTagName(name);
       return {
         quotes,
       };

@@ -44,7 +44,7 @@
     - [x] Login
 - [ ] Queries
   - [x] Feed
-  - [ ] Feed by Tag
+  - [x] Feed by Tag
   - [ ] User information including quotes liked and quotes submitted
   - [ ] Set up pagination
 - [ ] Subscription

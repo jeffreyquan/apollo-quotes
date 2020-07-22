@@ -26,4 +26,5 @@ export interface LikeInterface extends mongoose.Document {
 
 export interface TagInterface extends mongoose.Document {
   name: string;
+  quotes: QuoteInterface[];
 }
