@@ -38,7 +38,8 @@
       - [x] Create slug for when quote is being created to allow sharing on client
     - [ ] Update quote
     - [ ] Delete quote
-    - [ ] Like a quote
+    - [x] Like a quote
+    - [ ] Unlike a quote
   - [ ] User
     - [x] Create user
     - [x] Login

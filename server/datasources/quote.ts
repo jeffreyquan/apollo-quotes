@@ -2,6 +2,7 @@ import { DataSource } from "apollo-datasource";
 import Quote from "../models/Quote";
 import User from "../models/User";
 import Tag from "../models/Tag";
+import Like from "../models/Like";
 import { ApolloError, AuthenticationError } from "apollo-server";
 
 class QuoteAPI extends DataSource {
@@ -16,6 +17,10 @@ class QuoteAPI extends DataSource {
     return quotes;
   }
 
+  async fetchQuoteById(quoteId) {
+    return await Quote.findOne({ _id: quoteId }).exec();
+  }
+
   async createPost({ content, author, image, tags }) {
     const { user } = this.context;
     if (!user) return new AuthenticationError("User must be logged in");
@@ -27,7 +32,9 @@ class QuoteAPI extends DataSource {
     if (existingQuote)
       return new ApolloError("Quote already exists", "QUOTE_EXISTS");
 
-    const fetchedUser = await User.findById(user._id).exec();
+    const fetchedUser = await this.context.dataSources.userAPI.fetchUserById(
+      user._id
+    );
 
     const newQuote = await new Quote({
       content,
@@ -60,6 +67,42 @@ class QuoteAPI extends DataSource {
     newQuote.save();
 
     return newQuote;
+  }
+
+  async likeQuote(quoteId) {
+    const { user } = this.context;
+    if (!user) return new AuthenticationError("User must be logged in");
+
+    const existingLike = await Like.findOne({
+      user: user._id,
+      quote: quoteId,
+    }).exec();
+
+    if (existingLike) {
+      return new ApolloError("User already liked this quote", "LIKE_EXISTS");
+    }
+
+    const quote = await this.fetchQuoteById(quoteId);
+
+    const fetchedUser = await this.context.dataSources.userAPI.fetchUserById(
+      user._id
+    );
+
+    console.log(fetchedUser);
+
+    const newLike = new Like({
+      quote,
+      user: fetchedUser,
+    });
+
+    fetchedUser.likes.push(newLike);
+
+    fetchedUser.save();
+    newLike.save();
+
+    console.log(newLike);
+
+    return newLike;
   }
 
   generateSlug(author: string, content: string): string {

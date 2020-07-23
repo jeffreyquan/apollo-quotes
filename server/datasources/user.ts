@@ -85,6 +85,10 @@ class UserAPI extends DataSource {
     const token = await this.generateToken(user.username);
     return { token };
   }
+
+  async fetchUserById(userId) {
+    return await User.findOne({ _id: userId }).exec();
+  }
 }
 
 export default UserAPI;

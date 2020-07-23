@@ -6,6 +6,7 @@ import { typeDefs } from "./schema";
 import { resolvers as quoteResolvers } from "./resolvers/Quote";
 import { resolvers as userResolvers } from "./resolvers/User";
 import { resolvers as authResolvers } from "./resolvers/Auth";
+import { resolvers as likeResolvers } from "./resolvers/Like";
 import UserAPI from "./datasources/user";
 import QuoteAPI from "./datasources/quote";
 import TagAPI from "./datasources/tag";
@@ -33,7 +34,7 @@ const app = express();
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: merge(authResolvers, quoteResolvers, userResolvers),
+  resolvers: merge(authResolvers, quoteResolvers, userResolvers, likeResolvers),
   context: async ({ req, res }) => {
     const token = req.headers.authorization || "";
     let user = null;
