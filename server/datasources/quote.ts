@@ -1,6 +1,5 @@
 import { DataSource } from "apollo-datasource";
 import Quote from "../models/Quote";
-import User from "../models/User";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
 import { ApolloError, AuthenticationError } from "apollo-server";
@@ -77,31 +76,37 @@ class QuoteAPI extends DataSource {
       user: user._id,
       quote: quoteId,
     }).exec();
+    console.log(existingLike);
 
-    // TODO: fix error with return value
     if (existingLike) {
       const deletedLike = await existingLike.deleteOne();
-      console.log(deletedLike);
       return deletedLike;
     }
 
-    const quote = await this.fetchQuoteById(quoteId);
-
-    const fetchedUser = await this.context.dataSources.userAPI.fetchUserById(
-      user._id
-    );
-
     const newLike = new Like({
-      quote,
-      user: fetchedUser,
+      quote: quoteId,
+      user: user._id,
     });
+
+    console.log(newLike);
+
+    const fetchQuoteAndUser = async () =>
+      Promise.all([
+        this.fetchQuoteById(quoteId),
+        this.context.dataSources.userAPI.fetchUserById(user._id),
+      ]);
+
+    const result = await fetchQuoteAndUser();
+    const quote = result[0];
+    const fetchedUser = result[1];
 
     quote.likes.push(newLike);
     fetchedUser.likes.push(newLike);
 
-    quote.save();
-    fetchedUser.save();
-    newLike.save();
+    // TODO: is there a better option than awaiting multiple saves like so
+    await quote.save();
+    await fetchedUser.save();
+    await newLike.save();
 
     return newLike;
   }

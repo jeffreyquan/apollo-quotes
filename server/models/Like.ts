@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Quote from "./Quote";
 import User from "./User";
 import { LikeInterface } from "./Interfaces";
+import { nextTick } from "process";
 
 const { Schema } = mongoose;
 
@@ -19,14 +20,60 @@ const LikeSchema = new Schema(
   { collection: "like" }
 );
 
-LikeSchema.post("deleteOne", { document: true }, function () {
+LikeSchema.post("save", async function () {
+  const like = this;
+
+  await like
+    .populate("user", "_id username")
+    .populate({
+      path: "quote",
+      select: "_id content author image likes",
+      populate: {
+        path: "likes",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "_id username",
+        },
+      },
+    })
+    .execPopulate();
+
+  return like;
+});
+
+LikeSchema.post("deleteOne", { document: true }, async function () {
   const like = this;
 
   // TODO: send response back to deleteOne call
-  Promise.all([
-    Quote.updateOne({ _id: like.quote }, { $pull: { likes: like._id } }).exec(),
-    User.updateOne({ _id: like.user }, { $pull: { likes: like._id } }).exec(),
-  ]).then((res) => console.log(res));
+  const deleteLikeFromQuoteAndUser = async () =>
+    Promise.all([
+      Quote.updateOne(
+        { _id: like.quote },
+        { $pull: { likes: like._id } }
+      ).exec(),
+      User.updateOne({ _id: like.user }, { $pull: { likes: like._id } }).exec(),
+    ]);
+
+  await deleteLikeFromQuoteAndUser();
+
+  await like
+    .populate("user", "_id username")
+    .populate({
+      path: "quote",
+      select: "_id content author image likes",
+      populate: {
+        path: "likes",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "_id username",
+        },
+      },
+    })
+    .execPopulate();
+
+  return like;
 });
 
 const Like = mongoose.model<LikeInterface>("Like", LikeSchema);

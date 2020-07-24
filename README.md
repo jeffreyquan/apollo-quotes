@@ -39,7 +39,7 @@
     - [ ] Update quote
     - [ ] Delete quote
     - [x] Like a quote
-    - [ ] Unlike a quote
+    - [x] Unlike a quote
   - [ ] User
     - [x] Create user
     - [x] Login
