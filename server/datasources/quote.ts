@@ -78,8 +78,11 @@ class QuoteAPI extends DataSource {
       quote: quoteId,
     }).exec();
 
+    // TODO: fix error with return value
     if (existingLike) {
-      return new ApolloError("User already liked this quote", "LIKE_EXISTS");
+      const deletedLike = await existingLike.deleteOne();
+      console.log(deletedLike);
+      return deletedLike;
     }
 
     const quote = await this.fetchQuoteById(quoteId);
@@ -88,19 +91,17 @@ class QuoteAPI extends DataSource {
       user._id
     );
 
-    console.log(fetchedUser);
-
     const newLike = new Like({
       quote,
       user: fetchedUser,
     });
 
+    quote.likes.push(newLike);
     fetchedUser.likes.push(newLike);
 
+    quote.save();
     fetchedUser.save();
     newLike.save();
-
-    console.log(newLike);
 
     return newLike;
   }
