@@ -46,7 +46,7 @@
 - [ ] Queries
   - [x] Feed
   - [x] Feed by Tag
-  - [ ] User information including quotes liked and quotes submitted
+  - [x] User information including quotes liked and quotes submitted
   - [ ] Set up pagination
 - [ ] Subscription
   - [ ] Subscribe to new quotes

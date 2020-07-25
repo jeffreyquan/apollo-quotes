@@ -1,7 +1,7 @@
 import { DataSource } from "apollo-datasource";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { UserInputError } from "apollo-server";
+import { UserInputError, AuthenticationError } from "apollo-server";
 import dotenv from "dotenv";
 import User from "../models/User";
 
@@ -84,6 +84,55 @@ class UserAPI extends DataSource {
 
     const token = await this.generateToken(user.username);
     return { token };
+  }
+
+  async fetchUserProfile() {
+    const { user } = this.context;
+    if (!user) return new AuthenticationError("User must be logged in");
+
+    const userId = user._id;
+
+    const fetchedUser = await User.findById(userId)
+      .select("_id name username email likes quotes")
+      .populate({
+        path: "quotes",
+        populate: [
+          {
+            path: "likes",
+            select: "_id user",
+            populate: {
+              path: "user",
+              select: "username",
+            },
+          },
+          {
+            path: "tags",
+          },
+        ],
+      })
+      .populate({
+        path: "likes",
+        populate: [
+          {
+            path: "quote",
+            populate: [
+              {
+                path: "likes",
+                poulate: {
+                  path: "user",
+                  select: "username",
+                },
+              },
+              {
+                path: "tags",
+              },
+            ],
+          },
+        ],
+      })
+      .exec();
+
+    return fetchedUser;
   }
 
   async fetchUserById(userId) {
