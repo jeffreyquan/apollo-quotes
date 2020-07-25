@@ -48,25 +48,39 @@ const QuoteSchema = new Schema(
 QuoteSchema.post("deleteOne", { document: true }, async function () {
   const quote = this;
 
-  console.log(quote);
-
   const updateTagsWithThisQuote = quote.tags.map((id) =>
     Tag.updateOne({ _id: id }, { $pull: { quotes: quote._id } }).exec()
+  );
+
+  const allLikes = await Like.find({ quote }).exec();
+
+  const updateUsers = allLikes.map((like) =>
+    User.updateOne(
+      { _id: like.user },
+      {
+        $pull: {
+          likes: like._id,
+        },
+      }
+    ).exec()
   );
 
   const deleteAllQuoteRef = async () =>
     Promise.all([
       User.updateOne(
         { _id: quote.submittedBy },
-        { $pull: { quotes: quote._id } }
+        {
+          $pull: {
+            quotes: quote._id,
+          },
+        }
       ).exec(),
-      updateTagsWithThisQuote,
-      Like.deleteMany({ quote: quote.id }).exec(),
+      ...updateTagsWithThisQuote,
+      ...updateUsers,
+      Like.deleteMany({ quote }).exec(),
     ]);
 
   await deleteAllQuoteRef();
-
-  console.log(quote);
 
   return quote;
 });
