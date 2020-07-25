@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import Quote from "./Quote";
 import User from "./User";
 import { LikeInterface } from "./Interfaces";
-import { nextTick } from "process";
 
 const { Schema } = mongoose;
 
@@ -27,15 +26,24 @@ LikeSchema.post("save", async function () {
     .populate("user", "_id username")
     .populate({
       path: "quote",
-      select: "_id content author image likes",
-      populate: {
-        path: "likes",
-        select: "_id user",
-        populate: {
-          path: "user",
+      populate: [
+        {
+          path: "submittedBy",
           select: "_id username",
         },
-      },
+        {
+          path: "likes",
+          select: "_id user",
+          populate: {
+            path: "user",
+            select: "_id username",
+          },
+        },
+        {
+          path: "tags",
+          select: "_id name",
+        },
+      ],
     })
     .execPopulate();
 
@@ -61,15 +69,24 @@ LikeSchema.post("deleteOne", { document: true }, async function () {
     .populate("user", "_id username")
     .populate({
       path: "quote",
-      select: "_id content author image likes",
-      populate: {
-        path: "likes",
-        select: "_id user",
-        populate: {
-          path: "user",
+      populate: [
+        {
+          path: "submittedBy",
           select: "_id username",
         },
-      },
+        {
+          path: "likes",
+          select: "_id user",
+          populate: {
+            path: "user",
+            select: "_id username",
+          },
+        },
+        {
+          path: "tags",
+          select: "_id name",
+        },
+      ],
     })
     .execPopulate();
 
