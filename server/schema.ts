@@ -26,6 +26,14 @@ export const typeDefs = gql`
       email: String!
     ): AuthPayload!
     like(quoteId: ID!): Like!
+    updateQuote(
+      id: ID!
+      content: String
+      author: String
+      image: String
+      tags: [String]
+    ): Quote
+    deleteQuote(id: ID!): Quote
   }
 
   type Subscription {

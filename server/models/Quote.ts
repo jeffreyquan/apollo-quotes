@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import Like from "./Like";
+import User from "./User";
+import Tag from "./Tag";
 import { QuoteInterface } from "./Interfaces";
 
 const { Schema } = mongoose;
@@ -41,6 +44,32 @@ const QuoteSchema = new Schema(
   },
   { collection: "quote" }
 );
+
+QuoteSchema.post("deleteOne", { document: true }, async function () {
+  const quote = this;
+
+  console.log(quote);
+
+  const updateTagsWithThisQuote = quote.tags.map((id) =>
+    Tag.updateOne({ _id: id }, { $pull: { quotes: quote._id } }).exec()
+  );
+
+  const deleteAllQuoteRef = async () =>
+    Promise.all([
+      User.updateOne(
+        { _id: quote.submittedBy },
+        { $pull: { quotes: quote._id } }
+      ).exec(),
+      updateTagsWithThisQuote,
+      Like.deleteMany({ quote: quote.id }).exec(),
+    ]);
+
+  await deleteAllQuoteRef();
+
+  console.log(quote);
+
+  return quote;
+});
 
 const Quote = mongoose.model<QuoteInterface>("Quote", QuoteSchema);
 

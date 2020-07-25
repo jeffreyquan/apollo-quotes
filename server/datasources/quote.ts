@@ -2,7 +2,11 @@ import { DataSource } from "apollo-datasource";
 import Quote from "../models/Quote";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
-import { ApolloError, AuthenticationError } from "apollo-server";
+import {
+  ApolloError,
+  AuthenticationError,
+  ForbiddenError,
+} from "apollo-server";
 
 class QuoteAPI extends DataSource {
   private context;
@@ -106,6 +110,21 @@ class QuoteAPI extends DataSource {
     await newLike.save();
 
     return newLike;
+  }
+
+  async removeQuote(id) {
+    const { user } = this.context;
+    if (!user) return new AuthenticationError("User must be logged in");
+
+    const quote = await Quote.findById(id).exec();
+
+    if (quote.submittedBy.toString() !== user._id.toString()) {
+      return new ForbiddenError("Quote does not belong to user");
+    }
+
+    const deletedQuote = await quote.deleteOne();
+
+    return deletedQuote;
   }
 
   generateSlug(author: string, content: string): string {

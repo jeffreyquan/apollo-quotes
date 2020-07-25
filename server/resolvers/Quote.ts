@@ -24,5 +24,10 @@ export const resolvers = {
 
       return quote;
     },
+    deleteQuote: async (parent, { id }, { dataSources }) => {
+      const deletedQuote = await dataSources.quoteAPI.removeQuote(id);
+
+      return deletedQuote;
+    },
   },
 };
