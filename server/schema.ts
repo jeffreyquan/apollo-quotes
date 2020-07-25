@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Query {
     feed: Feed!
     feedByTagName(name: String!): Feed!
+    userProfile: User!
   }
 
   type Feed {
@@ -34,7 +35,7 @@ export const typeDefs = gql`
 
   type Quote {
     id: ID!
-    user: User!
+    submittedBy: User!
     content: String!
     author: String!
     slug: String!

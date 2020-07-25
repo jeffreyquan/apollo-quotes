@@ -41,7 +41,7 @@ class QuoteAPI extends DataSource {
       image,
     });
 
-    newQuote.user = user._id;
+    newQuote.submittedBy = user._id;
     newQuote.slug = slug;
 
     const data = await this.context.dataSources.tagAPI.findTags(tags);
@@ -76,7 +76,6 @@ class QuoteAPI extends DataSource {
       user: user._id,
       quote: quoteId,
     }).exec();
-    console.log(existingLike);
 
     if (existingLike) {
       const deletedLike = await existingLike.deleteOne();
@@ -87,8 +86,6 @@ class QuoteAPI extends DataSource {
       quote: quoteId,
       user: user._id,
     });
-
-    console.log(newLike);
 
     const fetchQuoteAndUser = async () =>
       Promise.all([

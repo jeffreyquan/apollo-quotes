@@ -22,7 +22,7 @@ const QuoteSchema = new Schema(
       required: "Slug cannot be blank",
       unique: true,
     },
-    user: {
+    submittedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
