@@ -1,8 +1,8 @@
 import { DataSource } from "apollo-datasource";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { UserInputError, AuthenticationError } from "apollo-server";
 import dotenv from "dotenv";
+import { UserInputError, AuthenticationError } from "apollo-server";
 import User from "../models/User";
 
 dotenv.config();
@@ -83,6 +83,7 @@ class UserAPI extends DataSource {
     }
 
     const token = await this.generateToken(user.username);
+
     return { token };
   }
 

@@ -1,0 +1,35 @@
+{
+  "name": "apollo-quotes-backend",
+  "version": "1.0.0",
+  "description": "backend of apollo quotes",
+  "main": "index.ts",
+  "scripts": {
+    "server": "nodemon --watch ./ --exec ts-node --project ./tsconfig.json ./index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.7",
+    "@types/graphql": "^14.5.0",
+    "@types/mongoose": "^5.7.32",
+    "@types/node": "^14.0.26",
+    "apollo-datasource": "^0.7.2",
+    "apollo-server": "^2.16.0",
+    "apollo-server-express": "^2.16.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.19",
+    "mongoose": "^5.9.25",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2"
+  }
+}
