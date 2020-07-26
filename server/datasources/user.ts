@@ -135,8 +135,8 @@ class UserAPI extends DataSource {
     return fetchedUser;
   }
 
-  async fetchUserById(userId) {
-    return await User.findOne({ _id: userId }).exec();
+  fetchUserById(userId) {
+    return User.findOne({ _id: userId }).exec();
   }
 }
 

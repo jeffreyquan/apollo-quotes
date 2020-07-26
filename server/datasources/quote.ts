@@ -11,120 +11,127 @@ import {
 class QuoteAPI extends DataSource {
   private context;
 
+  checkUserLoggedIn() {
+    const { user } = this.context;
+
+    if (!user) return new AuthenticationError("User must be logged in");
+
+    return user;
+  }
+
   initialize(config) {
     this.context = config.context;
   }
 
-  async fetchQuotes() {
-    const quotes = await Quote.find({}).exec();
-    return quotes;
+  fetchQuotes() {
+    return Quote.find({}).exec();
   }
 
-  async fetchQuoteById(quoteId) {
-    return await Quote.findOne({ _id: quoteId }).exec();
+  fetchQuoteById(quoteId) {
+    return Quote.findOne({ _id: quoteId }).exec();
   }
 
   async createPost({ content, author, image, tags }) {
-    const { user } = this.context;
-    if (!user) return new AuthenticationError("User must be logged in");
+    try {
+      const user = this.checkUserLoggedIn();
 
-    const slug = this.generateSlug(author, content);
+      const slug = this.generateSlug(author, content);
 
-    const existingQuote = await Quote.findOne({ slug }).exec();
+      const existingQuote = await Quote.findOne({ slug }).exec();
 
-    if (existingQuote)
-      return new ApolloError("Quote already exists", "QUOTE_EXISTS");
+      if (existingQuote)
+        return new ApolloError("Quote already exists", "QUOTE_EXISTS");
 
-    const fetchedUser = await this.context.dataSources.userAPI.fetchUserById(
-      user._id
-    );
+      const [fetchedUser, existingTags] = await Promise.all([
+        this.context.dataSources.userAPI.fetchUserById(user._id),
+        this.context.dataSources.tagAPI.findTags(tags),
+      ]);
 
-    const newQuote = await new Quote({
-      content,
-      author,
-      image,
-    });
+      const newQuote = await new Quote({
+        content,
+        author,
+        image,
+      });
 
-    newQuote.submittedBy = user._id;
-    newQuote.slug = slug;
+      newQuote.submittedBy = user._id;
+      newQuote.slug = slug;
 
-    const data = await this.context.dataSources.tagAPI.findTags(tags);
-
-    for (let i = 0; i < data.length; i++) {
-      if (!data[i]) {
-        const newTag = new Tag({
-          name: tags[i],
-        });
-        newTag.quotes.push(newQuote);
-        newTag.save();
-        newQuote.tags.push(newTag);
-      } else {
-        data[i].quotes.push(newQuote);
-        data[i].save();
-        newQuote.tags.push(data[i]);
+      for (let i = 0; i < existingTags.length; i++) {
+        if (!existingTags[i]) {
+          const newTag = new Tag({
+            name: tags[i],
+          });
+          newTag.quotes.push(newQuote);
+          await newTag.save();
+          newQuote.tags.push(newTag);
+        } else {
+          existingTags[i].quotes.push(newQuote);
+          await existingTags[i].save();
+          newQuote.tags.push(existingTags[i]);
+        }
       }
+
+      fetchedUser.quotes.push(newQuote);
+
+      await Promise.all([fetchedUser.save(), newQuote.save()]);
+
+      return newQuote;
+    } catch (err) {
+      return new Error("Internal server error");
     }
-
-    fetchedUser.quotes.push(newQuote);
-    fetchedUser.save();
-    newQuote.save();
-
-    return newQuote;
   }
 
   async likeQuote(quoteId) {
-    const { user } = this.context;
-    if (!user) return new AuthenticationError("User must be logged in");
+    try {
+      const user = this.checkUserLoggedIn();
 
-    const existingLike = await Like.findOne({
-      user: user._id,
-      quote: quoteId,
-    }).exec();
+      const existingLike = await Like.findOne({
+        user: user._id,
+        quote: quoteId,
+      }).exec();
 
-    if (existingLike) {
-      const deletedLike = await existingLike.deleteOne();
-      return deletedLike;
-    }
+      if (existingLike) {
+        const deletedLike = await existingLike.deleteOne();
+        return deletedLike;
+      }
 
-    const newLike = new Like({
-      quote: quoteId,
-      user: user._id,
-    });
+      const newLike = new Like({
+        quote: quoteId,
+        user: user._id,
+      });
 
-    const fetchQuoteAndUser = async () =>
-      Promise.all([
+      const [quote, fetchedUser] = await Promise.all([
         this.fetchQuoteById(quoteId),
         this.context.dataSources.userAPI.fetchUserById(user._id),
       ]);
 
-    const result = await fetchQuoteAndUser();
-    const quote = result[0];
-    const fetchedUser = result[1];
+      quote.likes.push(newLike);
+      fetchedUser.likes.push(newLike);
 
-    quote.likes.push(newLike);
-    fetchedUser.likes.push(newLike);
+      await Promise.all([quote.save(), fetchedUser.save(), newLike.save()]);
 
-    // TODO: is there a better option than awaiting multiple saves like so
-    await quote.save();
-    await fetchedUser.save();
-    await newLike.save();
-
-    return newLike;
+      return newLike;
+    } catch (err) {
+      return new Error("Internal server error");
+    }
   }
 
   async removeQuote(id) {
-    const { user } = this.context;
-    if (!user) return new AuthenticationError("User must be logged in");
+    try {
+      const user = this.checkUserLoggedIn();
 
-    const quote = await Quote.findById(id).exec();
+      const quote = await Quote.findById(id).exec();
 
-    if (quote.submittedBy.toString() !== user._id.toString()) {
-      return new ForbiddenError("Quote does not belong to user");
+      if (quote.submittedBy.toString() !== user._id.toString()) {
+        return new ForbiddenError("Quote does not belong to user");
+      }
+
+      const deletedQuote = await quote.deleteOne();
+
+      return deletedQuote;
+    } catch (err) {
+      return new Error("Internal server error");
     }
-
-    const deletedQuote = await quote.deleteOne();
-
-    return deletedQuote;
   }
 
   generateSlug(author: string, content: string): string {
