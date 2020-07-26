@@ -5,10 +5,12 @@
 #### Client
 
 - [ ] Set up Apollo Client
+- [ ] Set up Apollo Cache
 - [ ] User login
 - [ ] User sign up
 - [ ] User can:
   - [ ] Submit quote
+    - [ ] Upload image and post to Cloudinary
   - [ ] Edit submitted quote
   - [ ] Like a quote
   - [ ] Delete a quote
@@ -37,7 +39,7 @@
     - [x] Create quote
       - [x] Create slug for when quote is being created to allow sharing on client
     - [ ] Update quote
-    - [ ] Delete quote
+    - [x] Delete quote
     - [x] Like a quote
     - [x] Unlike a quote
   - [ ] User
@@ -51,5 +53,5 @@
 - [ ] Subscription
   - [ ] Subscribe to new quotes
   - [ ] Subscribe to new likes
-- [ ] Reset password
+- [ ] Password reset
 - [ ] Deploy
