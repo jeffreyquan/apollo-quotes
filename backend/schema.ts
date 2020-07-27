@@ -12,12 +12,6 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    post(
-      content: String!
-      author: String!
-      image: String
-      tags: [String]
-    ): Quote
     login(email: String!, password: String!): AuthPayload!
     register(
       name: String!
@@ -25,7 +19,13 @@ export const typeDefs = gql`
       password: String!
       email: String!
     ): AuthPayload!
-    like(quoteId: ID!): Like!
+    createQuote(
+      content: String!
+      author: String!
+      image: String
+      tags: [String]
+    ): Quote
+    likeQuote(quoteId: ID!): Like!
     updateQuote(
       id: ID!
       content: String

@@ -14,8 +14,12 @@ export const resolvers = {
     },
   },
   Mutation: {
-    post: async (parent, { content, author, image, tags }, { dataSources }) => {
-      const quote = await dataSources.quoteAPI.createPost({
+    createQuote: async (
+      parent,
+      { content, author, image, tags },
+      { dataSources }
+    ) => {
+      const quote = await dataSources.quoteAPI.createQuote({
         content,
         author,
         image,
@@ -24,8 +28,13 @@ export const resolvers = {
 
       return quote;
     },
+    updateQuote: async (parent, args, { dataSources }) => {
+      const updatedQuote = await dataSources.quoteAPI.updateQuote(args);
+
+      return updatedQuote;
+    },
     deleteQuote: async (parent, { id }, { dataSources }) => {
-      const deletedQuote = await dataSources.quoteAPI.removeQuote(id);
+      const deletedQuote = await dataSources.quoteAPI.deleteQuote(id);
 
       return deletedQuote;
     },

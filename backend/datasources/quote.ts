@@ -11,29 +11,27 @@ import {
 class QuoteAPI extends DataSource {
   private context;
 
-  checkUserLoggedIn() {
-    const { user } = this.context;
-
-    if (!user) return new AuthenticationError("User must be logged in");
-
-    return user;
-  }
-
   initialize(config) {
     this.context = config.context;
   }
 
   fetchQuotes() {
-    return Quote.find({}).exec();
+    return Quote.find({})
+      .populate("tags")
+      .populate("likes")
+      .populate("submittedBy")
+      .exec();
   }
 
   fetchQuoteById(quoteId) {
     return Quote.findOne({ _id: quoteId }).exec();
   }
 
-  async createPost({ content, author, image, tags }) {
+  async createQuote({ content, author, image, tags }) {
     try {
-      const user = this.checkUserLoggedIn();
+      const { user } = this.context;
+
+      if (!user) return new AuthenticationError("User must be logged in");
 
       const slug = this.generateSlug(author, content);
 
@@ -83,7 +81,9 @@ class QuoteAPI extends DataSource {
 
   async likeQuote(quoteId) {
     try {
-      const user = this.checkUserLoggedIn();
+      const { user } = this.context;
+
+      if (!user) return new AuthenticationError("User must be logged in");
 
       const existingLike = await Like.findOne({
         user: user._id,
@@ -116,9 +116,85 @@ class QuoteAPI extends DataSource {
     }
   }
 
-  async removeQuote(id) {
+  async updateQuote(updates) {
     try {
-      const user = this.checkUserLoggedIn();
+      const { user } = this.context;
+
+      if (!user) return new AuthenticationError("User must be logged in");
+
+      const id = updates.id;
+
+      const quote = await Quote.findById(id)
+        .populate("tags")
+        .populate({
+          path: "submittedBy",
+          select: "_id username",
+        })
+        .exec();
+
+      quote.content = updates.content;
+      quote.author = updates.author;
+      quote.image = updates.image;
+
+      const existingTags = quote.tags.map((tag) => tag.name);
+
+      const newTags = [];
+      const removedTags = [];
+
+      existingTags.forEach((tag) => {
+        if (!updates.tags.includes(tag)) {
+          removedTags.push(tag);
+        }
+      });
+
+      updates.tags.forEach((tag) => {
+        if (!existingTags.includes(tag)) {
+          newTags.push(tag);
+        }
+      });
+
+      const newTagsForQuote = await Promise.all(
+        newTags.map((tag) =>
+          Tag.findOneAndUpdate(
+            { name: tag },
+            { $push: { quotes: quote } },
+            { new: true, upsert: true }
+          ).exec()
+        )
+      );
+
+      const keptTags = quote.tags.filter(
+        (tag) => !removedTags.includes(tag.name)
+      );
+
+      const updatedTags = [...keptTags, ...newTagsForQuote];
+      quote.tags = updatedTags;
+
+      if (removedTags.length > 0) {
+        const tagsremoved = await Promise.all(
+          removedTags.map((tag) =>
+            Tag.updateOne(
+              { name: tag },
+              { $pull: { quotes: quote._id } },
+              { new: true, multi: true }
+            ).exec()
+          )
+        );
+      }
+
+      await quote.save();
+
+      return quote;
+    } catch (err) {
+      return new Error("Internal server error");
+    }
+  }
+
+  async deleteQuote(id) {
+    try {
+      const { user } = this.context;
+
+      if (!user) return new AuthenticationError("User must be logged in");
 
       const quote = await Quote.findById(id).exec();
 
