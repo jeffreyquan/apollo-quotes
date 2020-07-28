@@ -38,7 +38,7 @@
   - [ ] Quotes
     - [x] Create quote
       - [x] Create slug for when quote is being created to allow sharing on client
-    - [ ] Update quote
+    - [x] Update quote
     - [x] Delete quote
     - [x] Like a quote
     - [x] Unlike a quote
