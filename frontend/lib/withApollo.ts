@@ -10,13 +10,13 @@ function createApolloClient() {
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
       uri: DEV_ENDPOINT, // Server URL (must be absolute)
-      credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+      credentials: "include", // Additional fetch() options like `credentials` or `headers`,
     }),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
           fields: {
-            feed: concatPagination(),
+            quotes: concatPagination(),
           },
         },
       },
