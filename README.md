@@ -6,6 +6,7 @@
 
 - [ ] Set up Apollo Client
 - [ ] Set up Apollo Cache
+- [x] Set up global styles
 - [ ] User login
 - [ ] User sign up
 - [ ] User can:
@@ -22,7 +23,7 @@
 - [ ] View individual quote
 - [ ] Set up routing
 - [ ] Set up dark theme
-- [ ] Set up light theme
+- [x] Set up light theme
 - [ ] Responsive Design
 - [ ] Password reset
 - [ ] Deploy
@@ -34,6 +35,7 @@
 - [x] Create Mongoose models
 - [x] Define GraphQL schema
 - [x] Set up JWT authentication
+- [ ] Set up Cookie sessions
 - [ ] Mutations
   - [ ] Quotes
     - [x] Create quote
