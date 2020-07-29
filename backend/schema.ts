@@ -2,13 +2,8 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Query {
-    feed: Feed!
-    feedByTagName(name: String!): Feed!
+    quotes(tag: String): [Quote]!
     userProfile: User!
-  }
-
-  type Feed {
-    quotes: [Quote]!
   }
 
   type Mutation {
