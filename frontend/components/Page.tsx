@@ -46,7 +46,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
   }
 
-  html: {
+  html {
     box-sizing: border-box;
     font-size: 62.5%;
   }
