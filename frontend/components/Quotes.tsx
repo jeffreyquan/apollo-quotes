@@ -7,8 +7,18 @@ const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY($tag: String) {
     quotes(tag: $tag) {
       id
-      content
       author
+      content
+      image
+      tags {
+        id
+        name
+      }
+      likes {
+        user {
+          username
+        }
+      }
       slug
     }
   }
@@ -16,7 +26,7 @@ const ALL_QUOTES_QUERY = gql`
 
 const QuotesList = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(40rem, 1fr));
   grid-gap: 2.4rem;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
