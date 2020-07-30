@@ -49,12 +49,18 @@ const server = new ApolloServer({
   }),
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({
+  app,
+  cors: {
+    credentials: true,
+    origin: true,
+  },
+});
 
 const port = 5000;
 
 app.listen({ port }, async () => {
-  connectDatabase();
+  await connectDatabase();
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
   );
