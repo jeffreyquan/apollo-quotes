@@ -17,7 +17,7 @@ const TagSchema = new Schema(
       },
     ],
   },
-  { collection: "tag" }
+  { timestamps: true, collection: "tag" }
 );
 
 const Tag = mongoose.model<TagInterface>("Tag", TagSchema);

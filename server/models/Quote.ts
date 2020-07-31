@@ -42,7 +42,7 @@ const QuoteSchema = new Schema(
       },
     ],
   },
-  { collection: "quote" }
+  { timestamps: true, collection: "quote" }
 );
 
 QuoteSchema.post("deleteOne", { document: true }, async function () {

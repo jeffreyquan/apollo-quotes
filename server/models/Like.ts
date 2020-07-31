@@ -16,7 +16,7 @@ const LikeSchema = new Schema(
       ref: "User",
     },
   },
-  { collection: "like" }
+  { timestamps: true, collection: "like" }
 );
 
 LikeSchema.post("save", async function () {

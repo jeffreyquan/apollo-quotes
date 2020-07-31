@@ -26,7 +26,7 @@ const UserSchema = new Schema(
     quotes: [{ type: Schema.Types.ObjectId, ref: "Quote" }],
     likes: [{ type: Schema.Types.ObjectId, ref: "Like" }],
   },
-  { collection: "user" }
+  { timestamps: true, collection: "user" }
 );
 
 const User = mongoose.model<UserInterface>("User", UserSchema);
