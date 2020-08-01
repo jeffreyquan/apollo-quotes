@@ -35,6 +35,7 @@
 - [x] Create Mongoose models
 - [x] Define GraphQL schema
 - [x] Set up JWT authentication
+- [x] Create seed file and function
 - [ ] Set up Cookie sessions
 - [ ] Mutations
   - [ ] Quotes
@@ -51,7 +52,7 @@
   - [x] Feed
   - [x] Feed by Tag
   - [x] User information including quotes liked and quotes submitted
-  - [ ] Set up pagination
+  - [x] Set up pagination
 - [ ] Subscription
   - [ ] Subscribe to new quotes
   - [ ] Subscribe to new likes

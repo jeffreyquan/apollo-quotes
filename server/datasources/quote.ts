@@ -15,12 +15,52 @@ class QuoteAPI extends DataSource {
     this.context = config.context;
   }
 
-  fetchQuotes() {
-    return Quote.find({})
-      .populate("tags")
-      .populate("likes")
-      .populate("submittedBy")
+  async fetchQuotes({ tag, limit, cursor }) {
+    const totalCount = await Quote.countDocuments({}).exec();
+
+    let quotes = [];
+    let endCursor = "";
+    let filter = {};
+
+    if (tag) filter = { tags: tag };
+
+    if (cursor) filter = { ...filter, $lt: this.decodeCursor(cursor) };
+    quotes = await Quote.find(filter)
+
+      .sort({ createdAt: "descending", _id: "descending" })
+      .limit(limit + 1)
+      .populate({
+        path: "tags",
+        select: "_id name",
+      })
+      .populate({
+        path: "likes",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "_id username",
+        },
+      })
+      .populate({
+        path: "submittedBy",
+        select: "_id username",
+      })
       .exec();
+
+    const hasMore = quotes.length > limit;
+
+    quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
+
+    endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+
+    return {
+      totalCount,
+      pageInfo: {
+        endCursor,
+        hasMore,
+      },
+      quotes,
+    };
   }
 
   fetchQuoteById(quoteId) {
@@ -225,6 +265,14 @@ class QuoteAPI extends DataSource {
       .toLowerCase();
 
     return `${authorSlug}-${contentSlug}`;
+  }
+
+  encodeCursor(date) {
+    return Buffer.from(date.toString()).toString("base64");
+  }
+
+  decodeCursor(encodedCursor) {
+    return Buffer.from(encodedCursor, "base64").toString("ascii");
   }
 }
 
