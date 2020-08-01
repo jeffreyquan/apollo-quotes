@@ -1,9 +1,11 @@
 export const resolvers = {
   Query: {
-    quotes: async (parent, { tag }, { dataSources }) => {
-      const quotes = tag
-        ? await dataSources.tagAPI.fetchQuotesByTagName(tag)
-        : await dataSources.quoteAPI.fetchQuotes();
+    quotes: async (parent, { tag, limit, cursor }, { dataSources }) => {
+      const quotes = await dataSources.quoteAPI.fetchQuotes({
+        tag,
+        limit,
+        cursor,
+      });
       return quotes;
     },
   },
