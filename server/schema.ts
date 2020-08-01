@@ -2,7 +2,7 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Query {
-    quotes(tag: String): [Quote]!
+    quotes(tag: String, limit: Int, cursor: String): QuotesConnection!
     userProfile: User!
   }
 
@@ -67,6 +67,17 @@ export const typeDefs = gql`
     id: ID!
     quote: Quote!
     user: User!
+  }
+
+  type QuotesConnection {
+    totalCount: Int!
+    pageInfo: PageInfo!
+    quotes: [Quote]!
+  }
+
+  type PageInfo {
+    endCursor: String
+    hasMore: Boolean
   }
 
   type AuthPayload {
