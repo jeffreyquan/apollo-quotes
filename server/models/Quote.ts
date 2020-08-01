@@ -41,8 +41,15 @@ const QuoteSchema = new Schema(
         ref: "Tag",
       },
     ],
+    createdAt: Number,
+    updatedAt: Number,
   },
-  { timestamps: true, collection: "quote" }
+  {
+    timestamps: {
+      currentTime: () => Math.floor(Date.now()),
+    },
+    collection: "quote",
+  }
 );
 
 QuoteSchema.post("deleteOne", { document: true }, async function () {

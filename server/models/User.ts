@@ -31,8 +31,15 @@ const UserSchema = new Schema(
       enum: ["ADMIN", "EDITOR", "USER"],
       default: "USER",
     },
+    createdAt: Number,
+    updatedAt: Number,
   },
-  { timestamps: true, collection: "user" }
+  {
+    timestamps: {
+      currentTime: () => Math.floor(Date.now()),
+    },
+    collection: "user",
+  }
 );
 
 UserSchema.pre<UserInterface>("save", function (next) {

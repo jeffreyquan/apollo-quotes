@@ -15,8 +15,15 @@ const LikeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    createdAt: Number,
+    updatedAt: Number,
   },
-  { timestamps: true, collection: "like" }
+  {
+    timestamps: {
+      currentTime: () => Math.floor(Date.now()),
+    },
+    collection: "like",
+  }
 );
 
 LikeSchema.post("save", async function () {

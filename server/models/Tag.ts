@@ -16,8 +16,15 @@ const TagSchema = new Schema(
         ref: "Quote",
       },
     ],
+    createdAt: Number,
+    updatedAt: Number,
   },
-  { timestamps: true, collection: "tag" }
+  {
+    timestamps: {
+      currentTime: () => Math.floor(Date.now()),
+    },
+    collection: "tag",
+  }
 );
 
 const Tag = mongoose.model<TagInterface>("Tag", TagSchema);
