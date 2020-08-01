@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 import { UserInterface } from "./Interfaces";
 
 const { Schema } = mongoose;
@@ -25,9 +26,32 @@ const UserSchema = new Schema(
     },
     quotes: [{ type: Schema.Types.ObjectId, ref: "Quote" }],
     likes: [{ type: Schema.Types.ObjectId, ref: "Like" }],
+    role: {
+      type: String,
+      enum: ["ADMIN", "EDITOR", "USER"],
+      default: "USER",
+    },
   },
   { timestamps: true, collection: "user" }
 );
+
+UserSchema.pre<UserInterface>("save", function (next) {
+  if (!this.isModified("password")) return next();
+
+  const user = this;
+
+  bcrypt.genSalt(12, function (err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+
+      user.password = hash;
+
+      next();
+    });
+  });
+});
 
 const User = mongoose.model<UserInterface>("User", UserSchema);
 
