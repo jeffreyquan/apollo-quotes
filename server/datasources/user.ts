@@ -44,15 +44,11 @@ class UserAPI extends DataSource {
         });
       }
 
-      const salt = await bcrypt.genSaltSync(12);
-
-      const hash = await bcrypt.hash(password, salt);
-
       const newUser = new User({
-        name: name,
-        username: username,
-        email: email,
-        password: hash,
+        name,
+        username,
+        email,
+        password,
       });
 
       await newUser.save();
