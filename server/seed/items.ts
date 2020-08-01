@@ -1,4 +1,4 @@
-export const quotes = [
+export const items = [
   {
     author: "Forrest Gump",
     content:

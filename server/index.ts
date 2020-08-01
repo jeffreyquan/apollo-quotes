@@ -11,10 +11,13 @@ import UserAPI from "./datasources/user";
 import QuoteAPI from "./datasources/quote";
 import TagAPI from "./datasources/tag";
 import { verifyUser } from "./middleware/auth";
+import { initializeSeed } from "./seed";
 
 mongoose.Promise = global.Promise;
 
 const db = "mongodb://127.0.0.1/apollo-quotes";
+
+const INIT_SEED = false;
 
 const connectDatabase = () => {
   try {
@@ -61,6 +64,9 @@ const port = 5000;
 
 app.listen({ port }, async () => {
   await connectDatabase();
+  if (INIT_SEED) {
+    await initializeSeed();
+  }
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
   );
