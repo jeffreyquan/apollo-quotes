@@ -47,6 +47,8 @@ class QuoteAPI extends DataSource {
       })
       .exec();
 
+    console.log(quotes);
+
     const hasMore = quotes.length > limit;
 
     quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
@@ -67,7 +69,7 @@ class QuoteAPI extends DataSource {
     return Quote.findOne({ _id: quoteId }).exec();
   }
 
-  async createQuote({ content, author, image, tags }) {
+  async createQuote({ content, author, image, largeImage, tags }) {
     try {
       const { user } = this.context;
 
@@ -89,6 +91,7 @@ class QuoteAPI extends DataSource {
         content,
         author,
         image,
+        largeImage,
       });
 
       newQuote.submittedBy = user._id;

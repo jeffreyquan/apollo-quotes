@@ -12,13 +12,14 @@ export const resolvers = {
   Mutation: {
     createQuote: async (
       parent,
-      { content, author, image, tags },
+      { content, author, image, largeImage, tags },
       { dataSources }
     ) => {
       const quote = await dataSources.quoteAPI.createQuote({
         content,
         author,
         image,
+        largeImage,
         tags,
       });
 

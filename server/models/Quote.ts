@@ -20,6 +20,9 @@ const QuoteSchema = new Schema(
     image: {
       type: String,
     },
+    largeImage: {
+      type: String,
+    },
     slug: {
       type: String,
       required: "Slug cannot be blank",

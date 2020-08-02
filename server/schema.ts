@@ -44,6 +44,7 @@ export const typeDefs = gql`
     slug: String!
     likes: [Like]!
     image: String
+    largeImage: String
     tags: [Tag]!
   }
 
