@@ -41,6 +41,7 @@
   - [ ] Quotes
     - [x] Create quote
       - [x] Create slug for when quote is being created to allow sharing on client
+      - [x] Set up Cloudinary to allow image uploads when creating quotes
     - [x] Update quote
     - [x] Delete quote
     - [x] Like a quote
@@ -52,7 +53,7 @@
   - [x] Feed
   - [x] Feed by Tag
   - [x] User information including quotes liked and quotes submitted
-  - [x] Set up pagination
+  - [x] Set up cursor-based pagination
 - [ ] Subscription
   - [ ] Subscribe to new quotes
   - [ ] Subscribe to new likes
