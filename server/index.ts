@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import cloudinary from "cloudinary";
 import { ApolloServer } from "apollo-server-express";
 import { merge } from "lodash";
 import { typeDefs } from "./schema";
@@ -34,6 +35,12 @@ const connectDatabase = () => {
 };
 
 const app = express();
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const server = new ApolloServer({
   typeDefs,
