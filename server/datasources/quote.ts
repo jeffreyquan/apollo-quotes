@@ -1,4 +1,5 @@
 import { DataSource } from "apollo-datasource";
+import cloudinary from "cloudinary";
 import Quote from "../models/Quote";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
@@ -69,7 +70,7 @@ class QuoteAPI extends DataSource {
     return Quote.findOne({ _id: quoteId }).exec();
   }
 
-  async createQuote({ content, author, image, largeImage, tags }) {
+  async createQuote({ content, author, image, tags }) {
     try {
       const { user } = this.context;
 
@@ -87,11 +88,12 @@ class QuoteAPI extends DataSource {
         this.context.dataSources.tagAPI.findTags(tags),
       ]);
 
+      const images = await this.uploadImage(image);
+
       const newQuote = await new Quote({
         content,
         author,
-        image,
-        largeImage,
+        ...images,
       });
 
       newQuote.submittedBy = user._id;
@@ -120,6 +122,26 @@ class QuoteAPI extends DataSource {
     } catch (err) {
       return new Error("Internal server error");
     }
+  }
+
+  async uploadImage(image) {
+    const images = {
+      image: "",
+      largeImage: "",
+    };
+    await cloudinary.v2.uploader.upload(
+      image,
+      {
+        upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      },
+      (err, res) => {
+        if (err) console.log(err);
+        images.image = res.secure_url;
+        images.largeImage = res.eager[0].secure_url;
+      }
+    );
+
+    return images;
   }
 
   async likeQuote(quoteId) {

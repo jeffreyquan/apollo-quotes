@@ -17,7 +17,7 @@ export const typeDefs = gql`
     createQuote(
       content: String!
       author: String!
-      image: String
+      image: Upload
       tags: [String]
     ): Quote
     likeQuote(quoteId: ID!): Like!
