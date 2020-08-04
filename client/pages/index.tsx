@@ -3,7 +3,7 @@ import Quotes from "../components/Quotes";
 
 const Home = (props) => (
   <div>
-    <Quotes />
+    <Quotes limit={4} />
   </div>
 );
 
