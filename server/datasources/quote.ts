@@ -16,7 +16,7 @@ class QuoteAPI extends DataSource {
     this.context = config.context;
   }
 
-  async fetchQuotes({ tag, limit, cursor }) {
+  async fetchQuotes({ tag, limit = 4, cursor }) {
     const totalCount = await Quote.countDocuments({}).exec();
 
     let quotes = [];
@@ -25,9 +25,9 @@ class QuoteAPI extends DataSource {
 
     if (tag) filter = { tags: tag };
 
-    if (cursor) filter = { ...filter, $lt: this.decodeCursor(cursor) };
+    if (cursor)
+      filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
     quotes = await Quote.find(filter)
-
       .sort({ createdAt: "descending", _id: "descending" })
       .limit(limit + 1)
       .populate({
@@ -47,8 +47,6 @@ class QuoteAPI extends DataSource {
         select: "_id username",
       })
       .exec();
-
-    console.log(quotes);
 
     const hasMore = quotes.length > limit;
 
