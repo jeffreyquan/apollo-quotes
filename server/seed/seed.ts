@@ -34,11 +34,12 @@ export const initializeSeed = async () => {
 
   const createNewQuotes = async () => {
     for (const [index, item] of items.entries()) {
-      const { author, content, image, tags } = item;
+      const { author, content, image, largeImage, tags } = item;
       const newQuote = await createQuote({
         author,
         content,
         image,
+        largeImage,
         tags,
         user,
       });
@@ -55,7 +56,7 @@ export const initializeSeed = async () => {
   console.log(`Seeding completed`);
 };
 
-async function createQuote({ content, author, image, tags, user }) {
+async function createQuote({ content, author, image, largeImage, tags, user }) {
   try {
     const slug = generateSlug(author, content);
 
@@ -69,6 +70,7 @@ async function createQuote({ content, author, image, tags, user }) {
       content,
       author,
       image,
+      largeImage,
     });
 
     newQuote.submittedBy = user._id;
