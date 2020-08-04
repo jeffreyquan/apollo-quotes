@@ -4,22 +4,30 @@ import styled from "styled-components";
 import Quote from "../components/Quote";
 
 const ALL_QUOTES_QUERY = gql`
-  query ALL_QUOTES_QUERY($tag: String) {
-    quotes(tag: $tag) {
-      id
-      author
-      content
-      image
-      tags {
+  query ALL_QUOTES_QUERY($tag: String, $limit: Int, $cursor: String) {
+    quotes(tag: $tag, limit: $limit, cursor: $cursor) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasMore
+      }
+      quotes {
         id
-        name
-      }
-      likes {
-        user {
-          username
+        author
+        content
+        image
+        largeImage
+        tags {
+          id
+          name
         }
+        likes {
+          user {
+            username
+          }
+        }
+        slug
       }
-      slug
     }
   }
 `;
@@ -34,22 +42,41 @@ const QuotesList = styled.div`
 
 interface QuotesProps {
   tag?: string;
+  limit?: number;
+  cursor?: string;
 }
 
-const Quotes: React.FC<QuotesProps> = ({ tag }) => {
-  const { data, loading, error } = useQuery(ALL_QUOTES_QUERY, {
-    variables: { tag },
-  });
+const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
+  const { data, loading, error, fetchMore, updateQuery } = useQuery(
+    ALL_QUOTES_QUERY,
+    {
+      variables: { tag, limit, cursor },
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
-
   if (data) console.log(data);
+
+  const loadMore = async () => {
+    fetchMore({
+      query: ALL_QUOTES_QUERY,
+      variables: {
+        cursor: data.quotes.pageInfo.endCursor,
+        limit,
+      },
+    });
+  };
+
   return (
     <QuotesList>
-      {data.quotes.map((quote) => (
+      {data.quotes.quotes.map((quote) => (
         <Quote quote={quote} key={quote.id} />
       ))}
+      {data.quotes.pageInfo.hasMore && (
+        <button onClick={() => loadMore()}>Load more</button>
+      )}
     </QuotesList>
   );
 };
