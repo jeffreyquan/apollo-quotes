@@ -16,7 +16,19 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            quotes: {},
+            quotes: {
+              keyArgs: false,
+              merge: (
+                existing = { __typename: "QuotesConnection", quotes: [] },
+                incoming
+              ) => {
+                const result = {
+                  ...incoming,
+                  quotes: [...existing.quotes, ...incoming.quotes],
+                };
+                return result;
+              },
+            },
           },
         },
       },
