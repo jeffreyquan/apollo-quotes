@@ -47,7 +47,7 @@ interface QuotesProps {
 }
 
 const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
-  const { data, loading, error, fetchMore, updateQuery } = useQuery(
+  const { data, loading, error, fetchMore, networkStatus } = useQuery(
     ALL_QUOTES_QUERY,
     {
       variables: { tag, limit, cursor },
@@ -55,13 +55,8 @@ const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
     }
   );
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error...</div>;
-  if (data) console.log(data);
-
   const loadMore = async () => {
     fetchMore({
-      query: ALL_QUOTES_QUERY,
       variables: {
         cursor: data.quotes.pageInfo.endCursor,
         limit,
@@ -69,14 +64,19 @@ const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
     });
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
+
+  const { quotes } = data.quotes;
+
+  const { hasMore } = data.quotes.pageInfo;
+
   return (
     <QuotesList>
-      {data.quotes.quotes.map((quote) => (
+      {quotes.map((quote) => (
         <Quote quote={quote} key={quote.id} />
       ))}
-      {data.quotes.pageInfo.hasMore && (
-        <button onClick={() => loadMore()}>Load more</button>
-      )}
+      {hasMore && <button onClick={() => loadMore()}>Load more</button>}
     </QuotesList>
   );
 };
