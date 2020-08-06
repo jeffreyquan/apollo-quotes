@@ -2,6 +2,7 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Query {
+    quote(slug: String!): Quote
     quotes(tag: String, limit: Int, cursor: String): QuotesConnection!
     userProfile: User!
   }

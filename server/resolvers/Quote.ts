@@ -1,5 +1,11 @@
 export const resolvers = {
   Query: {
+    quote: async (parent, { slug }, { dataSources }) => {
+      const quote = await dataSources.quoteAPI.fetchQuote({
+        slug,
+      });
+      return quote;
+    },
     quotes: async (parent, { tag, limit, cursor }, { dataSources }) => {
       const quotes = await dataSources.quoteAPI.fetchQuotes({
         tag,

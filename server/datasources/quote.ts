@@ -16,6 +16,29 @@ class QuoteAPI extends DataSource {
     this.context = config.context;
   }
 
+  async fetchQuote({ slug }) {
+    const quote = await Quote.findOne({ slug })
+      .populate({
+        path: "tags",
+        select: "_id name",
+      })
+      .populate({
+        path: "likes",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "_id username",
+        },
+      })
+      .populate({
+        path: "submittedBy",
+        select: "_id username",
+      })
+      .exec();
+
+    return quote;
+  }
+
   async fetchQuotes({ tag, limit = 4, cursor }) {
     const totalCount = await Quote.countDocuments({}).exec();
 
@@ -25,8 +48,11 @@ class QuoteAPI extends DataSource {
 
     if (tag) filter = { tags: tag };
 
+    console.log(filter);
+
     if (cursor)
       filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
+
     quotes = await Quote.find(filter)
       .sort({ createdAt: "descending", _id: "descending" })
       .limit(limit + 1)
@@ -53,6 +79,8 @@ class QuoteAPI extends DataSource {
     quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
 
     endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+
+    console.log(quotes);
 
     return {
       totalCount,
