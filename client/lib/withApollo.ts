@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
-import { concatPagination } from "@apollo/client/utilities";
 import { DEV_ENDPOINT } from "../config";
 
 let apolloClient;
@@ -17,7 +16,7 @@ function createApolloClient() {
         Query: {
           fields: {
             quotes: {
-              keyArgs: false,
+              keyArgs: ["tag"],
               merge: (
                 existing = { __typename: "QuotesConnection", quotes: [] },
                 incoming
