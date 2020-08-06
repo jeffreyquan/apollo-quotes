@@ -1,9 +1,10 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
+import Link from "next/link";
 import styled from "styled-components";
 import Quote from "../components/Quote";
 
-const ALL_QUOTES_QUERY = gql`
+export const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY($tag: String, $limit: Int, $cursor: String) {
     quotes(tag: $tag, limit: $limit, cursor: $cursor) {
       totalCount
@@ -55,11 +56,13 @@ const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
     }
   );
 
-  const loadMore = async () => {
+  const loadMore = async (e) => {
+    e.preventDefault();
     fetchMore({
       variables: {
         cursor: data.quotes.pageInfo.endCursor,
         limit,
+        tag,
       },
     });
   };
@@ -74,9 +77,13 @@ const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
   return (
     <QuotesList>
       {quotes.map((quote) => (
-        <Quote quote={quote} key={quote.id} />
+        <Link href="/quotes/[slug]" as={`/quotes/${quote.slug}`}>
+          <a>
+            <Quote quote={quote} key={quote.id} />
+          </a>
+        </Link>
       ))}
-      {hasMore && <button onClick={() => loadMore()}>Load more</button>}
+      {hasMore && <button onClick={(e) => loadMore(e)}>Load more</button>}
     </QuotesList>
   );
 };
