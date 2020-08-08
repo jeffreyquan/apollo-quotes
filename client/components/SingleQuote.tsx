@@ -46,9 +46,12 @@ const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
 
+  const updatedQuote = { ...data.quote };
+  updatedQuote.image = updatedQuote.largeImage;
+
   return (
     <SingleQuoteStyles>
-      <Quote {...data} />
+      <Quote quote={updatedQuote} />
     </SingleQuoteStyles>
   );
 };
