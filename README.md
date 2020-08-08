@@ -35,7 +35,7 @@
 - [x] Define GraphQL schema
 - [x] Set up JWT authentication
 - [x] Create seed file and function
-- [ ] Set up Cookie sessions
+- [x] Set up to store JWT in Cookies
 - [ ] Mutations
   - [ ] Quotes
     - [x] Create quote

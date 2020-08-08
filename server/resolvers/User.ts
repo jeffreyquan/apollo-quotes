@@ -13,13 +13,13 @@ export const resolvers = {
       { dataSources }
     ) => {
       try {
-        const token = await dataSources.userAPI.createUser({
+        const user = await dataSources.userAPI.createUser({
           name,
           username,
           password,
           email,
         });
-        return token;
+        return user;
       } catch (error) {
         throw error;
       }

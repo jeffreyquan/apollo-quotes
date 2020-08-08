@@ -14,11 +14,11 @@ class UserAPI extends DataSource {
     this.context = config.context;
   }
 
-  generateToken(username) {
+  generateToken(userId) {
     const secretKey = process.env.JWT_SECRET;
     return jwt.sign(
       {
-        username,
+        userId,
       },
       secretKey,
       {
@@ -53,9 +53,16 @@ class UserAPI extends DataSource {
 
       await newUser.save();
 
-      const token = this.generateToken(username);
+      delete newUser.password;
 
-      return { token };
+      const token = this.generateToken(newUser._id);
+
+      this.context.res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 165,
+      });
+
+      return newUser;
     } catch (err) {
       throw err;
     }
@@ -78,13 +85,22 @@ class UserAPI extends DataSource {
       });
     }
 
-    const token = await this.generateToken(user.username);
+    delete user.password;
 
-    return { token };
+    const token = await this.generateToken(user._id);
+
+    console.log(this.context.res);
+
+    this.context.res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 165,
+    });
+
+    return user;
   }
 
   async fetchUserProfile() {
-    const { user } = this.context;
+    const { user } = this.context.req;
     if (!user) return new AuthenticationError("User must be logged in");
 
     const userId = user._id;

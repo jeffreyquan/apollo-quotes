@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cloudinary from "cloudinary";
 import { ApolloServer } from "apollo-server-express";
+import cookieParser from "cookie-parser";
 import { merge } from "lodash";
 import { typeDefs } from "./schema";
 import { resolvers as quoteResolvers } from "./resolvers/Quote";
@@ -11,7 +12,7 @@ import { resolvers as likeResolvers } from "./resolvers/Like";
 import UserAPI from "./datasources/user";
 import QuoteAPI from "./datasources/quote";
 import TagAPI from "./datasources/tag";
-import { verifyUser } from "./middleware/auth";
+import { verifyUser, AuthRequest } from "./middleware/auth";
 import { initializeSeed } from "./seed";
 
 mongoose.Promise = global.Promise;
@@ -19,6 +20,16 @@ mongoose.Promise = global.Promise;
 const db = "mongodb://127.0.0.1/apollo-quotes";
 
 const INIT_SEED = false;
+
+const app = express();
+app.use(cookieParser());
+app.use("*", async function (req: AuthRequest, res, next) {
+  const { token } = req.cookies;
+  let user = null;
+  if (token) user = await verifyUser(token);
+  req.user = user;
+  next();
+});
 
 const connectDatabase = () => {
   try {
@@ -34,8 +45,6 @@ const connectDatabase = () => {
   }
 };
 
-const app = express();
-
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -45,13 +54,10 @@ cloudinary.v2.config({
 const server = new ApolloServer({
   typeDefs,
   resolvers: merge(authResolvers, quoteResolvers, userResolvers, likeResolvers),
-  context: async ({ req, res }) => {
-    const token = req.headers.authorization || "";
-    let user = null;
-    if (token) user = await verifyUser(token);
-    console.log(user);
-    return { user };
-  },
+  context: async ({ req, res }) => ({
+    req,
+    res,
+  }),
   dataSources: () => ({
     userAPI: new UserAPI(),
     quoteAPI: new QuoteAPI(),

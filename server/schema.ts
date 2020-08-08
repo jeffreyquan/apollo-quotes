@@ -8,13 +8,13 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): AuthPayload!
+    login(email: String!, password: String!): User!
     register(
       name: String!
       username: String!
       password: String!
       email: String!
-    ): AuthPayload!
+    ): User!
     createQuote(
       content: String!
       author: String!
@@ -80,9 +80,5 @@ export const typeDefs = gql`
   type PageInfo {
     endCursor: String
     hasMore: Boolean
-  }
-
-  type AuthPayload {
-    token: String!
   }
 `;

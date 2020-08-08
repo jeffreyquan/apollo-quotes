@@ -48,8 +48,6 @@ class QuoteAPI extends DataSource {
 
     if (tag) filter = { tags: tag };
 
-    console.log(filter);
-
     if (cursor)
       filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
 
@@ -80,8 +78,6 @@ class QuoteAPI extends DataSource {
 
     endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
 
-    console.log(quotes);
-
     return {
       totalCount,
       pageInfo: {
@@ -98,7 +94,7 @@ class QuoteAPI extends DataSource {
 
   async createQuote({ content, author, image, tags }) {
     try {
-      const { user } = this.context;
+      const { user } = this.context.req;
 
       if (!user) return new AuthenticationError("User must be logged in");
 
@@ -172,7 +168,7 @@ class QuoteAPI extends DataSource {
 
   async likeQuote(quoteId) {
     try {
-      const { user } = this.context;
+      const { user } = this.context.req;
 
       if (!user) return new AuthenticationError("User must be logged in");
 
@@ -209,7 +205,7 @@ class QuoteAPI extends DataSource {
 
   async updateQuote(updates) {
     try {
-      const { user } = this.context;
+      const { user } = this.context.req;
 
       if (!user) return new AuthenticationError("User must be logged in");
 
@@ -283,7 +279,7 @@ class QuoteAPI extends DataSource {
 
   async deleteQuote(id) {
     try {
-      const { user } = this.context;
+      const { user } = this.context.req;
 
       if (!user) return new AuthenticationError("User must be logged in");
 
