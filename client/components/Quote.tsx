@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import QuoteStyles from "../styles/QuoteStyles";
-import QuoteTag from "../styles/QuoteTag";
+import { QuoteStyles } from "../styles/QuoteStyles";
+import { QuoteTag } from "../styles/QuoteTag";
 
 const QuoteBody = styled.div`
   display: grid;
@@ -21,7 +21,7 @@ const TagList = styled.div`
   display: block;
 `;
 
-const Quote = ({ quote }) => {
+export const Quote = ({ quote }) => {
   const { author, content, image, tags, likes } = quote;
   return (
     <QuoteStyles>
@@ -42,5 +42,3 @@ const Quote = ({ quote }) => {
     </QuoteStyles>
   );
 };
-
-export default Quote;

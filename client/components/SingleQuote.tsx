@@ -1,7 +1,7 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
-import Quote from "../components/Quote";
+import { Quote } from "../components/Quote";
 
 const SINGLE_QUOTE_QUERY = gql`
   query SINGLE_QUOTE_QUERY($slug: String!) {
@@ -36,7 +36,7 @@ interface SingleQuoteProps {
   slug: string;
 }
 
-const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
+export const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
   const { data, loading, error } = useQuery(SINGLE_QUOTE_QUERY, {
     variables: {
       slug,
@@ -55,5 +55,3 @@ const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
     </SingleQuoteStyles>
   );
 };
-
-export default SingleQuote;

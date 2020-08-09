@@ -2,7 +2,7 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import styled from "styled-components";
-import Quote from "../components/Quote";
+import { Quote } from "../components/Quote";
 
 export const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY($tag: String, $limit: Int, $cursor: String) {
@@ -47,7 +47,7 @@ interface QuotesProps {
   cursor?: string;
 }
 
-const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
+export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
   const { data, loading, error, fetchMore, networkStatus } = useQuery(
     ALL_QUOTES_QUERY,
     {
@@ -87,5 +87,3 @@ const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
     </QuotesList>
   );
 };
-
-export default Quotes;
