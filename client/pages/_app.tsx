@@ -1,8 +1,8 @@
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/withApollo";
-import Page from "../components/Page";
+import { Page } from "../components/Page";
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   const client = useApollo(pageProps.initialApolloState);
 
   return (
@@ -12,4 +12,6 @@ export default function App({ Component, pageProps }) {
       </Page>
     </ApolloProvider>
   );
-}
+};
+
+export default App;
