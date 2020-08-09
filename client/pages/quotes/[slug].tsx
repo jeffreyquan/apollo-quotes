@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import SingleQuote from "../../components/SingleQuote";
+import { SingleQuote } from "../../components/SingleQuote";
 
-const Quote = () => {
+const SingleQuotePage = () => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -12,4 +12,4 @@ const Quote = () => {
   );
 };
 
-export default Quote;
+export default SingleQuotePage;
