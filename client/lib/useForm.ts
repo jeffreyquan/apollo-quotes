@@ -1,6 +1,9 @@
 import { useState } from "react";
+interface FormState {
+  [key: string]: any;
+}
 
-function useForm(initialState = {}) {
+export const useForm = (initialState: FormState = {}) => {
   const [inputs, setInputs] = useState(initialState);
 
   function handleChange(e) {
@@ -33,4 +36,4 @@ function useForm(initialState = {}) {
     resetForm,
     clearForm,
   };
-}
+};
