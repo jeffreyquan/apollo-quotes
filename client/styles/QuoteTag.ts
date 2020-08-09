@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QuoteTag = styled.div`
+export const QuoteTag = styled.div`
   display: inline-block;
   font-size: 1.2rem;
   background-color: ${(props) => props.theme.cardtagbg};
@@ -10,5 +10,3 @@ const QuoteTag = styled.div`
   margin-right: 0.6rem;
   margin-bottom: 0.6rem;
 `;
-
-export default QuoteTag;

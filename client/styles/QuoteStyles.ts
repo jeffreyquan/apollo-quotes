@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QuoteStyles = styled.div`
+export const QuoteStyles = styled.div`
   background-color: ${(props) => props.theme.cardbg2};
   color: ${(props) => props.theme.cardbody};
   padding: 2.4rem;
@@ -21,5 +21,3 @@ const QuoteStyles = styled.div`
     font-size: 1.2rem;
   }
 `;
-
-export default QuoteStyles;
