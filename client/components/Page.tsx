@@ -22,7 +22,11 @@ const theme = {
   cardtagtext: "#fffffe",
   cardhl: "#f25042",
   link: "#8c7851",
-  forminput: "#020826",
+  formheadline: "#fffffe",
+  formbg: "#8c7851",
+  forminput: "#eaddcf",
+  formtext: "#020826",
+  formbtntext: "#fffffe",
   white: "#ffffff",
   black: "#000000",
   maxWidth: "960px",
@@ -36,11 +40,10 @@ const StyledPage = styled.div`
 const InnerDiv = styled.div`
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
-  padding: 2.4rem;
 `;
 
 const GlobalStyles = createGlobalStyle`
-  *, *:before, *:after  {
+  *, *::before, *::after  {
     margin: 0;
     padding: 0;
     box-sizing: inherit;
@@ -63,7 +66,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const Page = (props) => {
+export const Page = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <StyledPage>
@@ -73,5 +76,3 @@ const Page = (props) => {
     </ThemeProvider>
   );
 };
-
-export default Page;
