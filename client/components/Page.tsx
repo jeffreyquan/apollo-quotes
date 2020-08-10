@@ -40,6 +40,7 @@ const StyledPage = styled.div`
 const InnerDiv = styled.div`
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
+  min-height: 100vh;
 `;
 
 const GlobalStyles = createGlobalStyle`
