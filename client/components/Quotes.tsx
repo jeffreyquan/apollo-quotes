@@ -2,6 +2,8 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import styled from "styled-components";
+import { Waypoint } from "react-waypoint";
+
 import { Quote } from "../components/Quote";
 
 export const ALL_QUOTES_QUERY = gql`
@@ -35,7 +37,7 @@ export const ALL_QUOTES_QUERY = gql`
 
 const QuotesList = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(50rem, 1fr));
   grid-gap: 2.4rem;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
@@ -56,8 +58,7 @@ export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
     }
   );
 
-  const loadMore = async (e) => {
-    e.preventDefault();
+  const loadMore = async () => {
     fetchMore({
       variables: {
         cursor: data.quotes.pageInfo.endCursor,
@@ -76,14 +77,22 @@ export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
 
   return (
     <QuotesList>
-      {quotes.map((quote) => (
-        <Link href="/quotes/[slug]" as={`/quotes/${quote.slug}`}>
-          <a>
-            <Quote quote={quote} key={quote.id} />
-          </a>
-        </Link>
+      {quotes.map((quote, index) => (
+        <React.Fragment key={quote.id}>
+          <Link href="/quotes/[slug]" as={`/quotes/${quote.slug}`}>
+            <a>
+              <Quote quote={quote} />
+            </a>
+          </Link>
+          {hasMore && index === quotes.length - 2 && (
+            <Waypoint
+              onEnter={() => {
+                loadMore();
+              }}
+            />
+          )}
+        </React.Fragment>
       ))}
-      {hasMore && <button onClick={(e) => loadMore(e)}>Load more</button>}
     </QuotesList>
   );
 };
