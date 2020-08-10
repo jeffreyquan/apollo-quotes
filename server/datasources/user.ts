@@ -89,8 +89,6 @@ class UserAPI extends DataSource {
 
     const token = await this.generateToken(user._id);
 
-    console.log(this.context.res);
-
     this.context.res.cookie("token", token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 165,
