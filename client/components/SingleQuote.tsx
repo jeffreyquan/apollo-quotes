@@ -26,8 +26,9 @@ const SINGLE_QUOTE_QUERY = gql`
 `;
 
 const SingleQuoteStyles = styled.div`
-  display: grid;
-  grid-auto-columns: 1fr;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
 `;
