@@ -6,7 +6,8 @@ export const QuoteStyles = styled.div`
   padding: 2.4rem;
   border-radius: 3px;
   img {
-    height: 20rem;
+    min-height: 10rem;
+    max-height: 35rem;
     width: 100%;
     object-fit: cover;
     border-radius: 3px;
