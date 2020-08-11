@@ -17,8 +17,19 @@ const QuoteContent = styled.div`
   grid-column: 4 / 9;
 `;
 
+const QuoteFooter = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+`;
+
+const Like = styled.div`
+  display: inline-block;
+`;
+
 const TagList = styled.div`
-  display: block;
+  display: inline-block;
+  margin-right: auto;
 `;
 
 export const Quote = ({ quote }) => {
@@ -34,11 +45,14 @@ export const Quote = ({ quote }) => {
           <p>&mdash; {author}</p>
         </QuoteContent>
       </QuoteBody>
-      <TagList>
-        {tags.map((tag) => (
-          <QuoteTag key={tag.id}>{tag.name}</QuoteTag>
-        ))}
-      </TagList>
+      <QuoteFooter>
+        <TagList>
+          {tags.map((tag) => (
+            <QuoteTag key={tag.id}>{tag.name}</QuoteTag>
+          ))}
+        </TagList>
+        <Like>{likes.length} likes</Like>
+      </QuoteFooter>
     </QuoteStyles>
   );
 };
