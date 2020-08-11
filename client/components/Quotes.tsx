@@ -3,7 +3,6 @@ import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import styled from "styled-components";
 import { Waypoint } from "react-waypoint";
-
 import { Quote } from "../components/Quote";
 
 export const ALL_QUOTES_QUERY = gql`
@@ -37,8 +36,9 @@ export const ALL_QUOTES_QUERY = gql`
 
 const QuotesList = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 100rem));
   grid-gap: 2.4rem;
+  justify-content: center;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
 `;
