@@ -4,10 +4,10 @@
 
 #### Client
 
-- [ ] Set up Apollo Client
-- [ ] Set up Apollo Cache
+- [x] Set up Apollo Client
+- [x] Set up Apollo Cache
 - [x] Set up global styles
-- [ ] User login
+- [x] User login
 - [ ] User sign up
 - [ ] User can:
   - [ ] Submit quote
@@ -17,9 +17,9 @@
   - [ ] View quotes liked
   - [ ] View quotes submitted
 - [ ] Restrict editting, deleting and submitting to authorised users
-- [ ] View feed of quotes
+- [x] View feed of quotes
 - [ ] View feed of quotes by tag
-- [ ] View individual quote
+- [x] View individual quote
 - [ ] Set up routing
 - [ ] Set up dark theme
 - [x] Set up light theme
