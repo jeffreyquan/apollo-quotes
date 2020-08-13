@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
@@ -101,7 +102,7 @@ export const QuoteNew = () => {
           <label>Tags</label>
           {tags.map((tag, i) => {
             return (
-              <div>
+              <div className="input__group">
                 <input
                   type="text"
                   name="tag"
@@ -109,10 +110,14 @@ export const QuoteNew = () => {
                   onChange={(e) => handleTagChange(e, i)}
                 />
                 {i !== 0 && (
-                  <button onClick={() => handleRemoveClick(i)}>Remove</button>
+                  <button onClick={() => handleRemoveClick(i)}>
+                    <MdRemoveCircle />
+                  </button>
                 )}
                 {tags.length - 1 === i && (
-                  <button onClick={() => handleAddClick()}>Add</button>
+                  <button onClick={() => handleAddClick()}>
+                    <MdAddCircle />
+                  </button>
                 )}
               </div>
             );

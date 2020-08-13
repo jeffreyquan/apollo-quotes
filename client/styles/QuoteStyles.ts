@@ -15,10 +15,10 @@ export const QuoteStyles = styled.div`
 
   p {
     font-size: 1.4rem;
-  }
 
-  p:nth-child(2) {
-    text-align: right;
-    font-size: 1.2rem;
+    &:nth-child(2) {
+      text-align: right;
+      font-size: 1.2rem;
+    }
   }
 `;

@@ -7,6 +7,10 @@ export const Form = styled.form`
   border-radius: 3px;
   label {
     color: ${(props) => props.theme.formheadline};
+
+    &:not(first-child) {
+      margin-top: 1rem;
+    }
   }
 
   input,
@@ -16,7 +20,7 @@ export const Form = styled.form`
     border: 3px solid ${(props) => props.theme.forminput};
     width: 100%;
     padding: 1rem;
-    margin: 0.4rem 0;
+    margin: 0.5rem 0;
     border-radius: 3px;
     outline: none;
   }
@@ -45,5 +49,19 @@ export const Form = styled.form`
     background-color: inherit;
     border: none;
     color: ${(props) => props.theme.formbtntext};
+    outline: none;
+  }
+  .input__group {
+    display: flex;
+    align-items: center;
+
+    & > input {
+      width: 80%;
+      margin-right: 1rem;
+    }
+
+    svg {
+      font-size: 2rem;
+    }
   }
 `;
