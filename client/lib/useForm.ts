@@ -19,6 +19,13 @@ export const useForm = (initialState: FormState = {}) => {
     }));
   }
 
+  function updateInputs(update) {
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      ...update,
+    }));
+  }
+
   function resetForm() {
     setInputs(initialState);
   }
@@ -33,6 +40,7 @@ export const useForm = (initialState: FormState = {}) => {
   return {
     inputs,
     handleChange,
+    updateInputs,
     resetForm,
     clearForm,
   };
