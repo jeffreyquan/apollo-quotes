@@ -20,6 +20,9 @@ export const Form = styled.form`
     border-radius: 3px;
     outline: none;
   }
+  textarea {
+    resize: none;
+  }
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
