@@ -4,6 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
+import { FormTitle } from "../styles/FormTitle";
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -45,6 +46,7 @@ export const Login = () => {
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
+        <FormTitle>Login</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
           <label htmlFor="email">
             Email
