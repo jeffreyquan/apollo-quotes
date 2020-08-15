@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { User } from "./User";
+import { useUser } from "./User";
 
 const NavbarStyles = styled.nav`
   font-size: 2rem;
@@ -15,8 +15,8 @@ const NavbarStyles = styled.nav`
 `;
 
 export const Navbar = () => {
-  const user = User();
-  console.log(user);
+  const user = useUser();
+
   return (
     <NavbarStyles>
       <ul>

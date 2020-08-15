@@ -11,7 +11,7 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-export const User = () => {
+export const useUser = () => {
   const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
 
   if (error) return null;
