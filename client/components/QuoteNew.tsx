@@ -3,6 +3,7 @@ import { gql, useMutation } from "@apollo/client";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
+import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
 
 const CREATE_QUOTE_MUTATION = gql`
@@ -42,13 +43,13 @@ export const QuoteNew = () => {
 
   const handleSubmit = (e) => {};
 
-  const handleAddClick = () => {
+  const addTag = () => {
     updateInputs({
       tags: [...tags, ""],
     });
   };
 
-  const handleRemoveClick = (index) => {
+  const removeTag = (index) => {
     const updatedTags = [...tags];
     updatedTags.splice(index, 1);
     updateInputs({
@@ -68,6 +69,7 @@ export const QuoteNew = () => {
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
+        <FormTitle>Submit a new quote</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
           <label htmlFor="content">
             Content
@@ -82,8 +84,8 @@ export const QuoteNew = () => {
             Author
             <input
               type="text"
-              name="JR Smith"
-              placeholder="Author"
+              name="author"
+              placeholder="JR Smith"
               value={author}
               onChange={handleChange}
             />
@@ -102,7 +104,7 @@ export const QuoteNew = () => {
           <label>Tags</label>
           {tags.map((tag, i) => {
             return (
-              <div className="input__group">
+              <div className="input__group" key={i}>
                 <input
                   type="text"
                   name="tag"
@@ -110,12 +112,12 @@ export const QuoteNew = () => {
                   onChange={(e) => handleTagChange(e, i)}
                 />
                 {i !== 0 && (
-                  <button onClick={() => handleRemoveClick(i)}>
+                  <button onClick={() => removeTag(i)}>
                     <MdRemoveCircle />
                   </button>
                 )}
                 {tags.length - 1 === i && (
-                  <button onClick={() => handleAddClick()}>
+                  <button onClick={() => addTag()}>
                     <MdAddCircle />
                   </button>
                 )}
