@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import { Header } from "./Header";
 
 // https://www.happyhues.co/palettes/11
 const theme = {
@@ -72,6 +73,7 @@ export const Page = (props) => {
     <ThemeProvider theme={theme}>
       <StyledPage>
         <GlobalStyles />
+        <Header />
         <InnerDiv>{props.children}</InnerDiv>
       </StyledPage>
     </ThemeProvider>
