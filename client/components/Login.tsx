@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
-import { useUser } from "./User";
+import { CURRENT_USER_QUERY, useUser } from "./User";
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -29,35 +29,29 @@ export const Login = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const user = useUser();
   const router = useRouter();
-  const isMounted = useRef(false);
 
   useEffect(() => {
-    if (isMounted.current) {
-      setLoadingPage(true);
-      if (user) {
-        router.push("/");
+    if (user) {
+      if (router.query.redirect) {
+        router.back();
       } else {
-        setLoadingPage(false);
+        router.push("/");
       }
     } else {
-      isMounted.current = true;
+      setLoadingPage(false);
     }
   }, [user]);
 
   const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
   // TODO: create error component to display any login errors
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await login();
-      if (res.data.login.id) {
-        // TODO: only go back to previous route if redirected to login page
-        console.log(window.history);
-        router.back();
-      }
+      await login();
     } catch (err) {
       console.log(err);
     }
