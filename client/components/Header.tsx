@@ -24,6 +24,7 @@ const StyledHeader = styled.header`
   align-items: center;
   transition: all 0.3s ease-in-out;
   line-height: ${(props) => (props.sticky ? "3rem" : "5rem")};
+  max-height: 9rem;
 `;
 
 export const Header = () => {
