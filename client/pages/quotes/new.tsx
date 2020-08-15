@@ -1,30 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { QuoteNew } from "../../components/QuoteNew";
 import { useUser } from "../../components/User";
 
 const NewQuotePage = () => {
+  const [loadingPage, setLoadingPage] = useState(true);
   const user = useUser();
   const router = useRouter();
 
-  const isMounted = useRef(false);
-
   useEffect(() => {
-    if (isMounted.current) {
-      if (!user) {
-        console.log("redirecting...");
-        router.push("/login");
-      }
+    if (!user) {
+      router.push({
+        pathname: "/login",
+        query: { redirect: "true" },
+      });
     } else {
-      isMounted.current = true;
+      setLoadingPage(false);
     }
   }, [user]);
 
-  return (
-    <div>
-      <QuoteNew />
-    </div>
-  );
+  return !loadingPage ? <QuoteNew /> : <div>Loading...</div>;
 };
 
 export default NewQuotePage;
