@@ -1,6 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 
-const CURRENT_USER_QUERY = gql`
+export const CURRENT_USER_QUERY = gql`
   query {
     userProfile {
       id
@@ -13,8 +13,6 @@ const CURRENT_USER_QUERY = gql`
 
 export const useUser = () => {
   const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
-
-  if (error) return null;
 
   if (data) {
     return data.userProfile;
