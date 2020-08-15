@@ -39,8 +39,10 @@ const StyledPage = styled.div`
 `;
 
 const InnerDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   max-width: ${(props) => props.theme.maxWidth};
-  margin: 0 auto;
   min-height: calc(100vh - 9rem);
 `;
 
