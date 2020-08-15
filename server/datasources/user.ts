@@ -99,6 +99,7 @@ class UserAPI extends DataSource {
 
   async fetchUserProfile() {
     const { user } = this.context.req;
+
     if (!user) return new AuthenticationError("User must be logged in");
 
     const userId = user._id;

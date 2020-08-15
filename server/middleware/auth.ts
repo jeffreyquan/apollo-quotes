@@ -11,7 +11,7 @@ export const verifyUser = (token: string) => {
   return jwt.verify(token, secret, async (err, decoded) => {
     if (err) return null;
     const userId = decoded.userId;
-    const user = await User.findOne({ userId })
+    const user = await User.findOne({ _id: userId })
       .select("_id name username email")
       .exec();
     return user;
