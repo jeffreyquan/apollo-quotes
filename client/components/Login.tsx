@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
+import { useUser } from "./User";
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -24,7 +25,24 @@ export const Login = () => {
   });
 
   const { email, password } = inputs;
+
+  const [loadingPage, setLoadingPage] = useState(true);
+  const user = useUser();
   const router = useRouter();
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      setLoadingPage(true);
+      if (user) {
+        router.push("/");
+      } else {
+        setLoadingPage(false);
+      }
+    } else {
+      isMounted.current = true;
+    }
+  }, [user]);
 
   const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
@@ -36,14 +54,16 @@ export const Login = () => {
     try {
       const res = await login();
       if (res.data.login.id) {
-        await router.push("/");
+        // TODO: only go back to previous route if redirected to login page
+        console.log(window.history);
+        router.back();
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  return (
+  return !loadingPage ? (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
         <FormTitle>Login</FormTitle>
@@ -74,5 +94,7 @@ export const Login = () => {
         </fieldset>
       </Form>
     </FormContainer>
+  ) : (
+    <div>Loading....</div>
   );
 };
