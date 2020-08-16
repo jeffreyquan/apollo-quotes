@@ -43,8 +43,9 @@ const InnerDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   max-width: ${(props) => props.theme.maxWidth};
-  min-height: calc(100vh - 9rem);
+  min-height: ${(props) => (props.loading ? "100vh" : "calc(100vh - 9rem)")};
 `;
 
 const GlobalStyles = createGlobalStyle`
@@ -79,7 +80,7 @@ export const Page = ({ children }) => {
       <StyledPage>
         <GlobalStyles />
         {checkingAuth ? (
-          <InnerDiv>Loading...</InnerDiv>
+          <InnerDiv loading>Loading...</InnerDiv>
         ) : (
           <>
             <Header />
