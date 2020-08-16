@@ -25,13 +25,11 @@ export const AuthProvider = ({ children }) => {
   const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
 
   useEffect(() => {
-    if (typeof data === undefined) {
-      setCheckingAuth(true);
-    } else if (data) {
-      setUser(data.userProfile);
+    if (typeof data !== undefined) {
       setCheckingAuth(false);
-    } else {
-      setCheckingAuth(false);
+      if (data) {
+        setUser(data.userProfile);
+      }
     }
   }, [data]);
 
