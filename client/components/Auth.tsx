@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
 
 const CURRENT_USER_QUERY = gql`
@@ -12,15 +12,7 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-export const useUser = () => {
-  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
-
-  if (data) {
-    return data.userProfile;
-  }
-};
-
-export const AuthContext = React.createContext({
+export const AuthContext = createContext({
   checkingAuth: true,
   user: null,
   setUser: null,
