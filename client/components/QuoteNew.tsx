@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";

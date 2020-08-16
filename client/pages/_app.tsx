@@ -1,5 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/withApollo";
+import { AuthProvider } from "../components/Auth";
 import { Page } from "../components/Page";
 
 const App = ({ Component, pageProps }) => {
@@ -7,9 +8,11 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <ApolloProvider client={client}>
-      <Page>
-        <Component {...pageProps} />
-      </Page>
+      <AuthProvider>
+        <Page>
+          <Component {...pageProps} />
+        </Page>
+      </AuthProvider>
     </ApolloProvider>
   );
 };

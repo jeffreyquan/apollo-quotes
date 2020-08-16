@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { useUser } from "./User";
+import { AuthContext } from "./Auth";
+import { Logout } from "./Logout";
 
 const NavbarStyles = styled.nav`
   font-size: 2rem;
@@ -15,27 +16,31 @@ const NavbarStyles = styled.nav`
 `;
 
 export const Navbar = () => {
-  const user = useUser();
-
   return (
-    <NavbarStyles>
-      <ul>
-        <Link href="/quotes">
-          <a>Quotes</a>
-        </Link>
-        {user && (
-          <>
-            <Link href="/quotes/new">
-              <a>New</a>
+    <AuthContext.Consumer>
+      {({ user }) => (
+        <NavbarStyles>
+          <ul>
+            <Link href="/quotes">
+              <a>Quotes</a>
             </Link>
-          </>
-        )}
-        {!user && (
-          <Link href="/login">
-            <a>Login</a>
-          </Link>
-        )}
-      </ul>
-    </NavbarStyles>
+            {user && (
+              <>
+                <Link href="/quotes/new">
+                  <a>New</a>
+                </Link>
+              </>
+            )}
+            {!user ? (
+              <Link href="/login">
+                <a>Login</a>
+              </Link>
+            ) : (
+              <Logout />
+            )}
+          </ul>
+        </NavbarStyles>
+      )}
+    </AuthContext.Consumer>
   );
 };

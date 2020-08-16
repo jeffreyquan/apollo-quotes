@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";

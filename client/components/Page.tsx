@@ -1,5 +1,6 @@
-import React from "react";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import { useContext } from "react";
+import { AuthContext } from "./Auth";
 import { Header } from "./Header";
 
 // https://www.happyhues.co/palettes/11
@@ -70,13 +71,21 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export const Page = (props) => {
+export const Page = ({ children }) => {
+  const { checkingAuth } = useContext(AuthContext);
+
   return (
     <ThemeProvider theme={theme}>
       <StyledPage>
         <GlobalStyles />
-        <Header />
-        <InnerDiv>{props.children}</InnerDiv>
+        {checkingAuth ? (
+          <InnerDiv>Loading...</InnerDiv>
+        ) : (
+          <>
+            <Header />
+            <InnerDiv>{children}</InnerDiv>
+          </>
+        )}
       </StyledPage>
     </ThemeProvider>
   );

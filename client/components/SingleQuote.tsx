@@ -1,4 +1,3 @@
-import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Quote } from "../components/Quote";

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
+import { AuthContext } from "./Auth";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
-import { CURRENT_USER_QUERY, useUser } from "./User";
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -27,7 +27,9 @@ export const Login = () => {
   const { email, password } = inputs;
 
   const [loadingPage, setLoadingPage] = useState(true);
-  const user = useUser();
+
+  let { user, setUser } = useContext(AuthContext);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -44,14 +46,14 @@ export const Login = () => {
 
   const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
   // TODO: create error component to display any login errors
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login();
+      const res = await login();
+      setUser(res.data.login);
     } catch (err) {
       console.log(err);
     }
