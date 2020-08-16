@@ -97,6 +97,11 @@ class UserAPI extends DataSource {
     return user;
   }
 
+  async logoutUser() {
+    this.context.res.clearCookie("token");
+    return { message: "Successfully logged out" };
+  }
+
   async fetchUserProfile() {
     const { user } = this.context.req;
 

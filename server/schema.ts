@@ -9,6 +9,7 @@ export const typeDefs = gql`
 
   type Mutation {
     login(email: String!, password: String!): User!
+    logout: Message
     register(
       name: String!
       username: String!
@@ -80,5 +81,9 @@ export const typeDefs = gql`
   type PageInfo {
     endCursor: String
     hasMore: Boolean
+  }
+
+  type Message {
+    message: String
   }
 `;
