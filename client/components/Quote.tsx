@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
@@ -33,6 +34,17 @@ const TagList = styled.div`
 
 export const Quote = ({ quote }) => {
   const { author, content, image, tags, likes } = quote;
+  const router = useRouter();
+  const fetchQuoteWithTag = (
+    e: React.MouseEvent<HTMLDivElement>,
+    tagName: string
+  ) => {
+    e.preventDefault();
+    router.push({
+      pathname: "/quotes",
+      query: { tag: tagName },
+    });
+  };
   return (
     <QuoteStyles>
       <QuoteBody>
@@ -47,7 +59,12 @@ export const Quote = ({ quote }) => {
       <QuoteFooter>
         <TagList>
           {tags.map((tag) => (
-            <QuoteTag key={tag.id}>{tag.name}</QuoteTag>
+            <QuoteTag
+              key={tag.id}
+              onClick={(e) => fetchQuoteWithTag(e, tag.name)}
+            >
+              {tag.name}
+            </QuoteTag>
           ))}
         </TagList>
         <Like>{likes.length} likes</Like>
