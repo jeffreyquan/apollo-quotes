@@ -80,7 +80,7 @@ export const Page = ({ children }) => {
       <StyledPage>
         <GlobalStyles />
         {checkingAuth ? (
-          <InnerDiv loading>Loading...</InnerDiv>
+          <InnerDiv loading="true">Loading...</InnerDiv>
         ) : (
           <>
             <Header />
