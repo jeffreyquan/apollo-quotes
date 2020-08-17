@@ -46,7 +46,13 @@ class QuoteAPI extends DataSource {
     let endCursor = "";
     let filter = {};
 
-    if (tag) filter = { tags: tag };
+    if (tag) {
+      const fetchedTag = await Tag.findOne({ name: tag }).exec();
+      if (fetchedTag) {
+        const tagId = fetchedTag._id;
+        filter = { tags: tagId };
+      }
+    }
 
     if (cursor)
       filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
