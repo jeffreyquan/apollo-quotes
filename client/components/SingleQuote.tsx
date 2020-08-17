@@ -27,7 +27,7 @@ const SINGLE_QUOTE_QUERY = gql`
 const SingleQuoteStyles = styled.div`
   display: flex;
   align-items: center;
-  min-height: 100vh;
+  height: 100%;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
 `;
