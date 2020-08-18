@@ -58,6 +58,13 @@ export const typeDefs = gql`
     email: String!
     quotes: [Quote]!
     likes: [Quote]!
+    role: Role!
+  }
+
+  enum Role {
+    ADMIN
+    EDITOR
+    USER
   }
 
   type Tag {

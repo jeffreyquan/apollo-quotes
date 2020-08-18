@@ -12,7 +12,7 @@ export const verifyUser = (token: string) => {
     if (err) return null;
     const userId = decoded.userId;
     const user = await User.findOne({ _id: userId })
-      .select("_id name username email")
+      .select("_id name username email role")
       .exec();
     return user;
   });

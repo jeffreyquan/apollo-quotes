@@ -110,7 +110,7 @@ class UserAPI extends DataSource {
     const userId = user._id;
 
     const fetchedUser = await User.findById(userId)
-      .select("_id name username email likes quotes")
+      .select("_id name username email likes quotes role")
       .populate({
         path: "quotes",
         populate: [
