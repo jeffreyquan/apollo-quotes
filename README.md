@@ -18,7 +18,7 @@
   - [ ] View quotes submitted
 - [ ] Restrict editting, deleting and submitting to authorised users
 - [x] View feed of quotes
-- [ ] View feed of quotes by tag
+- [x] View feed of quotes by tag
 - [x] View individual quote
 - [ ] Set up routing
 - [ ] Set up dark theme
