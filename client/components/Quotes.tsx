@@ -24,7 +24,9 @@ export const ALL_QUOTES_QUERY = gql`
           name
         }
         likes {
+          id
           user {
+            id
             username
           }
         }
