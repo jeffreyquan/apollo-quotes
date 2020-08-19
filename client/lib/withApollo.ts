@@ -30,6 +30,15 @@ function createApolloClient() {
             },
           },
         },
+        Quote: {
+          fields: {
+            likes: {
+              merge(existing = [], incoming: any) {
+                return incoming;
+              },
+            },
+          },
+        },
       },
     }),
   });
