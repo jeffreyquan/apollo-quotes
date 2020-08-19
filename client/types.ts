@@ -33,6 +33,7 @@ export type QueryQuotesArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   login: User;
+  logout?: Maybe<Message>;
   register: User;
   createQuote?: Maybe<Quote>;
   likeQuote: Like;
@@ -109,7 +110,14 @@ export type User = {
   email: Scalars['String'];
   quotes: Array<Maybe<Quote>>;
   likes: Array<Maybe<Quote>>;
+  role: Role;
 };
+
+export enum Role {
+  Admin = 'ADMIN',
+  Editor = 'EDITOR',
+  User = 'USER'
+}
 
 export type Tag = {
   __typename?: 'Tag';
@@ -136,6 +144,11 @@ export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']>;
   hasMore?: Maybe<Scalars['Boolean']>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  message?: Maybe<Scalars['String']>;
 };
 
 export enum CacheControlScope {
