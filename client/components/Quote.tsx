@@ -1,10 +1,12 @@
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
-import { BsHeart } from "react-icons/bs";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
-import { ALL_QUOTES_QUERY } from "./Quotes";
+import { Quote as QuoteType } from "../types";
+import { AuthContext } from "./Auth";
 
 const QuoteBody = styled.div`
   display: grid;
@@ -29,6 +31,7 @@ const QuoteFooter = styled.div`
 const Like = styled.div`
   display: flex;
   align-items: center;
+  font-size: 1.6rem;
   svg {
     margin-left: 0.8rem;
   }
@@ -40,7 +43,7 @@ const TagList = styled.div`
 `;
 
 const LIKE_MUTATION = gql`
-  mutation LIKE_MUTATION($quoteId: String!) {
+  mutation LIKE_MUTATION($quoteId: ID!) {
     likeQuote(quoteId: $quoteId) {
       id
       quote {
@@ -64,22 +67,34 @@ const LIKE_MUTATION = gql`
 export const Quote = ({ quote }) => {
   const { id, author, content, image, tags, likes } = quote;
   const [like] = useMutation(LIKE_MUTATION, {
-    update(cache, { data: { like } }) {
-      const { quotes } = cache.readQuery({
-        query: ALL_QUOTES_QUERY,
+    variables: {
+      quoteId: id,
+    },
+    update(cache, { data: { likeQuote } }) {
+      const likedQuote: QuoteType = cache.readFragment({
+        id: `Quote:${id}`,
+        fragment: gql`
+          fragment Like on Quote {
+            likes {
+              id
+            }
+          }
+        `,
       });
-      const likedQuote = quotes.find((quote) => quote.id === id);
-
-      likedQuote.likes = like.quote.likes;
-
-      cache.writeQuery({
-        query: ALL_QUOTES_QUERY,
-        data: {
-          quotes: [...quotes, likedQuote],
-        },
-      });
+      const updatedLikes = likedQuote.likes;
+      const foundLike = updatedLikes.some((like) => like.id === likeQuote.id);
+      if (!foundLike) {
+        cache.evict({
+          id: `Like:${likeQuote.id}`,
+        });
+      }
     },
   });
+
+  let { user } = useContext(AuthContext);
+
+  const liked = likes.some((like) => like.user.id === user.id);
+
   const router = useRouter();
   const fetchQuoteWithTag = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -94,7 +109,11 @@ export const Quote = ({ quote }) => {
 
   const likeQuote = async (e) => {
     e.preventDefault();
-    await like();
+    try {
+      await like();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -120,7 +139,12 @@ export const Quote = ({ quote }) => {
           ))}
         </TagList>
         <Like>
-          {likes.length} likes <BsHeart onClick={(e) => likeQuote(e)} />
+          {likes.length > 0 && likes.length}{" "}
+          {liked ? (
+            <BsHeartFill onClick={(e) => likeQuote(e)} />
+          ) : (
+            <BsHeart onClick={(e) => likeQuote(e)} />
+          )}
         </Like>
       </QuoteFooter>
     </QuoteStyles>
