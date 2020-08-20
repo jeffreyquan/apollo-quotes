@@ -2,6 +2,7 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import { useContext } from "react";
 import { AuthContext } from "./Auth";
 import { Header } from "./Header";
+import { Meta } from "./Meta";
 
 // https://www.happyhues.co/palettes/11
 const theme = {
@@ -79,6 +80,7 @@ export const Page = ({ children }) => {
     <ThemeProvider theme={theme}>
       <StyledPage>
         <GlobalStyles />
+        <Meta />
         {checkingAuth ? (
           <InnerDiv loading="true">Loading...</InnerDiv>
         ) : (
