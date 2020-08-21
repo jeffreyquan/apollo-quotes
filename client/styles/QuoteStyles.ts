@@ -7,10 +7,8 @@ export const QuoteStyles = styled.div`
   border-radius: 3px;
   display: ${(props) => (props.loading ? "none" : "")};
   img {
-    min-height: 10rem;
-    max-height: 35rem;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 3px;
   }
 
