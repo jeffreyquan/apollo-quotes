@@ -19,10 +19,22 @@ export const SignUp = () => {
   });
   const { name, username, email, password, confirmationPassword } = inputs;
 
+  let { user, setUser } = useContext(AuthContext);
+
+  const [loadingPage, setLoadingPage] = useState(true);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
+
   const handleSubmit = (e) => {
     console.log("Signing up...");
   };
-  return (
+  return !loadingPage ? (
     <FormContainer>
       <Head>
         <title>Apollo Quotes | Sign Up</title>
@@ -95,5 +107,7 @@ export const SignUp = () => {
         </fieldset>
       </Form>
     </FormContainer>
+  ) : (
+    <div>Loading...</div>
   );
 };
