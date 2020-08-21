@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
@@ -66,6 +66,7 @@ const LIKE_MUTATION = gql`
 
 export const Quote = ({ quote }) => {
   const { id, author, content, image, tags, likes } = quote;
+
   const [like] = useMutation(LIKE_MUTATION, {
     variables: {
       quoteId: id,
@@ -90,6 +91,8 @@ export const Quote = ({ quote }) => {
       }
     },
   });
+
+  const [loading, setLoading] = useState(true);
 
   let { user } = useContext(AuthContext);
 
@@ -117,10 +120,10 @@ export const Quote = ({ quote }) => {
   };
 
   return (
-    <QuoteStyles>
+    <QuoteStyles loading={loading ? "true" : undefined}>
       <QuoteBody>
         <QuoteImg>
-          <img src={image} alt={author} />
+          <img src={image} alt={author} onLoad={() => setLoading(false)} />
         </QuoteImg>
         <QuoteContent>
           <p>&#8220;{content}&#8221;</p>

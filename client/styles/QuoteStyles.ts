@@ -5,6 +5,7 @@ export const QuoteStyles = styled.div`
   color: ${(props) => props.theme.cardbody};
   padding: 2.4rem;
   border-radius: 3px;
+  display: ${(props) => (props.loading ? "none" : "")};
   img {
     min-height: 10rem;
     max-height: 35rem;
