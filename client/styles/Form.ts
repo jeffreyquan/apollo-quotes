@@ -5,6 +5,13 @@ export const Form = styled.form`
   background-color: ${(props) => props.theme.formbg};
   padding: 2rem;
   border-radius: 3px;
+  .link {
+    display: flex;
+    justify-content: center;
+  }
+  a {
+    color: ${(props) => props.theme.formbtntext};
+  }
   label {
     color: ${(props) => props.theme.formheadline};
 
@@ -46,6 +53,8 @@ export const Form = styled.form`
   button,
   input[type="submit"] {
     cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: bold;
     background-color: inherit;
     border: none;
     color: ${(props) => props.theme.formbtntext};
