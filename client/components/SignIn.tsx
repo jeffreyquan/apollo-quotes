@@ -1,4 +1,6 @@
 import { useState, useEffect, useContext } from "react";
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "./Auth";
@@ -18,7 +20,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-export const Login = () => {
+export const SignIn = () => {
   const { inputs, handleChange, resetForm } = useForm({
     email: "",
     password: "",
@@ -61,8 +63,11 @@ export const Login = () => {
 
   return !loadingPage ? (
     <FormContainer>
+      <Head>
+        <title>Apollo Quotes | Sign In</title>
+      </Head>
       <Form onSubmit={handleSubmit}>
-        <FormTitle>Login</FormTitle>
+        <FormTitle>Welcome to Apollo Quotes</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
           <label htmlFor="email">
             Email
@@ -73,6 +78,8 @@ export const Login = () => {
               value={email}
               onChange={handleChange}
               autoComplete="email"
+              autoFocus
+              required
             />
           </label>
           <label htmlFor="password">
@@ -84,10 +91,16 @@ export const Login = () => {
               value={password}
               onChange={handleChange}
               autoComplete="current-password"
+              required
             />
           </label>
           <input type="submit" value="Sign In" />
         </fieldset>
+        <div className="link">
+          <Link href="/signup">
+            <a>Create a new account</a>
+          </Link>
+        </div>
       </Form>
     </FormContainer>
   ) : (
