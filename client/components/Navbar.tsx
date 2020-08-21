@@ -32,8 +32,8 @@ export const Navbar = () => {
               </>
             )}
             {!user ? (
-              <Link href="/login">
-                <a>Login</a>
+              <Link href="/signin">
+                <a>Sign In</a>
               </Link>
             ) : (
               <Logout />
