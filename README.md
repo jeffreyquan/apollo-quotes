@@ -8,11 +8,11 @@
 - [x] Set up Apollo Cache
 - [x] Set up global styles
 - [x] User login
-- [ ] User sign up
+- [x] User sign up
 - [ ] User can:
   - [ ] Submit quote
   - [ ] Edit submitted quote
-  - [ ] Like a quote
+  - [x] Like a quote
   - [ ] Delete a quote
   - [ ] View quotes liked
   - [ ] View quotes submitted
