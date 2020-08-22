@@ -9,6 +9,27 @@ import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
 
+const REGISTER_MUTATION = gql`
+  mutation REGISTER_MUTATION(
+    $name: String!
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    register(
+      name: $name
+      username: $username
+      email: $email
+      password: $password
+    ) {
+      id
+      name
+      email
+      username
+    }
+  }
+`;
+
 export const SignUp = () => {
   const { inputs, handleChange, resetForm } = useForm({
     name: "",
@@ -51,10 +72,41 @@ export const SignUp = () => {
     }
   }, [inputs]);
 
-  const handleSubmit = (e) => {
+  const request = { ...inputs };
+  delete request.confirmationPassword;
+
+  const [register, { error, loading }] = useMutation(REGISTER_MUTATION, {
+    variables: request,
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signing up...");
+
+    try {
+      await register();
+    } catch (err) {
+      let errors: any = {};
+      const { message } = err;
+      if (message === "Username already exists") {
+        errors.username = message;
+      } else if (message === "Email already exists") {
+        errors.email = message;
+      } else if (!!err.graphQLErrors[0].extensions.exception.errors) {
+        const inputKeys = Object.keys(
+          err.graphQLErrors[0].extensions.exception.errors
+        );
+        inputKeys.forEach(
+          (key) =>
+            (errors[key] =
+              err.graphQLErrors[0].extensions.exception.errors[
+                key
+              ].properties.message)
+        );
+      }
+      setErrors(errors);
+    }
   };
+
   return !loadingPage ? (
     <FormContainer>
       <Head>
