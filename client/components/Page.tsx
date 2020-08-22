@@ -30,6 +30,7 @@ const theme = {
   forminput: "#eaddcf",
   formtext: "#020826",
   formbtntext: "#fffffe",
+  errortext: "#ff9999",
   white: "#ffffff",
   black: "#000000",
   maxWidth: "960px",
