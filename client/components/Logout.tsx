@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useApolloClient } from "@apollo/client";
 import { AuthContext } from "./Auth";
 
 const LOGOUT_MUTATION = gql`
@@ -22,14 +22,20 @@ const LogoutButton = styled.button`
 `;
 
 export const Logout = () => {
+  const client = useApolloClient();
   const [logout] = useMutation(LOGOUT_MUTATION);
 
   let { setUser } = useContext(AuthContext);
 
   const logoutUser = async () => {
-    const res = await logout();
-    if (res.data.logout.message) {
-      setUser(null);
+    try {
+      const res = await logout();
+      if (res.data.logout.message) {
+        setUser(null);
+        await client.resetStore();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
