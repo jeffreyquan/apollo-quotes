@@ -13,11 +13,13 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-export const AuthContext = createContext({
+const initialAuthState = {
   checkingAuth: true,
   user: null,
   setUser: null,
-});
+};
+
+export const AuthContext = createContext(initialAuthState);
 
 export const AuthProvider = ({ children }) => {
   const [checkingAuth, setCheckingAuth] = useState(true);
@@ -26,13 +28,16 @@ export const AuthProvider = ({ children }) => {
   const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
 
   useEffect(() => {
-    if (typeof data !== undefined) {
+    if (error) {
+      setUser(null);
+      setCheckingAuth(false);
+    } else if (typeof data !== undefined) {
       setCheckingAuth(false);
       if (data) {
         setUser(data.userProfile);
       }
     }
-  }, [data]);
+  }, [error, data]);
 
   const value = { checkingAuth, user, setUser };
 
