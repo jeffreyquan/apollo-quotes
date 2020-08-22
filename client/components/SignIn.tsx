@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "./Auth";
-import { useForm } from "../lib/useForm";
+import { useForm, validateInputs } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
@@ -26,9 +26,15 @@ export const SignIn = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState<any>({});
+
+  const isMounted = useRef(false);
+
   const { email, password } = inputs;
 
   const [loadingPage, setLoadingPage] = useState(true);
+
+  const [disabled, setDisabled] = useState(true);
 
   let { user, setUser } = useContext(AuthContext);
 
@@ -46,18 +52,41 @@ export const SignIn = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (isMounted.current) {
+      const errors = validateInputs(inputs);
+      setErrors(errors);
+      if (Object.keys(errors).length === 0) {
+        setDisabled(false);
+      }
+    } else {
+      isMounted.current = true;
+    }
+  }, [inputs]);
+  console.log(disabled);
+
   const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
   });
 
-  // TODO: create error component to display any login errors
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await login();
       setUser(res.data.login);
     } catch (err) {
-      console.log(err);
+      const { message } = err;
+      if (message === "User does not exist") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: message,
+        }));
+      } else if (message === "Password is incorrect") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: message,
+        }));
+      }
     }
   };
 
@@ -82,6 +111,7 @@ export const SignIn = () => {
               required
             />
           </label>
+          <p>{errors.email && errors.email}</p>
           <label htmlFor="password">
             Password
             <input
@@ -94,7 +124,8 @@ export const SignIn = () => {
               required
             />
           </label>
-          <input type="submit" value="Sign In" />
+          <p>{errors.password && errors.password}</p>
+          <input type="submit" value="Sign In" disabled={disabled} />
         </fieldset>
         <div className="link">
           <Link href="/signup">
