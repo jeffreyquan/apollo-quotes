@@ -12,6 +12,10 @@ export const Form = styled.form`
   a {
     color: ${(props) => props.theme.formbtntext};
   }
+  p {
+    font-size: 1.2rem;
+    color: ${(props) => props.theme.errortext};
+  }
   label {
     color: ${(props) => props.theme.formheadline};
 
