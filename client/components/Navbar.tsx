@@ -21,7 +21,7 @@ export const Navbar = () => {
       {({ user }) => (
         <NavbarStyles>
           <ul>
-            <Link href="/quotes">
+            <Link href="/">
               <a>Quotes</a>
             </Link>
             {user && (
