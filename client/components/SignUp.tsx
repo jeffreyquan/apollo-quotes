@@ -4,56 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "./Auth";
-import { useForm } from "../lib/useForm";
+import { useForm, validateInputs } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
-
-function validateInputs(inputs) {
-  let errors: any = {};
-
-  const { name, username, email, password, confirmationPassword } = inputs;
-
-  const nameRegex = /^[A-Za-z]+((\s)?((\'|\-|\.)?([A-Za-z])+))*$/;
-
-  if (name.length === 0) {
-    errors.name = "Name cannot be empty";
-  } else if (!nameRegex.test(name)) {
-    errors.name = "Name is invalid";
-  }
-
-  const userNameRegex = /^[a-zA-Z][a-zA-Z0-9_]{3,15}$/;
-
-  if (username.length === 0) {
-    errors.username = "Username cannot be empty";
-  } else if (!userNameRegex.test(username)) {
-    errors.username =
-      "Username must begin with a letter and be between 4 to 16 characters long";
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (email.length === 0) {
-    errors.email = "Email cannot be empty";
-  } else if (!emailRegex.test(email)) {
-    errors.email = "Email in valid";
-  }
-
-  if (password.length === 0) {
-    errors.password = "Password cannot be empty";
-  } else if (password.length < 6) {
-    errors.password = "Password must be at least 6 characters";
-  }
-
-  if (confirmationPassword.length === 0) {
-    errors.confirmationPassword = "Confirmation Password cannot be empty";
-  } else if (password !== confirmationPassword) {
-    errors.confirmationPassword =
-      "Password and Confirmation Password must match";
-  }
-
-  return errors;
-}
 
 export const SignUp = () => {
   const { inputs, handleChange, resetForm } = useForm({
