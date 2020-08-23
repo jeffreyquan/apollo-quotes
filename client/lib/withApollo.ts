@@ -4,6 +4,10 @@ import { DEV_ENDPOINT } from "../config";
 
 let apolloClient;
 
+function decodeCursor(encodedCursor: string) {
+  return Buffer.from(encodedCursor, "base64").toString("ascii");
+}
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
@@ -18,14 +22,38 @@ function createApolloClient() {
             quotes: {
               keyArgs: ["tag"],
               merge: (
-                existing = { __typename: "QuotesConnection", quotes: [] },
+                existing = {
+                  __typename: "QuotesConnection",
+                  totalCount: 0,
+                  pageInfo: {
+                    endCursor: null,
+                    hasMore: true,
+                  },
+                  quotes: [],
+                },
                 incoming
               ) => {
-                const result = {
-                  ...incoming,
-                  quotes: [...existing.quotes, ...incoming.quotes],
-                };
-                return result;
+                let existingCursor;
+                let incomingCursor;
+
+                if (existing.pageInfo.endCursor) {
+                  existingCursor = decodeCursor(existing.pageInfo.endCursor);
+
+                  incomingCursor = decodeCursor(incoming.pageInfo.endCursor);
+                }
+
+                if (incomingCursor > existingCursor) {
+                  return existing;
+                }
+
+                const newQuotes = incoming.quotes;
+
+                return newQuotes.length > 0
+                  ? {
+                      ...incoming,
+                      quotes: [...existing.quotes, ...newQuotes],
+                    }
+                  : existing;
               },
             },
           },
