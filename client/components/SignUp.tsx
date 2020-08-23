@@ -56,8 +56,9 @@ export const SignUp = () => {
   useEffect(() => {
     if (user) {
       router.push("/");
+    } else {
+      setLoadingPage(false);
     }
-    setLoadingPage(false);
   }, [user]);
 
   useEffect(() => {
