@@ -82,7 +82,11 @@ class QuoteAPI extends DataSource {
 
     quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
 
-    endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+    if (quotes.length > 0) {
+      endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+    } else {
+      endCursor = cursor;
+    }
 
     return {
       totalCount,
