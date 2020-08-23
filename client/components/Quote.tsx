@@ -96,7 +96,11 @@ export const Quote = ({ quote }) => {
 
   let { user } = useContext(AuthContext);
 
-  const liked = likes.some((like) => like.user.id === user.id);
+  let liked;
+
+  if (user) {
+    liked = likes.some((like) => like.user.id === user.id);
+  }
 
   const router = useRouter();
   const fetchQuoteWithTag = (
