@@ -11,7 +11,7 @@ const NewQuotePage = () => {
   useEffect(() => {
     if (!user) {
       router.push({
-        pathname: "/login",
+        pathname: "/signin",
         query: { redirect: "true" },
       });
     } else {
