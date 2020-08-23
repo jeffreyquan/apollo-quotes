@@ -35,7 +35,7 @@ export const Logout = () => {
         await client.resetStore();
       }
     } catch (err) {
-      console.log(err);
+      setUser(null);
     }
   };
 
