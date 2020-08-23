@@ -12,6 +12,7 @@ export const resolvers = {
         limit,
         cursor,
       });
+
       return quotes;
     },
   },
