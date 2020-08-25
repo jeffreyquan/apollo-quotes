@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 import { DEV_ENDPOINT } from "../config";
 
 let apolloClient;
@@ -11,9 +12,11 @@ function decodeCursor(encodedCursor: string) {
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: new HttpLink({
+    link: createUploadLink({
       uri: DEV_ENDPOINT, // Server URL (must be absolute)
-      credentials: "include", // Additional fetch() options like `credentials` or `headers`,
+      fetchOptions: {
+        credentials: "include", // Additional fetch() options like `credentials` or `headers`,
+      },
     }),
     cache: new InMemoryCache({
       typePolicies: {
