@@ -63,7 +63,6 @@ export const SignIn = () => {
       isMounted.current = true;
     }
   }, [inputs]);
-  console.log(disabled);
 
   const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
