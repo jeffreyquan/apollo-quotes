@@ -19,7 +19,7 @@ export const initializeSeed = async () => {
     Tag.deleteMany({}).exec(),
   ]);
 
-  console.log("Reset completed.\nCreating new user and quotes...");
+  console.log("Reset completed.\nCreating new users and quotes...");
 
   const newUser = new User({
     name: "Jeffrey",
@@ -30,7 +30,17 @@ export const initializeSeed = async () => {
   });
 
   const user = await newUser.save();
-  console.log(`New user created`);
+  console.log(`New user, ${newUser.name}, created`);
+
+  const secondUser = new User({
+    name: "John",
+    username: "john",
+    email: process.env.EMAIL_TWO,
+    password: process.env.PASSWORD,
+  });
+
+  await secondUser.save();
+  console.log(`New user, ${secondUser.name}, created`);
 
   const createNewQuotes = async () => {
     for (const [index, item] of items.entries()) {
