@@ -4,6 +4,7 @@ import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
+import { useRouter } from "next/router";
 
 const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
@@ -21,7 +22,11 @@ const CREATE_QUOTE_MUTATION = gql`
       content
       author
       image
-      tags
+      slug
+      tags {
+        id
+        name
+      }
     }
   }
 `;
@@ -36,11 +41,24 @@ export const QuoteNew = () => {
 
   const { content, author, image, tags } = inputs;
 
+  const router = useRouter();
+
+  // TODO: refetch all quotes after mutation
   const [createQuote, { error, loading }] = useMutation(CREATE_QUOTE_MUTATION, {
     variables: inputs,
   });
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createQuote();
+      const slug = res.data.createQuote.slug;
+      router.push("/quotes/[slug]", `/quotes/${slug}`);
+    } catch (err) {
+      // TODO: handle error
+      console.log(err);
+    }
+  };
 
   const addTag = () => {
     updateInputs({
