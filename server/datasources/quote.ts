@@ -120,7 +120,8 @@ class QuoteAPI extends DataSource {
         this.context.dataSources.tagAPI.findTags(tags),
       ]);
 
-      const images = await this.uploadImage(image);
+      // TODO: correct type for images instead of using any
+      const images: any = await this.uploadImage(image);
 
       const newQuote = await new Quote({
         content,
@@ -161,19 +162,28 @@ class QuoteAPI extends DataSource {
       image: "",
       largeImage: "",
     };
-    await cloudinary.v2.uploader.upload(
-      image,
-      {
-        upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
-      },
-      (err, res) => {
-        if (err) console.log(err);
-        images.image = res.secure_url;
-        images.largeImage = res.eager[0].secure_url;
-      }
-    );
 
-    return images;
+    const { createReadStream } = await image;
+
+    const stream = createReadStream();
+
+    return new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.v2.uploader.upload_stream(
+        {
+          upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+        },
+        function (err, res) {
+          if (err) reject(err);
+          if (res) {
+            images.image = res.secure_url;
+            images.largeImage = res.eager[0].secure_url;
+            resolve(images);
+          }
+        }
+      );
+
+      stream.pipe(uploadStream);
+    });
   }
 
   async likeQuote(quoteId) {
