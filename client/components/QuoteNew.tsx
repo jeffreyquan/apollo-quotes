@@ -1,10 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
-import { useRouter } from "next/router";
 
 const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
@@ -117,7 +117,6 @@ export const QuoteNew = () => {
     e.preventDefault();
     try {
       const res = await createQuote();
-      console.log(res);
       const slug = res.data.createQuote.slug;
       router.push("/quotes/[slug]", `/quotes/${slug}`);
     } catch (err) {

@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { FiDelete } from "react-icons/fi";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
 import { Quote as QuoteType } from "../types";
 import { AuthContext } from "./Auth";
+import { DeleteQuote } from "./DeleteQuote";
 
 const QuoteBody = styled.div`
   display: grid;
@@ -28,12 +30,17 @@ const QuoteFooter = styled.div`
   margin-right: auto;
 `;
 
-const Like = styled.div`
+const Controls = styled.div`
   display: flex;
   align-items: center;
-  font-size: 1.6rem;
-  svg {
-    margin-left: 0.8rem;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    svg {
+      margin-left: 0.8rem;
+    }
   }
 `;
 
@@ -65,7 +72,7 @@ const LIKE_MUTATION = gql`
 `;
 
 export const Quote = ({ quote }) => {
-  const { id, author, content, image, tags, likes } = quote;
+  const { id, author, content, image, tags, likes, submittedBy } = quote;
 
   const [like] = useMutation(LIKE_MUTATION, {
     variables: {
@@ -98,8 +105,14 @@ export const Quote = ({ quote }) => {
 
   let liked;
 
-  if (user) {
+  if (user && likes) {
     liked = likes.some((like) => like.user.id === user.id);
+  }
+
+  let submitted;
+
+  if (user) {
+    submitted = submittedBy.id === user.id ? true : false;
   }
 
   const router = useRouter();
@@ -145,14 +158,21 @@ export const Quote = ({ quote }) => {
             </QuoteTag>
           ))}
         </TagList>
-        <Like>
-          {likes.length > 0 && likes.length}{" "}
-          {liked ? (
-            <BsHeartFill onClick={(e) => likeQuote(e)} />
-          ) : (
-            <BsHeart onClick={(e) => likeQuote(e)} />
+        <Controls>
+          <div>
+            {likes.length > 0 && likes.length}{" "}
+            {liked ? (
+              <BsHeartFill onClick={(e) => likeQuote(e)} />
+            ) : (
+              <BsHeart onClick={(e) => likeQuote(e)} />
+            )}
+          </div>
+          {submitted && (
+            <DeleteQuote id={id}>
+              <FiDelete />
+            </DeleteQuote>
           )}
-        </Like>
+        </Controls>
       </QuoteFooter>
     </QuoteStyles>
   );

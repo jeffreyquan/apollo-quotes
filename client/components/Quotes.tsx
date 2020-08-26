@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import { Waypoint } from "react-waypoint";
 import { Quote } from "../components/Quote";
-import { QuotesConnection } from "../types";
+import { Message } from "./Message";
 
 export const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY($tag: String, $limit: Int, $cursor: String) {
@@ -20,6 +21,9 @@ export const ALL_QUOTES_QUERY = gql`
         content
         image
         largeImage
+        submittedBy {
+          id
+        }
         tags {
           id
           name
@@ -45,7 +49,6 @@ const QuotesList = styled.div`
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
 `;
-
 interface QuotesProps {
   tag?: string;
   limit?: number;
@@ -54,9 +57,34 @@ interface QuotesProps {
 
 export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
   const [prevCursor, setPrevCursor] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
+
   const { data, loading, error, fetchMore } = useQuery(ALL_QUOTES_QUERY, {
     variables: { tag, limit, cursor },
   });
+
+  const router = useRouter();
+
+  const timeoutId = useRef<number>();
+
+  useEffect(() => {
+    if (router.query.delete === "success") {
+      setShowMessage(true);
+    }
+
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, [router.query]);
+
+  useEffect(() => {
+    if (showMessage) {
+      timeoutId.current = window.setTimeout(function () {
+        setShowMessage(false);
+        router.push("/");
+      }, 3000);
+    }
+  }, [showMessage]);
 
   const loadMore = async () => {
     const { endCursor } = data.quotes.pageInfo;
@@ -84,12 +112,12 @@ export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
 
   if (data) {
     quotes = data.quotes.quotes;
-    console.log(quotes);
     hasMore = data.quotes.pageInfo.hasMore;
   }
 
   return (
     <QuotesList>
+      <Message>{showMessage ? "Successfully deleted quote" : null}</Message>
       {quotes &&
         quotes.map((quote, index) => (
           <React.Fragment key={quote.id}>

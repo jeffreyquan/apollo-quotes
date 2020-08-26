@@ -10,6 +10,9 @@ const SINGLE_QUOTE_QUERY = gql`
       content
       image
       largeImage
+      submittedBy {
+        id
+      }
       tags {
         id
         name
