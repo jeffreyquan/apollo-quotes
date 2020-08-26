@@ -4,7 +4,7 @@
   "description": "backend of apollo quotes",
   "main": "index.ts",
   "scripts": {
-    "server": "nodemon --watch ./ --exec ts-node --project ./tsconfig.json ./index.ts"
+    "start": "nodemon --watch ./ --exec ts-node --project ./tsconfig.json ./index.ts"
   },
   "keywords": [],
   "author": "",
