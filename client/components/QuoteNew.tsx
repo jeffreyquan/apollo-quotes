@@ -19,14 +19,23 @@ const CREATE_QUOTE_MUTATION = gql`
       image: $image
       tags: $tags
     ) {
-      content
+      id
       author
+      content
       image
-      slug
+      largeImage
       tags {
         id
         name
       }
+      likes {
+        id
+        user {
+          id
+          username
+        }
+      }
+      slug
     }
   }
 `;
@@ -46,17 +55,74 @@ export const QuoteNew = () => {
   // TODO: refetch all quotes after mutation
   const [createQuote, { error, loading }] = useMutation(CREATE_QUOTE_MUTATION, {
     variables: inputs,
+    update(cache, { data: { createQuote } }) {
+      cache.modify({
+        fields: {
+          quotes(
+            existing = {
+              __typename: "QuotesConnection",
+              totalCount: 0,
+              pageInfo: {
+                endCursor: null,
+                hasMore: true,
+              },
+              quotes: [],
+            },
+            { readField }
+          ) {
+            const newQuoteRef = cache.writeFragment({
+              data: createQuote,
+              fragment: gql`
+                fragment NewQuote on Quote {
+                  id
+                  author
+                  content
+                  image
+                  largeImage
+                  tags {
+                    id
+                    name
+                  }
+                  likes {
+                    id
+                    user {
+                      id
+                      username
+                    }
+                  }
+                  slug
+                }
+              `,
+            });
+
+            if (
+              existing.quotes.some(
+                (ref) => readField("id", ref) === createQuote.id
+              )
+            ) {
+              return existing;
+            }
+
+            return {
+              ...existing,
+              quotes: [newQuoteRef, ...existing.quotes],
+            };
+          },
+        },
+      });
+    },
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await createQuote();
+      console.log(res);
       const slug = res.data.createQuote.slug;
       router.push("/quotes/[slug]", `/quotes/${slug}`);
     } catch (err) {
       // TODO: handle error
-      console.log(err);
+      console.log(err.message);
     }
   };
 
