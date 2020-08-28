@@ -1,7 +1,7 @@
 {
-  "name": "apollo-quotes-backend",
+  "name": "apollo-quotes-server",
   "version": "1.0.0",
-  "description": "backend of apollo quotes",
+  "description": "Apollo Quotes - Server",
   "main": "index.ts",
   "scripts": {
     "start": "nodemon --watch ./ --exec ts-node --project ./tsconfig.json ./index.ts"

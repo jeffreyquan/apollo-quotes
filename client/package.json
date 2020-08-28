@@ -1,7 +1,7 @@
 {
-  "name": "apollo-quotes-frontend",
+  "name": "apollo-quotes-client",
   "version": "0.1.0",
-  "description": "Apollo Quotes",
+  "description": "Apollo Quotes - Client",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,7 +17,7 @@
     "next": "9.4.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-icons": "^3.10.0",
+    "react-icons": "^3.11.0",
     "react-waypoint": "^9.0.3",
     "styled-components": "^5.1.1"
   },
