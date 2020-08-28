@@ -45,13 +45,26 @@ export const initializeSeed = async () => {
   const createNewQuotes = async () => {
     for (const [index, item] of items.entries()) {
       const { author, content, image, largeImage, tags } = item;
+
+      let quoteSubmittedBy;
+
+      if (index % 2 === 0) {
+        quoteSubmittedBy = {
+          user,
+        };
+      } else {
+        quoteSubmittedBy = {
+          user: secondUser,
+        };
+      }
+
       const newQuote = await createQuote({
         author,
         content,
         image,
         largeImage,
         tags,
-        user,
+        ...quoteSubmittedBy,
       });
 
       if (newQuote) {
