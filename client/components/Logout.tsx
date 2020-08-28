@@ -11,17 +11,15 @@ const LOGOUT_MUTATION = gql`
   }
 `;
 
-const LogoutButton = styled.button`
+const LogoutButton = styled.div`
   cursor: pointer;
-  outline: none;
-  border: none;
   background-color: inherit;
   font-size: 2rem;
   color: ${(props) => props.theme.headline2};
   padding: 2rem 1rem;
 `;
 
-export const Logout = () => {
+export const Logout = ({ children }) => {
   const client = useApolloClient();
   const [logout] = useMutation(LOGOUT_MUTATION);
 
@@ -41,7 +39,7 @@ export const Logout = () => {
 
   return (
     <LogoutButton type="button" onClick={logoutUser}>
-      Logout
+      {children}
     </LogoutButton>
   );
 };

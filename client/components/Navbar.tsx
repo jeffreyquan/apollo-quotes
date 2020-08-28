@@ -1,10 +1,33 @@
 import Link from "next/link";
 import styled from "styled-components";
+import { AiFillHome } from "react-icons/ai";
+import { IoMdLogIn, IoMdLogOut } from "react-icons/io";
+import {
+  MdInsertDriveFile,
+  MdAssignmentInd,
+  MdNoteAdd,
+  MdTurnedIn,
+  MdAddBox,
+  MdCreateNewFolder,
+} from "react-icons/md";
+import { RiHomeHeartLine } from "react-icons/ri";
 import { AuthContext } from "./Auth";
 import { Logout } from "./Logout";
 
+const IconStyles = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.4;
+  font-size: 1.2rem;
+
+  svg {
+    font-size: 3rem;
+  }
+`;
+
 const NavbarStyles = styled.nav`
-  font-size: 2rem;
   ul {
     display: flex;
 
@@ -15,6 +38,10 @@ const NavbarStyles = styled.nav`
   }
 `;
 
+const IconContainer = ({ children }) => {
+  return <IconStyles>{children}</IconStyles>;
+};
+
 export const Navbar = () => {
   return (
     <AuthContext.Consumer>
@@ -22,21 +49,49 @@ export const Navbar = () => {
         <NavbarStyles>
           <ul>
             <Link href="/">
-              <a>Quotes</a>
+              <a>
+                <IconContainer>
+                  <AiFillHome />
+                  <p>Quotes</p>
+                </IconContainer>
+              </a>
             </Link>
             {user && (
               <>
+                <Link href="/quotes/submitted">
+                  <a>
+                    <IconContainer>
+                      <MdAssignmentInd />
+                      My Quotes
+                    </IconContainer>
+                  </a>
+                </Link>
                 <Link href="/quotes/new">
-                  <a>New</a>
+                  <a>
+                    <IconContainer>
+                      <MdNoteAdd />
+                      New
+                    </IconContainer>
+                  </a>
                 </Link>
               </>
             )}
             {!user ? (
               <Link href="/signin">
-                <a>Sign In</a>
+                <a>
+                  <IconContainer>
+                    <IoMdLogIn />
+                    <p>Sign In</p>
+                  </IconContainer>
+                </a>
               </Link>
             ) : (
-              <Logout />
+              <Logout>
+                <IconContainer>
+                  <IoMdLogOut />
+                  Log out
+                </IconContainer>
+              </Logout>
             )}
           </ul>
         </NavbarStyles>
