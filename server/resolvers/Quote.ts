@@ -6,11 +6,16 @@ export const resolvers = {
       });
       return quote;
     },
-    quotes: async (parent, { tag, limit, cursor }, { dataSources }) => {
+    quotes: async (
+      parent,
+      { tag, limit, cursor, submittedBy },
+      { dataSources }
+    ) => {
       const quotes = await dataSources.quoteAPI.fetchQuotes({
         tag,
         limit,
         cursor,
+        submittedBy,
       });
 
       return quotes;

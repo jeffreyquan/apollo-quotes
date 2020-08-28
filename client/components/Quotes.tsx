@@ -8,8 +8,18 @@ import { Quote } from "../components/Quote";
 import { Message } from "./Message";
 
 export const ALL_QUOTES_QUERY = gql`
-  query ALL_QUOTES_QUERY($tag: String, $limit: Int, $cursor: String) {
-    quotes(tag: $tag, limit: $limit, cursor: $cursor) {
+  query ALL_QUOTES_QUERY(
+    $tag: String
+    $limit: Int
+    $cursor: String
+    $submittedBy: ID
+  ) {
+    quotes(
+      tag: $tag
+      limit: $limit
+      cursor: $cursor
+      submittedBy: $submittedBy
+    ) {
       totalCount
       pageInfo {
         endCursor
@@ -53,14 +63,20 @@ interface QuotesProps {
   tag?: string;
   limit?: number;
   cursor?: string;
+  submittedBy?: string;
 }
 
-export const Quotes: React.FC<QuotesProps> = ({ tag, limit, cursor }) => {
+export const Quotes: React.FC<QuotesProps> = ({
+  tag,
+  limit,
+  cursor,
+  submittedBy,
+}) => {
   const [prevCursor, setPrevCursor] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
 
   const { data, loading, error, fetchMore } = useQuery(ALL_QUOTES_QUERY, {
-    variables: { tag, limit, cursor },
+    variables: { tag, limit, cursor, submittedBy },
   });
 
   const router = useRouter();

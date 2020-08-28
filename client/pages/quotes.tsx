@@ -11,4 +11,5 @@ const QuotesPage = (props) => {
     </div>
   );
 };
+
 export default QuotesPage;

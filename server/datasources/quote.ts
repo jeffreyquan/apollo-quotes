@@ -39,7 +39,7 @@ class QuoteAPI extends DataSource {
     return quote;
   }
 
-  async fetchQuotes({ tag, limit = 4, cursor }) {
+  async fetchQuotes({ tag, limit = 4, cursor, submittedBy }) {
     const totalCount = await Quote.countDocuments({}).exec();
 
     let quotes = [];
@@ -52,6 +52,21 @@ class QuoteAPI extends DataSource {
         const tagId = fetchedTag._id;
         filter = { tags: tagId };
       }
+    }
+
+    const { user } = this.context.req;
+
+    if (submittedBy) {
+      if (!user) {
+        if (!user) return new AuthenticationError("User must be logged in");
+      }
+
+      if (user && submittedBy.toString() !== user._id.toString()) {
+        console.log(submittedBy, user._id);
+        return new ForbiddenError("User not authorised");
+      }
+
+      filter = { ...filter, submittedBy };
     }
 
     if (cursor)
