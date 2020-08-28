@@ -28,6 +28,16 @@ const IconStyles = styled.div`
 `;
 
 const NavbarStyles = styled.nav`
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    display: flex;
+    background-color: ${(props) => props.theme.white};
+    justify-content: center;
+    position: fixed;
+    align-items: center;
+    bottom: 0;
+    width: 100%;
+    height: 9rem;
+  }
   ul {
     display: flex;
 

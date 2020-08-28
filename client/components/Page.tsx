@@ -33,12 +33,15 @@ const theme = {
   errortext: "#ff9999",
   white: "#ffffff",
   black: "#000000",
+  smallbp: "600px",
   maxWidth: "960px",
 };
 
 const StyledPage = styled.div`
   background: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.black};
+  display: flex;
+  flex-direction: column;
 `;
 
 const InnerDiv = styled.div`
@@ -48,6 +51,10 @@ const InnerDiv = styled.div`
   margin: 0 auto;
   max-width: ${(props) => props.theme.maxWidth};
   min-height: ${(props) => (props.loading ? "100vh" : "calc(100vh - 9rem)")};
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    overflow-y: auto;
+    margin-bottom: 9rem;
+  }
 `;
 
 const GlobalStyles = createGlobalStyle`

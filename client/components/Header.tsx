@@ -7,6 +7,10 @@ import { Navbar } from "./Navbar";
 const Logo = styled.div`
   font-size: 3rem;
   margin-right: auto;
+  padding: 2rem 0;
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    margin-right: 0;
+  }
   a {
     display: flex;
     align-items: center;
@@ -25,6 +29,9 @@ const StyledHeader = styled.header`
   transition: all 0.3s ease-in-out;
   line-height: ${(props) => (props.sticky ? "3rem" : "5rem")};
   max-height: 9rem;
+  @media only screen and (max-width: 600px) {
+    justify-content: center;
+  }
 `;
 
 export const Header = () => {
