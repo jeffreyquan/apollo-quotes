@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+  app:
+    container_name: apollo-quotes-server
+    restart: always
+    env_file:
+      - .env
+    build: .
+    command: ["npm", "run", "start"]
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+    external_links:
+      - mongo
+
+volumes:
+  mongodb_data_container:
