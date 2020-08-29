@@ -1,4 +1,5 @@
 {
-  "watch": ["server/index.ts", "server/"],
+  "watch": ["index.ts", "**/*"],
+  "ignore": ["node_modules/**/node_modules", ".git"],
   "ext": "ts"
 }
