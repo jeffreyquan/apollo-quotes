@@ -1,4 +1,5 @@
 import express from "express";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cloudinary from "cloudinary";
 import { ApolloServer } from "apollo-server-express";
@@ -13,13 +14,12 @@ import UserAPI from "./datasources/user";
 import QuoteAPI from "./datasources/quote";
 import TagAPI from "./datasources/tag";
 import { verifyUser, AuthRequest } from "./middleware/auth";
-import { initializeSeed } from "./seed";
+
+dotenv.config();
 
 mongoose.Promise = global.Promise;
 
-const db = "mongodb://127.0.0.1/apollo-quotes";
-
-const INIT_SEED = false;
+const db = process.env.MONGO_URI || "mongodb://127.0.0.1/apollo-quotes";
 
 const app = express();
 app.use(cookieParser());
@@ -77,9 +77,6 @@ const port = process.env.PORT || 5000;
 
 app.listen({ port }, async () => {
   await connectDatabase();
-  if (INIT_SEED) {
-    await initializeSeed();
-  }
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
   );

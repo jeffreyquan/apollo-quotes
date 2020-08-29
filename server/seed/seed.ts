@@ -1,13 +1,30 @@
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 import User from "../models/User";
 import Quote from "../models/Quote";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
 import { items } from "./items";
+import { nextTick } from "process";
 
 dotenv.config();
 
-export const initializeSeed = async () => {
+const db = process.env.MONGO_URI;
+
+const initializeSeed = async () => {
+  try {
+    mongoose.set("useFindAndModify", false);
+    mongoose.connect(db, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    console.log(db);
+    console.log("DB connected.");
+  } catch (error) {
+    console.log(error);
+  }
+
   console.log(
     "Reseting the database.\nDeleting existing users, quotes, likes and tags..."
   );
@@ -76,6 +93,7 @@ export const initializeSeed = async () => {
   };
 
   await createNewQuotes();
+  mongoose.disconnect();
   console.log(`Seeding completed`);
 };
 
@@ -87,7 +105,7 @@ async function createQuote({ content, author, image, largeImage, tags, user }) {
 
     if (existingQuote) return;
 
-    const existingTags = await findTags(tags);
+    const existingTags: any[] = await findTags(tags);
 
     const newQuote = await new Quote({
       content,
@@ -124,7 +142,7 @@ async function createQuote({ content, author, image, largeImage, tags, user }) {
   }
 }
 
-function generateSlug(author: string, content: string): string {
+function generateSlug(author, content) {
   const authorSlug = author
     .replace(/[^a-zA-Z ]/g, "")
     .split(" ")
@@ -141,6 +159,10 @@ function generateSlug(author: string, content: string): string {
   return `${authorSlug}-${contentSlug}`;
 }
 
-function findTags(tags: string[]) {
+function findTags(tags) {
   return Promise.all(tags.map((tag) => Tag.findOne({ name: tag })));
 }
+
+initializeSeed().then(() => {
+  process.exit();
+});
