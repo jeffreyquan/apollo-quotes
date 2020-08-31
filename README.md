@@ -23,6 +23,7 @@
 - [x] Set up routing
 - [ ] Set up dark theme
 - [x] Set up light theme
+- [x] Set up Docker
 - [ ] Responsive Design
 - [ ] Password reset
 - [ ] Deploy
@@ -56,5 +57,6 @@
 - [ ] Subscription
   - [ ] Subscribe to new quotes
   - [ ] Subscribe to new likes
+- [x] Set up Docker
 - [ ] Password reset
 - [ ] Deploy

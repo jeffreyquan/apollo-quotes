@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  dev:
+    image: "${IMAGE}"
+    container_name: "${CONTAINER}"
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./:/app"
+    command: "npm run dev"
+
+  deploy:
+    build:
+      context: .
+      dockerfile: deploy.Dockerfile
+    image: "${DEPLOYMENT_IMAGE}"
+    container_name: "${CONTAINER}"
+
+  npm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "${IMAGE}"
+    container_name: "${CONTAINER}"
