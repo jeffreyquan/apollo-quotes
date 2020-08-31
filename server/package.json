@@ -5,8 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon -L ./ --exec ts-node --project ./tsconfig.json ./index.ts",
-    "seed": "ts-node seed/seed.ts",
-    "start:dev": "npm-run-all seed start"
+    "seed": "ts-node ./seed/seed.ts",
+    "start:seed": "npm-run-all seed start"
   },
   "keywords": [],
   "author": "",
