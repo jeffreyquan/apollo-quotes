@@ -1,20 +1,10 @@
-version: "3"
+version: "3.8"
 services:
-  mongo:
-    container_name: mongo
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data_container:/data/db
-
-  app:
-    container_name: apollo-quotes-server
+  dev:
+    image: "${IMAGE}"
+    container_name: "${CONTAINER}"
     restart: always
-    env_file:
-      - .env
     build: .
-    command: ["npm", "run", "start"]
     ports:
       - "5000:5000"
     volumes:
@@ -22,5 +12,45 @@ services:
     external_links:
       - mongo
 
+  deploy:
+    build:
+      context: .
+      dockerfile: deploy.Dockerfile
+    image: "${DEPLOYMENT_IMAGE}"
+    container_name: "${CONTAINER}"
+    external_links:
+      - mongo
+
+  npm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "${IMAGE}"
+    container_name: "${CONTAINER}"
+
+  seed:
+    image: "${IMAGE}"
+    container_name: "${CONTAINER}"
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: deploy.Dockerfile
+    command: "npm run seed"
+    ports:
+      - "5000:5000"
+    external_links:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - data:/data/db
+
 volumes:
-  mongodb_data_container:
+  data:
+    external:
+      name: aqs_mongodb_data
