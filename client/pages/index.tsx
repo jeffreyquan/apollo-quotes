@@ -1,11 +1,9 @@
-import { Quotes } from "../components/Quotes";
+import { useRouter } from "next/router";
 
 const HomePage = (props) => {
-  return (
-    <div>
-      <Quotes limit={4} />
-    </div>
-  );
+  const router = useRouter();
+  router.push("/quotes");
+  return <div>Loading...</div>;
 };
 
 export default HomePage;
