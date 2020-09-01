@@ -15,7 +15,7 @@
   - [x] Like a quote
   - [x] Delete a quote
   - [ ] View quotes liked
-  - [ ] View quotes submitted
+  - [x] View quotes submitted
 - [ ] Restrict editting, deleting and submitting to authorised users
 - [x] View feed of quotes
 - [x] View feed of quotes by tag

@@ -6,21 +6,17 @@ import { AuthContext } from "../../components/Auth";
 const UserPage = () => {
   const router = useRouter();
   let { user } = useContext(AuthContext);
-  const { username, quotes, tag } = router.query;
+  const { slug, tag } = router.query;
 
   let submittedBy;
 
-  if (user && user.username === username) {
+  if (user && user.username === slug[0]) {
     submittedBy = user.id;
-  } else {
-    router.push({
-      pathname: "/",
-    });
   }
 
   return (
     <div>
-      {quotes === "submitted" && (
+      {slug[1] === "quotes" && (
         <Quotes tag={tag as string} limit={4} submittedBy={submittedBy} />
       )}
     </div>
