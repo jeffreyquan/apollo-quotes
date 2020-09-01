@@ -116,6 +116,7 @@ export const Quote = ({ quote }) => {
   }
 
   const router = useRouter();
+  console.log(router);
   const fetchQuoteWithTag = (
     e: React.MouseEvent<HTMLDivElement>,
     tagName: string

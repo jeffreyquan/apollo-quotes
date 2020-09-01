@@ -1,16 +1,16 @@
-import { useContext } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { Quotes } from "../../components/Quotes";
 import { useRouter } from "next/router";
 import { AuthContext } from "../../components/Auth";
 
-const QuotesSubmittedPage = (props) => {
+const UserPage = () => {
   const router = useRouter();
   let { user } = useContext(AuthContext);
-  const { tag } = router.query;
+  const { username, quotes, tag } = router.query;
 
   let submittedBy;
 
-  if (user) {
+  if (user && user.username === username) {
     submittedBy = user.id;
   } else {
     router.push({
@@ -20,9 +20,11 @@ const QuotesSubmittedPage = (props) => {
 
   return (
     <div>
-      <Quotes tag={tag as string} limit={4} submittedBy={submittedBy} />
+      {quotes === "submitted" && (
+        <Quotes tag={tag as string} limit={4} submittedBy={submittedBy} />
+      )}
     </div>
   );
 };
 
-export default QuotesSubmittedPage;
+export default UserPage;

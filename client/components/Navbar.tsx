@@ -68,7 +68,13 @@ export const Navbar = () => {
             </Link>
             {user && (
               <>
-                <Link href="/quotes/submitted">
+                <Link
+                  href={{
+                    pathname: "/user/[username]",
+                    query: { quotes: "submitted" },
+                  }}
+                  as={`/user/${user.username}?quotes=submitted`}
+                >
                   <a>
                     <IconContainer>
                       <MdAssignmentInd />
