@@ -28,13 +28,7 @@ export const typeDefs = gql`
       tags: [String]
     ): Quote
     likeQuote(quoteId: ID!): Like!
-    updateQuote(
-      id: ID!
-      content: String
-      author: String
-      image: String
-      tags: [String]
-    ): Quote
+    updateQuote(id: ID!, content: String, author: String, tags: [String]): Quote
     deleteQuote(id: ID!): Quote
   }
 

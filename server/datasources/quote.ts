@@ -62,7 +62,6 @@ class QuoteAPI extends DataSource {
       }
 
       if (user && submittedBy.toString() !== user._id.toString()) {
-        console.log(submittedBy, user._id);
         return new ForbiddenError("User not authorised");
       }
 
@@ -150,7 +149,7 @@ class QuoteAPI extends DataSource {
       for (let i = 0; i < existingTags.length; i++) {
         if (!existingTags[i]) {
           const newTag = new Tag({
-            name: tags[i],
+            name: tags[i].toLowerCase(),
           });
           newTag.quotes.push(newQuote);
           await newTag.save();
@@ -254,9 +253,13 @@ class QuoteAPI extends DataSource {
         })
         .exec();
 
+      if (user.id !== quote.submittedBy._id.toString()) {
+        return new ForbiddenError("User not authorised");
+      }
+
       quote.content = updates.content;
       quote.author = updates.author;
-      quote.image = updates.image;
+      quote.slug = this.generateSlug(updates.author, updates.content);
 
       const existingTags = quote.tags.map((tag) => tag.name);
 
@@ -264,14 +267,16 @@ class QuoteAPI extends DataSource {
       const removedTags = [];
 
       existingTags.forEach((tag) => {
-        if (!updates.tags.includes(tag)) {
-          removedTags.push(tag);
+        const tagName = tag.toLowerCase();
+        if (!updates.tags.includes(tagName)) {
+          removedTags.push(tagName);
         }
       });
 
       updates.tags.forEach((tag) => {
-        if (!existingTags.includes(tag)) {
-          newTags.push(tag);
+        const tagName = tag.toLowerCase();
+        if (!existingTags.includes(tagName)) {
+          newTags.push(tagName);
         }
       });
 
@@ -293,7 +298,7 @@ class QuoteAPI extends DataSource {
       quote.tags = updatedTags;
 
       if (removedTags.length > 0) {
-        const tagsremoved = await Promise.all(
+        await Promise.all(
           removedTags.map((tag) =>
             Tag.updateOne(
               { name: tag },

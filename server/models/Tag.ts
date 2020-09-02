@@ -27,6 +27,11 @@ const TagSchema = new Schema(
   }
 );
 
+TagSchema.pre<TagInterface>("save", function (next) {
+  this.name = this.name.toLowerCase();
+  next();
+});
+
 const Tag = mongoose.model<TagInterface>("Tag", TagSchema);
 
 export default Tag;
