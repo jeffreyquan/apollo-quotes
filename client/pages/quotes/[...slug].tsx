@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { SingleQuote } from "../../components/SingleQuote";
+import { UpdateQuote } from "../../components/UpdateQuote";
 
 const SingleQuotePage = () => {
   const router = useRouter();
@@ -7,7 +8,11 @@ const SingleQuotePage = () => {
 
   return (
     <div>
-      <SingleQuote slug={slug as string} />
+      {slug[1] && slug[1] === "edit" ? (
+        <UpdateQuote slug={slug[0] as string} />
+      ) : (
+        <SingleQuote slug={slug[0] as string} />
+      )}
     </div>
   );
 };

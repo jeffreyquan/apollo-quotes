@@ -17,4 +17,14 @@ export const QuoteTag = styled.div`
     color: ${(props) => props.theme.headline2};
     border: 1px solid ${(props) => props.theme.cardtagbg};
   }
+
+  &.edit {
+    background: ${(props) => props.theme.forminput};
+    color: ${(props) => props.theme.headline2};
+
+    &::after {
+      content: "⨉";
+      padding-left: 0.8rem;
+    }
+  }
 `;

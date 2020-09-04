@@ -137,7 +137,7 @@ export const Quotes: React.FC<QuotesProps> = ({
       {quotes &&
         quotes.map((quote, index) => (
           <React.Fragment key={quote.id}>
-            <Link href="/quotes/[slug]" as={`/quotes/${quote.slug}`}>
+            <Link href="/quotes/[...slug]" as={`/quotes/${quote.slug}`}>
               <a>
                 <Quote quote={quote} />
               </a>

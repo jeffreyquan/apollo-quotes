@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { FiDelete } from "react-icons/fi";
+import { FiDelete, FiEdit } from "react-icons/fi";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
 import { Quote as QuoteType } from "../types";
@@ -169,9 +169,14 @@ export const Quote = ({ quote }) => {
             )}
           </div>
           {submitted && (
-            <DeleteQuote id={id}>
-              <FiDelete />
-            </DeleteQuote>
+            <>
+              <DeleteQuote id={id}>
+                <FiDelete />
+              </DeleteQuote>
+              <div>
+                <FiEdit />
+              </div>
+            </>
           )}
         </Controls>
       </QuoteFooter>
