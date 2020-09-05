@@ -1,10 +1,12 @@
 import { gql, useMutation } from "@apollo/client";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
+import { QuoteTag } from "../styles/QuoteTag";
 
 const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
@@ -45,8 +47,10 @@ export const QuoteNew = () => {
     content: "",
     author: "",
     image: "",
-    tags: [""],
+    tags: [],
   });
+
+  const [tagInput, setTagInput] = useState("");
 
   const { content, author, image, tags } = inputs;
 
@@ -126,23 +130,17 @@ export const QuoteNew = () => {
   };
 
   const addTag = () => {
-    updateInputs({
-      tags: [...tags, ""],
-    });
+    if (!tags.includes(tagInput)) {
+      updateInputs({
+        tags: [...tags, tagInput],
+      });
+      setTagInput("");
+    }
   };
 
   const removeTag = (index) => {
     const updatedTags = [...tags];
     updatedTags.splice(index, 1);
-    updateInputs({
-      tags: updatedTags,
-    });
-  };
-
-  const handleTagChange = (e, i) => {
-    const { value } = e.target;
-    const updatedTags = [...tags];
-    updatedTags[i] = value;
     updateInputs({
       tags: updatedTags,
     });
@@ -158,6 +156,7 @@ export const QuoteNew = () => {
             <textarea
               name="content"
               placeholder="When nothing goes right, go left."
+              rows={4}
               value={content}
               onChange={handleChange}
             />
@@ -184,29 +183,31 @@ export const QuoteNew = () => {
             />
           </label>
           <label>Tags</label>
-          {tags.map((tag, i) => {
-            return (
-              <div className="input__group" key={i}>
-                <input
-                  type="text"
-                  name="tag"
-                  value={tag}
-                  onChange={(e) => handleTagChange(e, i)}
-                />
-                {i !== 0 && (
-                  <button onClick={() => removeTag(i)}>
-                    <MdRemoveCircle />
-                  </button>
-                )}
-                {tags.length - 1 === i && (
-                  <button onClick={() => addTag()}>
-                    <MdAddCircle />
-                  </button>
-                )}
-              </div>
-            );
-          })}
-
+          <div className="input__group">
+            <input
+              type="text"
+              name="tag"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+            />
+            <button onClick={() => addTag()}>
+              <MdAddCircle />
+            </button>
+          </div>
+          <div>
+            {tags.length > 0 &&
+              tags.map((tag, i) => {
+                return (
+                  <QuoteTag
+                    key={`${tag}-${i}`}
+                    className="edit"
+                    onClick={() => removeTag(i)}
+                  >
+                    {tag}
+                  </QuoteTag>
+                );
+              })}
+          </div>
           <input type="submit" value="Submit" />
         </fieldset>
       </Form>
