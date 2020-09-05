@@ -4,7 +4,10 @@ export const FormContainer = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 40rem;
+  width: 60rem;
+  padding: 8rem 0;
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    width: 100vw;
+  }
+  align-self: flex-start;
 `;
