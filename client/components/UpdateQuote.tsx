@@ -100,25 +100,25 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
         slug,
       },
       onCompleted: (data) => {
-        // if (user.id !== data.quote.submittedBy.id) {
-        //   router.push({
-        //     pathname: `/quotes/${data.quote.slug}`,
-        //   });
-        // } else {
-        const { id, author, content, tags } = data.quote;
+        if (user.id !== data.quote.submittedBy.id) {
+          router.push({
+            pathname: `/quotes/${data.quote.slug}`,
+          });
+        } else {
+          const { id, author, content, tags } = data.quote;
 
-        const tagNames = tags.map((tag) => tag.name);
+          const tagNames = tags.map((tag) => tag.name);
 
-        const formInputs = {
-          id,
-          author,
-          content,
-          tags: tagNames,
-        };
+          const formInputs = {
+            id,
+            author,
+            content,
+            tags: tagNames,
+          };
 
-        updateInputs(formInputs);
-        setLoadingPage(false);
-        // }
+          updateInputs(formInputs);
+          setLoadingPage(false);
+        }
       },
     }
   );
