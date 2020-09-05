@@ -9,12 +9,12 @@
 - [x] Set up global styles
 - [x] User login
 - [x] User sign up
-- [ ] User can:
+- [x] User can:
   - [x] Submit quote
   - [x] Edit submitted quote
   - [x] Like a quote
   - [x] Delete a quote
-  - [ ] View quotes liked
+  - [x] View quotes liked
   - [x] View quotes submitted
 - [x] Restrict editting, deleting and submitting to authorised users
 - [x] View feed of quotes
@@ -37,8 +37,8 @@
 - [x] Set up JWT authentication
 - [x] Create seed file and function
 - [x] Set up to store JWT in Cookies
-- [ ] Mutations
-  - [ ] Quotes
+- [x] Mutations
+  - [x] Quotes
     - [x] Create quote
       - [x] Create slug for when quote is being created to allow sharing on client
       - [x] Set up Cloudinary to allow image uploads when creating quotes
@@ -46,10 +46,10 @@
     - [x] Delete quote
     - [x] Like a quote
     - [x] Unlike a quote
-  - [ ] User
+  - [x] User
     - [x] Create user
     - [x] Login
-- [ ] Queries
+- [x] Queries
   - [x] Feed
   - [x] Feed by Tag
   - [x] User information including quotes liked and quotes submitted

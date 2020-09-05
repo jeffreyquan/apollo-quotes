@@ -3,6 +3,7 @@ import cloudinary from "cloudinary";
 import Quote from "../models/Quote";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
+import User from "../models/User";
 import {
   ApolloError,
   AuthenticationError,
@@ -39,9 +40,8 @@ class QuoteAPI extends DataSource {
     return quote;
   }
 
-  async fetchQuotes({ tag, limit = 4, cursor, submittedBy }) {
-    const totalCount = await Quote.countDocuments({}).exec();
-
+  async fetchQuotes({ tag, limit = 4, cursor, submittedBy, likedBy }) {
+    let totalCount = 0;
     let quotes = [];
     let endCursor = "";
     let filter = {};
@@ -71,26 +71,49 @@ class QuoteAPI extends DataSource {
     if (cursor)
       filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
 
-    quotes = await Quote.find(filter)
-      .sort({ createdAt: "descending", _id: "descending" })
-      .limit(limit + 1)
-      .populate({
-        path: "tags",
-        select: "_id name",
-      })
-      .populate({
-        path: "likes",
-        select: "_id user",
-        populate: {
-          path: "user",
+    if (likedBy) {
+      if (!user) {
+        if (!user) return new AuthenticationError("User must be logged in");
+      }
+
+      if (user && likedBy.toString() !== user._id.toString()) {
+        return new ForbiddenError("User not authorised");
+      }
+
+      const res = await this.fetchLikedQuotes({
+        likedBy,
+        limit,
+        cursor,
+      });
+
+      totalCount = await (await User.findById(user._id).select("likes").exec())
+        .likes.length;
+
+      quotes = res.likes.map((x) => x.quote);
+    } else {
+      quotes = await Quote.find(filter)
+        .sort({ createdAt: "descending", _id: "descending" })
+        .limit(limit + 1)
+        .populate({
+          path: "tags",
+          select: "_id name",
+        })
+        .populate({
+          path: "likes",
+          select: "_id user",
+          populate: {
+            path: "user",
+            select: "_id username",
+          },
+        })
+        .populate({
+          path: "submittedBy",
           select: "_id username",
-        },
-      })
-      .populate({
-        path: "submittedBy",
-        select: "_id username",
-      })
-      .exec();
+        })
+        .exec();
+
+      totalCount = await Quote.countDocuments({}).exec();
+    }
 
     const hasMore = quotes.length > limit;
 
@@ -110,6 +133,60 @@ class QuoteAPI extends DataSource {
       },
       quotes,
     };
+  }
+
+  async fetchLikedQuotes({ likedBy, limit, cursor }) {
+    const { user } = this.context.req;
+
+    if (!user) return new AuthenticationError("User must be logged in");
+
+    const userId = user._id;
+
+    let filter = {};
+
+    if (cursor) {
+      filter = {
+        $lt: this.decodeCursor(cursor),
+      };
+    }
+
+    const quotes = await User.findById(userId)
+      .select("likes")
+      .populate({
+        path: "likes",
+        select: "quote -_id",
+        createdAt: { ...filter },
+        options: {
+          sort: { createdAt: "descending", _id: "descending" },
+          limit: limit + 1,
+        },
+        populate: [
+          {
+            path: "quote",
+            populate: [
+              {
+                path: "likes",
+                select: "_id user",
+                populate: {
+                  path: "user",
+                  select: "_id username",
+                },
+              },
+              {
+                path: "tags",
+                select: "_id name",
+              },
+              {
+                path: "submittedBy",
+                select: "_id username",
+              },
+            ],
+          },
+        ],
+      })
+      .exec();
+
+    return quotes;
   }
 
   fetchQuoteById(quoteId) {

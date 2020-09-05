@@ -10,14 +10,22 @@ const UserPage = () => {
 
   let submittedBy;
 
+  let likedBy;
+
   if (user && user.username === slug[0]) {
     submittedBy = user.id;
+    likedBy = user.id;
+  } else {
+    router.push("/quotes");
   }
 
   return (
     <div>
       {slug[1] === "quotes" && (
         <Quotes tag={tag as string} limit={4} submittedBy={submittedBy} />
+      )}
+      {slug[1] === "likes" && (
+        <Quotes tag={tag as string} limit={4} likedBy={likedBy} />
       )}
     </div>
   );

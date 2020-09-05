@@ -8,7 +8,7 @@ export const resolvers = {
     },
     quotes: async (
       parent,
-      { tag, limit, cursor, submittedBy },
+      { tag, limit, cursor, submittedBy, likedBy },
       { dataSources }
     ) => {
       const quotes = await dataSources.quoteAPI.fetchQuotes({
@@ -16,6 +16,7 @@ export const resolvers = {
         limit,
         cursor,
         submittedBy,
+        likedBy,
       });
 
       return quotes;

@@ -23,7 +23,7 @@ function createApolloClient() {
         Query: {
           fields: {
             quotes: {
-              keyArgs: ["tag", "submittedBy"],
+              keyArgs: ["tag", "submittedBy", "likedBy"],
               merge: (
                 existing = {
                   __typename: "QuotesConnection",

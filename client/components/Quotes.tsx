@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import { Waypoint } from "react-waypoint";
 import { Quote } from "../components/Quote";
+import { AuthContext } from "./Auth";
 import { Message } from "./Message";
 
 export const ALL_QUOTES_QUERY = gql`
@@ -13,12 +14,14 @@ export const ALL_QUOTES_QUERY = gql`
     $limit: Int
     $cursor: String
     $submittedBy: ID
+    $likedBy: ID
   ) {
     quotes(
       tag: $tag
       limit: $limit
       cursor: $cursor
       submittedBy: $submittedBy
+      likedBy: $likedBy
     ) {
       totalCount
       pageInfo {
@@ -68,6 +71,7 @@ interface QuotesProps {
   limit?: number;
   cursor?: string;
   submittedBy?: string;
+  likedBy?: string;
 }
 
 export const Quotes: React.FC<QuotesProps> = ({
@@ -75,15 +79,30 @@ export const Quotes: React.FC<QuotesProps> = ({
   limit,
   cursor,
   submittedBy,
+  likedBy,
 }) => {
   const [prevCursor, setPrevCursor] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
 
   const { data, loading, error, fetchMore } = useQuery(ALL_QUOTES_QUERY, {
-    variables: { tag, limit, cursor, submittedBy },
+    variables: { tag, limit, cursor, submittedBy, likedBy },
   });
 
   const router = useRouter();
+
+  let { user } = useContext(AuthContext);
+
+  if (submittedBy) {
+    if (submittedBy !== user.id) {
+      router.push("/quotes");
+    }
+  }
+
+  if (likedBy) {
+    if (likedBy !== user.id) {
+      router.push("/quotes");
+    }
+  }
 
   const timeoutId = useRef<number>();
 

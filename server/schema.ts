@@ -8,6 +8,7 @@ export const typeDefs = gql`
       limit: Int
       cursor: String
       submittedBy: ID
+      likedBy: ID
     ): QuotesConnection!
     userProfile: User!
   }
