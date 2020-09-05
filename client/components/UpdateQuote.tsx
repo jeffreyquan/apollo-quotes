@@ -146,6 +146,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
             <textarea
               name="content"
               placeholder="When nothing goes right, go left."
+              rows={4}
               value={content}
               onChange={handleChange}
             />

@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
@@ -39,7 +40,7 @@ const Controls = styled.div`
     align-items: center;
     font-size: 1.6rem;
     svg {
-      margin-left: 0.8rem;
+      margin-left: 1.2rem;
     }
   }
 `;
@@ -72,7 +73,7 @@ const LIKE_MUTATION = gql`
 `;
 
 export const Quote = ({ quote }) => {
-  const { id, author, content, image, tags, likes, submittedBy } = quote;
+  const { id, author, content, image, tags, likes, submittedBy, slug } = quote;
 
   const [like] = useMutation(LIKE_MUTATION, {
     variables: {
@@ -137,6 +138,12 @@ export const Quote = ({ quote }) => {
     }
   };
 
+  const EditLink = ({ children, href, as, ...props }) => (
+    <Link href={href} as={as}>
+      <div {...props}>{children}</div>
+    </Link>
+  );
+
   return (
     <QuoteStyles loading={loading ? "true" : undefined}>
       <QuoteBody>
@@ -173,9 +180,10 @@ export const Quote = ({ quote }) => {
               <DeleteQuote id={id}>
                 <FiDelete />
               </DeleteQuote>
-              <div>
+
+              <EditLink href="/quotes/[...slug]" as={`/quotes/${slug}/edit`}>
                 <FiEdit />
-              </div>
+              </EditLink>
             </>
           )}
         </Controls>
