@@ -11,7 +11,7 @@
 - [x] User sign up
 - [ ] User can:
   - [x] Submit quote
-  - [ ] Edit submitted quote
+  - [x] Edit submitted quote
   - [x] Like a quote
   - [x] Delete a quote
   - [ ] View quotes liked
@@ -24,7 +24,7 @@
 - [ ] Set up dark theme
 - [x] Set up light theme
 - [x] Set up Docker
-- [ ] Responsive Design
+- [x] Responsive Design
 - [ ] Password reset
 - [ ] Deploy
 
