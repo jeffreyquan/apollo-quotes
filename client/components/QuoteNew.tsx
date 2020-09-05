@@ -130,9 +130,10 @@ export const QuoteNew = () => {
   };
 
   const addTag = () => {
-    if (!tags.includes(tagInput)) {
+    const tagName = tagInput.toLowerCase();
+    if (!tags.includes(tagName)) {
       updateInputs({
-        tags: [...tags, tagInput],
+        tags: [...tags, tagName],
       });
       setTagInput("");
     }
