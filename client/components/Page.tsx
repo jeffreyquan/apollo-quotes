@@ -46,14 +46,12 @@ const StyledPage = styled.div`
 
 const InnerDiv = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
   margin: 0 auto;
   max-width: ${(props) => props.theme.maxWidth};
   min-height: ${(props) => (props.loading ? "100vh" : "calc(100vh - 9rem)")};
   @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
     overflow-y: auto;
-    margin-bottom: 9rem;
   }
 `;
 
