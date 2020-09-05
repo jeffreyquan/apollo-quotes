@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useContext } from "react";
 import { Quotes } from "../../components/Quotes";
 import { useRouter } from "next/router";
 import { AuthContext } from "../../components/Auth";
