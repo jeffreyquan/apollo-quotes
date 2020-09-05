@@ -22,6 +22,10 @@ const IconStyles = styled.div`
   line-height: 1.4;
   font-size: 1.2rem;
 
+  p {
+    white-space: nowrap;
+  }
+
   svg {
     font-size: 3rem;
   }
@@ -38,8 +42,10 @@ const NavbarStyles = styled.nav`
     width: 100%;
     height: 9rem;
   }
+
   ul {
     display: flex;
+    align-items: center;
 
     a {
       color: ${(props) => props.theme.headline2};
@@ -75,7 +81,7 @@ export const Navbar = () => {
                   <a>
                     <IconContainer>
                       <MdAssignmentInd />
-                      My Quotes
+                      <p>My Quotes</p>
                     </IconContainer>
                   </a>
                 </Link>
@@ -83,7 +89,7 @@ export const Navbar = () => {
                   <a>
                     <IconContainer>
                       <MdNoteAdd />
-                      New
+                      <p>New</p>
                     </IconContainer>
                   </a>
                 </Link>
@@ -102,7 +108,7 @@ export const Navbar = () => {
               <Logout>
                 <IconContainer>
                   <IoMdLogOut />
-                  Log out
+                  <p>Log out</p>
                 </IconContainer>
               </Logout>
             )}

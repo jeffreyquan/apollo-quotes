@@ -10,6 +10,7 @@ const Logo = styled.div`
   padding: 2rem 0;
   @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
     margin-right: 0;
+    justify-content: center;
   }
   a {
     display: flex;
@@ -18,17 +19,27 @@ const Logo = styled.div`
 `;
 
 const StyledHeader = styled.header`
+  display: flex;
+  align-items: center;
   position: sticky;
   background-color: ${(props) =>
     props.sticky ? props.theme.white : "transparent"};
+  top: 0;
+  max-height: 9rem;
   box-shadow: ${(props) =>
     props.sticky ? `0 0.2rem 0.5rem rgba(0,0,0,0.5)` : ""};
-  top: 0;
-  display: flex;
-  align-items: center;
+
   transition: all 0.3s ease-in-out;
   line-height: ${(props) => (props.sticky ? "3rem" : "5rem")};
-  max-height: 9rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    max-width: ${(props) => props.theme.maxWidth};
+  }
+
   @media only screen and (max-width: 600px) {
     justify-content: center;
   }
@@ -49,15 +60,17 @@ export const Header = () => {
 
   return (
     <StyledHeader sticky={sticky}>
-      <Logo>
-        <Link href="/">
-          <a>
-            <IoIosRocket />
-            Apollo Quotes
-          </a>
-        </Link>
-      </Logo>
-      <Navbar />
+      <div>
+        <Logo>
+          <Link href="/">
+            <a>
+              <IoIosRocket />
+              Apollo Quotes
+            </a>
+          </Link>
+        </Logo>
+        <Navbar />
+      </div>
     </StyledHeader>
   );
 };
