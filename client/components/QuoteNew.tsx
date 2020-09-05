@@ -179,7 +179,6 @@ export const QuoteNew = () => {
               id="file"
               name="image"
               placeholder="Upload an image"
-              required
               onChange={handleChange}
             />
           </label>
