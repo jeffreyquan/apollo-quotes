@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useContext } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 import { AuthContext } from "./Auth";
+import { Message } from "./Message";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
@@ -73,6 +74,23 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const [loadingPage, setLoadingPage] = useState(true);
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const timeoutId = useRef<number>();
+
+  useEffect(() => {
+    if (errorMessage) {
+      clearTimeout(timeoutId.current);
+      timeoutId.current = window.setTimeout(function () {
+        setErrorMessage(null);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, [errorMessage]);
+
   const [tagInput, setTagInput] = useState("");
 
   const { data, loading, error: singleQuoteError } = useQuery(
@@ -82,25 +100,25 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
         slug,
       },
       onCompleted: (data) => {
-        if (user.id !== data.quote.submittedBy.id) {
-          router.push({
-            pathname: `/quotes/${data.quote.slug}`,
-          });
-        } else {
-          const { id, author, content, tags } = data.quote;
+        // if (user.id !== data.quote.submittedBy.id) {
+        //   router.push({
+        //     pathname: `/quotes/${data.quote.slug}`,
+        //   });
+        // } else {
+        const { id, author, content, tags } = data.quote;
 
-          const tagNames = tags.map((tag) => tag.name);
+        const tagNames = tags.map((tag) => tag.name);
 
-          const formInputs = {
-            id,
-            author,
-            content,
-            tags: tagNames,
-          };
+        const formInputs = {
+          id,
+          author,
+          content,
+          tags: tagNames,
+        };
 
-          updateInputs(formInputs);
-          setLoadingPage(false);
-        }
+        updateInputs(formInputs);
+        setLoadingPage(false);
+        // }
       },
     }
   );
@@ -126,14 +144,15 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
       router.push(`/quotes/${slug}`);
     } catch (err) {
       // TODO: handle error
-      console.log(err.message);
+      setErrorMessage(err.message);
     }
   };
 
   const addTag = () => {
-    if (!tags.includes(tagInput)) {
+    const tagName = tagInput.toLowerCase();
+    if (!tags.includes(tagName)) {
       updateInputs({
-        tags: [...tags, tagInput],
+        tags: [...tags, tagName],
       });
       setTagInput("");
     }
@@ -152,59 +171,62 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
   return loadingPage ? (
     <div>Loading...</div>
   ) : (
-    <FormContainer>
-      <Form onSubmit={handleSubmit}>
-        <FormTitle>Edit quote</FormTitle>
-        <fieldset>
-          <label htmlFor="content">
-            Content
-            <textarea
-              name="content"
-              placeholder="When nothing goes right, go left."
-              rows={4}
-              value={content}
-              onChange={handleChange}
-            />
-          </label>
-          <label htmlFor="author">
-            Author
-            <input
-              type="text"
-              name="author"
-              placeholder="JR Smith"
-              value={author}
-              onChange={handleChange}
-            />
-          </label>
-          <label>Tags</label>
-          <div className="input__group">
-            <input
-              type="text"
-              name="tagInput"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-            />
-            <button type="button" onClick={() => addTag()}>
-              <MdAddCircle />
-            </button>
-          </div>
-          <div>
-            {tags.map((tag, i) => {
-              return (
-                <QuoteTag
-                  key={`${tag}-${i}`}
-                  className="edit"
-                  onClick={() => removeTag(i)}
-                >
-                  {tag}
-                </QuoteTag>
-              );
-            })}
-          </div>
+    <div>
+      {errorMessage && <Message error>{errorMessage}</Message>}
+      <FormContainer>
+        <Form onSubmit={handleSubmit}>
+          <FormTitle>Edit quote</FormTitle>
+          <fieldset>
+            <label htmlFor="content">
+              Content
+              <textarea
+                name="content"
+                placeholder="When nothing goes right, go left."
+                rows={4}
+                value={content}
+                onChange={handleChange}
+              />
+            </label>
+            <label htmlFor="author">
+              Author
+              <input
+                type="text"
+                name="author"
+                placeholder="JR Smith"
+                value={author}
+                onChange={handleChange}
+              />
+            </label>
+            <label>Tags</label>
+            <div className="input__group">
+              <input
+                type="text"
+                name="tagInput"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+              />
+              <button type="button" onClick={() => addTag()}>
+                <MdAddCircle />
+              </button>
+            </div>
+            <div>
+              {tags.map((tag, i) => {
+                return (
+                  <QuoteTag
+                    key={`${tag}-${i}`}
+                    className="edit"
+                    onClick={() => removeTag(i)}
+                  >
+                    {tag}
+                  </QuoteTag>
+                );
+              })}
+            </div>
 
-          <input type="submit" value="Update" />
-        </fieldset>
-      </Form>
-    </FormContainer>
+            <input type="submit" value="Update" />
+          </fieldset>
+        </Form>
+      </FormContainer>
+    </div>
   );
 };
