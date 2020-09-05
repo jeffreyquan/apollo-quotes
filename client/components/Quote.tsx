@@ -38,7 +38,7 @@ const Controls = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     svg {
       margin-left: 1.2rem;
     }
@@ -177,13 +177,13 @@ export const Quote = ({ quote }) => {
           </div>
           {submitted && (
             <>
-              <DeleteQuote id={id}>
-                <FiDelete />
-              </DeleteQuote>
-
               <EditLink href="/quotes/[...slug]" as={`/quotes/${slug}/edit`}>
                 <FiEdit />
               </EditLink>
+
+              <DeleteQuote id={id}>
+                <FiDelete />
+              </DeleteQuote>
             </>
           )}
         </Controls>

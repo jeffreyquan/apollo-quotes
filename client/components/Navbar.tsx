@@ -1,16 +1,12 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { AiFillHome } from "react-icons/ai";
-import { IoMdLogIn, IoMdLogOut } from "react-icons/io";
+import { RiLoginBoxFill, RiLogoutBoxRFill } from "react-icons/ri";
 import {
-  MdInsertDriveFile,
-  MdAssignmentInd,
-  MdNoteAdd,
-  MdTurnedIn,
-  MdAddBox,
-  MdCreateNewFolder,
-} from "react-icons/md";
-import { RiHomeHeartLine } from "react-icons/ri";
+  BsFillHouseFill,
+  BsFillCollectionFill,
+  BsFillHeartFill,
+  BsFillPlusCircleFill,
+} from "react-icons/bs";
 import { AuthContext } from "./Auth";
 import { Logout } from "./Logout";
 
@@ -67,7 +63,7 @@ export const Navbar = () => {
             <Link href="/">
               <a>
                 <IconContainer>
-                  <AiFillHome />
+                  <BsFillHouseFill />
                   <p>Quotes</p>
                 </IconContainer>
               </a>
@@ -80,15 +76,26 @@ export const Navbar = () => {
                 >
                   <a>
                     <IconContainer>
-                      <MdAssignmentInd />
+                      <BsFillCollectionFill />
                       <p>My Quotes</p>
+                    </IconContainer>
+                  </a>
+                </Link>
+                <Link
+                  href="/user/[...slug]"
+                  as={`/user/${user.username}/likes`}
+                >
+                  <a>
+                    <IconContainer>
+                      <BsFillHeartFill />
+                      <p>Likes</p>
                     </IconContainer>
                   </a>
                 </Link>
                 <Link href="/quotes/new">
                   <a>
                     <IconContainer>
-                      <MdNoteAdd />
+                      <BsFillPlusCircleFill />
                       <p>New</p>
                     </IconContainer>
                   </a>
@@ -99,7 +106,7 @@ export const Navbar = () => {
               <Link href="/signin">
                 <a>
                   <IconContainer>
-                    <IoMdLogIn />
+                    <RiLoginBoxFill />
                     <p>Sign In</p>
                   </IconContainer>
                 </a>
@@ -107,7 +114,7 @@ export const Navbar = () => {
             ) : (
               <Logout>
                 <IconContainer>
-                  <IoMdLogOut />
+                  <RiLogoutBoxRFill />
                   <p>Log out</p>
                 </IconContainer>
               </Logout>
