@@ -58,6 +58,10 @@ const QuotesList = styled.div`
   justify-content: center;
   max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    overflow-y: auto;
+    padding-bottom: 9rem;
+  }
 `;
 interface QuotesProps {
   tag?: string;
