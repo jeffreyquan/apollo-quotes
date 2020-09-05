@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { useContext } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { useRouter } from "next/router";
+import { AuthContext } from "./Auth";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
@@ -67,6 +69,10 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
     tags: [],
   });
 
+  let { user } = useContext(AuthContext);
+
+  const [loadingPage, setLoadingPage] = useState(true);
+
   const [tagInput, setTagInput] = useState("");
 
   const { data, loading, error: singleQuoteError } = useQuery(
@@ -76,18 +82,25 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
         slug,
       },
       onCompleted: (data) => {
-        const { id, author, content, tags } = data.quote;
+        if (user.id !== data.quote.submittedBy.id) {
+          router.push({
+            pathname: `/quotes/${data.quote.slug}`,
+          });
+        } else {
+          const { id, author, content, tags } = data.quote;
 
-        const tagNames = tags.map((tag) => tag.name);
+          const tagNames = tags.map((tag) => tag.name);
 
-        const formInputs = {
-          id,
-          author,
-          content,
-          tags: tagNames,
-        };
+          const formInputs = {
+            id,
+            author,
+            content,
+            tags: tagNames,
+          };
 
-        updateInputs(formInputs);
+          updateInputs(formInputs);
+          setLoadingPage(false);
+        }
       },
     }
   );
@@ -110,7 +123,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
     try {
       const res = await updateQuote();
       const slug = res.data.updateQuote.slug;
-      router.push("/quotes/[...slug]", `/quotes/${slug}`);
+      router.push(`/quotes/${slug}`);
     } catch (err) {
       // TODO: handle error
       console.log(err.message);
@@ -136,7 +149,9 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const { content, author, tags } = inputs;
 
-  return (
+  return loadingPage ? (
+    <div>Loading...</div>
+  ) : (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
         <FormTitle>Edit quote</FormTitle>
