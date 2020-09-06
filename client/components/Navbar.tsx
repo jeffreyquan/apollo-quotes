@@ -30,7 +30,7 @@ const IconStyles = styled.div`
 const NavbarStyles = styled.nav`
   @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
     display: flex;
-    background-color: ${(props) => props.theme.white};
+    background-color: ${(props) => props.theme.bg};
     justify-content: center;
     position: fixed;
     align-items: center;
@@ -44,7 +44,7 @@ const NavbarStyles = styled.nav`
     align-items: center;
 
     a {
-      color: ${(props) => props.theme.headline2};
+      color: ${(props) => props.theme.headline};
       padding: 2rem 1rem;
     }
   }

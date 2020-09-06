@@ -1,33 +1,54 @@
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import { useContext } from "react";
+import { useTheme } from "../lib/useTheme";
 import { AuthContext } from "./Auth";
 import { Header } from "./Header";
 import { Meta } from "./Meta";
 
+const darkTheme = {
+  bg: "#282e34",
+  headline: "#ffffff",
+  body: "#383d49",
+  subheadline: "#383d49",
+  btnbg: "#d54473",
+  btntext: "#e7e7e9",
+  cardbg: "#383d48",
+  cardheadline: "#ffffff",
+  cardbody: "#ffffff",
+  cardtagbg: "#d54473",
+  cardtagtext: "#e7e7e9",
+  cardhl: "#f25042",
+  link: "#d54473",
+  formheadline: "#e7e7e9",
+  formbg: "#383d48",
+  forminputbg: "#ffffff",
+  formtext: "#000000",
+  formbtntext: "#ffffff",
+  errortext: "#ff9999",
+  white: "#ffffff",
+  black: "#000000",
+  smallbp: "600px",
+  maxWidth: "960px",
+};
+
 // https://www.happyhues.co/palettes/11
-const theme = {
+const lightTheme = {
   bg: "#f9f4ef",
   headline: "#020826",
   body: "#716040",
   subheadline: "#716040",
-  btn: "#8c7851",
+  btnbg: "#8c7851",
   btntext: "#fffffe",
-  bg2: "#fffffe",
-  headline2: "#020826",
-  subheadline2: "#716040",
-  cardbg: "#eaddcf",
+  cardbg: "#fffffe",
   cardheadline: "#020826",
   cardbody: "#716040",
-  cardbg2: "#fffffe",
-  cardheadline2: "#020826",
-  cardbody2: "#716040",
   cardtagbg: "#8c7851",
   cardtagtext: "#fffffe",
   cardhl: "#f25042",
   link: "#8c7851",
   formheadline: "#fffffe",
   formbg: "#8c7851",
-  forminput: "#eaddcf",
+  forminputbg: "#eaddcf",
   formtext: "#020826",
   formbtntext: "#fffffe",
   errortext: "#ff9999",
@@ -39,7 +60,7 @@ const theme = {
 
 const StyledPage = styled.div`
   background: ${(props) => props.theme.bg};
-  color: ${(props) => props.theme.black};
+  color: ${(props) => props.theme.headline};
   display: flex;
   flex-direction: column;
 `;
@@ -81,13 +102,17 @@ const GlobalStyles = createGlobalStyle`
 
 export const Page = ({ children }) => {
   const { checkingAuth } = useContext(AuthContext);
+  const [theme, toggleTheme, mounted] = useTheme();
+  const selectedTheme = theme === "light" ? lightTheme : darkTheme;
+
+  if (!mounted) return <div>Loading...</div>;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={selectedTheme}>
       <StyledPage>
         <GlobalStyles />
         <Meta />
-        <Header />
+        <Header theme={theme} toggleTheme={toggleTheme} />
         {checkingAuth ? (
           <InnerDiv loading="true">Loading...</InnerDiv>
         ) : (

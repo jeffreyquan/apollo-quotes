@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { BsMoon, BsSun } from "react-icons/bs";
 import { IoIosRocket } from "react-icons/io";
 import { Navbar } from "./Navbar";
 
@@ -23,7 +24,7 @@ const StyledHeader = styled.header`
   align-items: center;
   position: sticky;
   background-color: ${(props) =>
-    props.sticky ? props.theme.white : "transparent"};
+    props.sticky ? props.theme.bg : "transparent"};
   top: 0;
   max-height: 9rem;
   box-shadow: ${(props) =>
@@ -45,7 +46,77 @@ const StyledHeader = styled.header`
   }
 `;
 
-export const Header = () => {
+const StyledSwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 44px; /* 2 x (slider:before width + left) */
+  height: 24px; /* slider:before height + 2 x slider:before bottom */
+  flex: 0 0 auto;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    display: flex;
+    justify-content: space-around;
+
+    svg {
+      color: gold;
+    }
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: 0.3s;
+      transition: 0.3s;
+    }
+
+    &.round {
+      border-radius: 24px; /* same as label height */
+
+      &:before {
+        border-radius: 50%;
+      }
+    }
+  }
+
+  /* input:checked + .slider {
+    background-color: #2196f3;
+  } */
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+
+    .round {
+      border: 2px solid pink;
+    }
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(20px); /* same as slider:before width */
+    -ms-transform: translateX(20px); /* same as slider:before */
+    transform: translateX(20px);
+  }
+`;
+
+export const Header = ({ theme, toggleTheme }) => {
   const [sticky, setSticky] = useState(false);
 
   useEffect(() => {
@@ -70,6 +141,13 @@ export const Header = () => {
           </Link>
         </Logo>
         <Navbar />
+        <StyledSwitch>
+          <input name="themeSelector" type="checkbox" onChange={toggleTheme} />
+          <div className="slider round">
+            <BsMoon />
+            <BsSun />
+          </div>
+        </StyledSwitch>
       </div>
     </StyledHeader>
   );

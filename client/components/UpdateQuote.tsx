@@ -10,6 +10,7 @@ import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
 import { QuoteTag } from "../styles/QuoteTag";
+import { AddIconStyles } from "../styles/AddIconStyles";
 
 const SINGLE_QUOTE_QUERY = gql`
   query SINGLE_QUOTE_QUERY($slug: String!) {
@@ -205,9 +206,9 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
               />
-              <button type="button" onClick={() => addTag()}>
+              <AddIconStyles type="button" onClick={() => addTag()}>
                 <MdAddCircle />
-              </button>
+              </AddIconStyles>
             </div>
             <div>
               {tags.map((tag, i) => {

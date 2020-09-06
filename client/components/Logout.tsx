@@ -15,7 +15,7 @@ const LogoutButton = styled.div`
   cursor: pointer;
   background-color: inherit;
   font-size: 2rem;
-  color: ${(props) => props.theme.headline2};
+  color: ${(props) => props.theme.headline};
   padding: 2rem 1rem;
 `;
 

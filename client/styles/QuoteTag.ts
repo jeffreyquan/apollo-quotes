@@ -13,14 +13,13 @@ export const QuoteTag = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: ${(props) => props.theme.bg2};
-    color: ${(props) => props.theme.headline2};
-    border: 1px solid ${(props) => props.theme.cardtagbg};
+    background: ${(props) => props.theme.cardbg};
+    color: ${(props) => props.theme.headline};
   }
 
   &.edit {
-    background: ${(props) => props.theme.forminput};
-    color: ${(props) => props.theme.headline2};
+    background: ${(props) => props.theme.forminputbg};
+    color: ${(props) => props.theme.formtext};
 
     &::after {
       content: "⨉";

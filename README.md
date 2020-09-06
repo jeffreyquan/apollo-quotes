@@ -21,7 +21,7 @@
 - [x] View feed of quotes by tag
 - [x] View individual quote
 - [x] Set up routing
-- [ ] Set up dark theme
+- [x] Set up dark theme
 - [x] Set up light theme
 - [x] Set up Docker
 - [x] Responsive Design

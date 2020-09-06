@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, fromPromise } from "@apollo/client";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
@@ -7,6 +7,7 @@ import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
 import { QuoteTag } from "../styles/QuoteTag";
+import { AddIconStyles } from "../styles/AddIconStyles";
 
 const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
@@ -190,9 +191,9 @@ export const QuoteNew = () => {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
             />
-            <button onClick={() => addTag()}>
+            <AddIconStyles onClick={() => addTag()}>
               <MdAddCircle />
-            </button>
+            </AddIconStyles>
           </div>
           <div>
             {tags.length > 0 &&

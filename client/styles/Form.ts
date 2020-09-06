@@ -27,8 +27,9 @@ export const Form = styled.form`
   input,
   textarea,
   select {
-    background-color: ${(props) => props.theme.forminput};
-    border: 3px solid ${(props) => props.theme.forminput};
+    color: ${(props) => props.theme.formtext};
+    background-color: ${(props) => props.theme.forminputbg};
+    border: 3px solid ${(props) => props.theme.forminputbg};
     width: 100%;
     padding: 1rem;
     margin: 0.5rem 0;
@@ -59,7 +60,7 @@ export const Form = styled.form`
     cursor: pointer;
     font-size: 1.4rem;
     font-weight: bold;
-    background-color: inherit;
+    background-color: ${(props) => props.theme.btnbg};
     border: none;
     color: ${(props) => props.theme.formbtntext};
     outline: none;
