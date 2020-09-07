@@ -97,12 +97,8 @@ const StyledSwitch = styled.label`
     }
   }
 
-  /* input:checked + .slider {
-    background-color: #2196f3;
-  } */
-
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
+    box-shadow: 0 0 1px ${(props) => props.theme.link};
 
     .round {
       border: 2px solid pink;
@@ -142,7 +138,12 @@ export const Header = ({ theme, toggleTheme }) => {
         </Logo>
         <Navbar />
         <StyledSwitch>
-          <input name="themeSelector" type="checkbox" onChange={toggleTheme} />
+          <input
+            name="themeSelector"
+            type="checkbox"
+            onChange={toggleTheme}
+            checked={theme === "dark"}
+          />
           <div className="slider round">
             <BsMoon />
             <BsSun />
