@@ -10,7 +10,7 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
-    "@apollo/client": "^3.0.2",
+    "@apollo/client": "^3.1.4",
     "apollo-upload-client": "^14.1.1",
     "babel-plugin-styled-components": "^1.11.0",
     "graphql": "^15.3.0",
@@ -19,7 +19,8 @@
     "react-dom": "16.13.1",
     "react-icons": "^3.11.0",
     "react-waypoint": "^9.0.3",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.17.7",
