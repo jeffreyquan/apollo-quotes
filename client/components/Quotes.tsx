@@ -54,6 +54,53 @@ export const ALL_QUOTES_QUERY = gql`
   }
 `;
 
+const QUOTES_SUBSCRIPTION = gql`
+  subscription {
+    newQuote {
+      id
+      author
+      content
+      image
+      largeImage
+      submittedBy {
+        id
+      }
+      tags {
+        id
+        name
+      }
+      likes {
+        id
+        user {
+          id
+          username
+        }
+      }
+      slug
+    }
+  }
+`;
+
+const subscribeToNewQuotes = (subscribeToMore) => {
+  subscribeToMore({
+    document: QUOTES_SUBSCRIPTION,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) return prev;
+      const newQuote = subscriptionData.data.newQuote;
+      const exists = prev.quotes.quotes.find(({ id }) => id === newQuote.id);
+      if (exists) return prev;
+
+      return Object.assign({}, prev, {
+        quotes: {
+          ...prev.quotes,
+          quotes: [newQuote, ...prev.quotes.quotes],
+          totalCount: prev.quotes.totalCount + 1,
+        },
+      });
+    },
+  });
+};
+
 const QuotesList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30rem, 100rem));
@@ -84,9 +131,12 @@ export const Quotes: React.FC<QuotesProps> = ({
   const [prevCursor, setPrevCursor] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
 
-  const { data, loading, error, fetchMore } = useQuery(ALL_QUOTES_QUERY, {
-    variables: { tag, limit, cursor, submittedBy, likedBy },
-  });
+  const { data, loading, error, fetchMore, subscribeToMore } = useQuery(
+    ALL_QUOTES_QUERY,
+    {
+      variables: { tag, limit, cursor, submittedBy, likedBy },
+    }
+  );
 
   const router = useRouter();
 
@@ -153,6 +203,8 @@ export const Quotes: React.FC<QuotesProps> = ({
     quotes = data.quotes.quotes;
     hasMore = data.quotes.pageInfo.hasMore;
   }
+
+  subscribeToNewQuotes(subscribeToMore);
 
   return (
     <QuotesList>

@@ -212,7 +212,12 @@ class QuoteAPI extends DataSource {
       ]);
 
       // TODO: correct type for images instead of using any
-      const images: any = await this.uploadImage(image);
+      let images;
+      console.log(image);
+      if (image) {
+        images = await this.uploadImage(image);
+        console.log(images);
+      }
 
       const newQuote = await new Quote({
         content,

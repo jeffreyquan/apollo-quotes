@@ -1,4 +1,13 @@
+import { pubsub } from "../index";
+
+const NEW_QUOTE = "NEW_QUOTE";
+
 export const resolvers = {
+  Subscription: {
+    newQuote: {
+      subscribe: () => pubsub.asyncIterator([NEW_QUOTE]),
+    },
+  },
   Query: {
     quote: async (parent, { slug }, { dataSources }) => {
       const quote = await dataSources.quoteAPI.fetchQuote({
@@ -28,6 +37,7 @@ export const resolvers = {
       { content, author, image, tags },
       { dataSources }
     ) => {
+      // pubsub.publish(NEW_QUOTE, { newQuote: { content, author, image, tags } });
       const quote = await dataSources.quoteAPI.createQuote({
         content,
         author,

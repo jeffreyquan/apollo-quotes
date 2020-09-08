@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
+import http from "http";
 import mongoose from "mongoose";
 import cloudinary from "cloudinary";
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, PubSub } from "apollo-server-express";
 import cookieParser from "cookie-parser";
 import { merge } from "lodash";
 import { typeDefs } from "./schema";
@@ -18,6 +19,8 @@ import { verifyUser, AuthRequest } from "./middleware/auth";
 dotenv.config();
 
 mongoose.Promise = global.Promise;
+
+export const pubsub = new PubSub();
 
 const db = process.env.MONGO_URI || "mongodb://127.0.0.1/apollo-quotes";
 
@@ -73,11 +76,17 @@ server.applyMiddleware({
   },
 });
 
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
 const port = process.env.PORT || 5000;
 
-app.listen({ port }, async () => {
+httpServer.listen({ port }, async () => {
   await connectDatabase();
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+  );
+  console.log(
+    `🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`
   );
 });
