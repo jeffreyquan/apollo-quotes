@@ -17,6 +17,9 @@
   - [x] View quotes liked
   - [x] View quotes submitted
 - [x] Restrict editting, deleting and submitting to authorised users
+- [ ] Subscription
+  - [x] Subscribe to new quotes
+  - [ ] Subscribe to new likes
 - [x] View feed of quotes
 - [x] View feed of quotes by tag
 - [x] View individual quote
@@ -55,7 +58,7 @@
   - [x] User information including quotes liked and quotes submitted
   - [x] Set up cursor-based pagination
 - [ ] Subscription
-  - [ ] Subscribe to new quotes
+  - [x] Subscribe to new quotes
   - [ ] Subscribe to new likes
 - [x] Set up Docker
 - [ ] Password reset
