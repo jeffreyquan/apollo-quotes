@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
@@ -25,8 +26,68 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^1.17.7",
     "@graphql-codegen/typescript": "^1.17.7",
+    "@types/jest": "^26.0.13",
     "@types/node": "^14.0.26",
     "@types/react": "^16.9.43",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.4",
+    "jest": "^26.4.2",
+    "jest-transform-graphql": "^2.1.0",
+    "ts-jest": "^26.3.0",
     "typescript": "^3.9.7"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true
+      }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transform": {
+      "\\.(gql|graphql)$": "jest-transform-graphql",
+      ".*": "babel-jest"
+    }
+  },
+  "babel": {
+    "env": {
+      "development": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          "styled-components",
+          {
+            "ssr": true
+          }
+        ]
+      },
+      "production": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          "styled-components",
+          {
+            "ssr": true
+          }
+        ]
+      },
+      "test": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true
+            }
+          ]
+        ]
+      }
+    }
   }
 }
