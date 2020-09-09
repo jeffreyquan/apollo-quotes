@@ -81,7 +81,7 @@ server.installSubscriptionHandlers(httpServer);
 
 const port = process.env.PORT || 5000;
 
-httpServer.listen({ port }, async () => {
+httpServer.listen(port, async () => {
   await connectDatabase();
   console.log(
     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`

@@ -1,4 +1,5 @@
 import { pubsub } from "../index";
+import Quote from "../models/Quote";
 
 const NEW_QUOTE = "NEW_QUOTE";
 
@@ -37,12 +38,28 @@ export const resolvers = {
       { content, author, image, tags },
       { dataSources }
     ) => {
-      // pubsub.publish(NEW_QUOTE, { newQuote: { content, author, image, tags } });
       const quote = await dataSources.quoteAPI.createQuote({
         content,
         author,
         image,
         tags,
+      });
+
+      pubsub.publish(NEW_QUOTE, {
+        newQuote: {
+          id: quote._id,
+          author: quote.author,
+          content: quote.content,
+          submittedBy: {
+            id: quote.submittedBy._id,
+            username: quote.submittedBy.username,
+          },
+          tags: quote.tags.map((tag) => {
+            return { id: tag._id, name: tag.name };
+          }),
+          likes: [],
+          slug: quote.slug,
+        },
       });
 
       return quote;

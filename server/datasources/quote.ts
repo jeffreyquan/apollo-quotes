@@ -213,7 +213,7 @@ class QuoteAPI extends DataSource {
 
       // TODO: correct type for images instead of using any
       let images;
-      console.log(image);
+
       if (image) {
         images = await this.uploadImage(image);
         console.log(images);
@@ -247,7 +247,26 @@ class QuoteAPI extends DataSource {
 
       await Promise.all([fetchedUser.save(), newQuote.save()]);
 
-      return newQuote;
+      const populatedQuote = await newQuote
+        .populate({
+          path: "tags",
+          select: "_id name",
+        })
+        .populate({
+          path: "likes",
+          select: "_id user",
+          populate: {
+            path: "user",
+            select: "_id username",
+          },
+        })
+        .populate({
+          path: "submittedBy",
+          select: "_id username",
+        })
+        .execPopulate();
+
+      return populatedQuote;
     } catch (err) {
       return new Error("Internal server error");
     }

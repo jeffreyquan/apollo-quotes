@@ -7,6 +7,7 @@ import { Waypoint } from "react-waypoint";
 import { Quote } from "../components/Quote";
 import { AuthContext } from "./Auth";
 import { Message } from "./Message";
+import { NEW_QUOTE } from "../lib/withApollo";
 
 export const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY(
@@ -55,7 +56,7 @@ export const ALL_QUOTES_QUERY = gql`
 `;
 
 const QUOTES_SUBSCRIPTION = gql`
-  subscription {
+  subscription NewQuote {
     newQuote {
       id
       author
@@ -85,18 +86,25 @@ const subscribeToNewQuotes = (subscribeToMore) => {
   subscribeToMore({
     document: QUOTES_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData.data) return prev;
+      if (!subscriptionData.data) return;
       const newQuote = subscriptionData.data.newQuote;
       const exists = prev.quotes.quotes.find(({ id }) => id === newQuote.id);
-      if (exists) return prev;
+      if (exists) return;
 
-      return Object.assign({}, prev, {
-        quotes: {
-          ...prev.quotes,
-          quotes: [newQuote, ...prev.quotes.quotes],
-          totalCount: prev.quotes.totalCount + 1,
-        },
-      });
+      return Object.assign(
+        {},
+        {
+          quotes: {
+            pageInfo: {
+              ...prev.quotes.pageInfo,
+              endCursor: NEW_QUOTE,
+            },
+            quotes: [newQuote],
+            totalCount: prev.quotes.totalCount + 1,
+            __typename: prev.quotes.__typename,
+          },
+        }
+      );
     },
   });
 };
@@ -137,6 +145,10 @@ export const Quotes: React.FC<QuotesProps> = ({
       variables: { tag, limit, cursor, submittedBy, likedBy },
     }
   );
+
+  useEffect(() => {
+    subscribeToNewQuotes(subscribeToMore);
+  }, [subscribeToMore]);
 
   const router = useRouter();
 
@@ -203,8 +215,6 @@ export const Quotes: React.FC<QuotesProps> = ({
     quotes = data.quotes.quotes;
     hasMore = data.quotes.pageInfo.hasMore;
   }
-
-  subscribeToNewQuotes(subscribeToMore);
 
   return (
     <QuotesList>

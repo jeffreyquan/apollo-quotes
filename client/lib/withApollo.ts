@@ -5,6 +5,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { DEV_ENDPOINT } from "../config";
 
+export const NEW_QUOTE = "NEW_QUOTE";
+
 let apolloClient;
 
 function decodeCursor(encodedCursor: string) {
@@ -75,7 +77,10 @@ function createApolloClient() {
                 let existingCursor;
                 let incomingCursor;
 
-                if (existing.pageInfo.endCursor) {
+                if (
+                  existing.pageInfo.endCursor &&
+                  incoming.pageInfo.endCursor !== NEW_QUOTE
+                ) {
                   existingCursor = decodeCursor(existing.pageInfo.endCursor);
 
                   incomingCursor = decodeCursor(incoming.pageInfo.endCursor);
@@ -87,10 +92,24 @@ function createApolloClient() {
 
                 const newQuotes = incoming.quotes;
 
+                let update;
+
+                if (incoming.pageInfo.endCursor === NEW_QUOTE) {
+                  update = {
+                    pageInfo: existing.pageInfo,
+                    quotes: [...newQuotes, ...existing.quotes],
+                    totalCount: incoming.totalCount,
+                  };
+                } else {
+                  update = {
+                    quotes: [...existing.quotes, ...newQuotes],
+                  };
+                }
+
                 return newQuotes.length > 0
                   ? {
                       ...incoming,
-                      quotes: [...existing.quotes, ...newQuotes],
+                      ...update,
                     }
                   : existing;
               },
