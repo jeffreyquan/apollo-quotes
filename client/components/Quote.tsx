@@ -147,9 +147,11 @@ export const Quote = ({ quote }) => {
   return (
     <QuoteStyles loading={loading ? "true" : undefined}>
       <QuoteBody>
-        <QuoteImg>
-          <img src={image} alt={author} onLoad={() => setLoading(false)} />
-        </QuoteImg>
+        {image && (
+          <QuoteImg>
+            <img src={image} alt={author} onLoad={() => setLoading(false)} />
+          </QuoteImg>
+        )}
         <QuoteContent>
           <p>&#8220;{content}&#8221;</p>
           <p>&mdash; {author}</p>

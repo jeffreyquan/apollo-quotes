@@ -1,7 +1,7 @@
-import { gql, useMutation, fromPromise } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
+import { MdAddCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormTitle } from "../styles/FormTitle";
@@ -181,6 +181,7 @@ export const QuoteNew = () => {
               name="image"
               placeholder="Upload an image"
               onChange={handleChange}
+              required
             />
           </label>
           <label>Tags</label>

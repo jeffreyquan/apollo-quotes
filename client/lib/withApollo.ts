@@ -1,7 +1,11 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, split, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { DEV_ENDPOINT } from "../config";
+
+export const NEW_QUOTE = "NEW_QUOTE";
 
 let apolloClient;
 
@@ -9,15 +13,49 @@ function decodeCursor(encodedCursor: string) {
   return Buffer.from(encodedCursor, "base64").toString("ascii");
 }
 
+const isFile = (value) =>
+  (typeof File !== "undefined" && value instanceof File) ||
+  (typeof Blob !== "undefined" && value instanceof Blob);
+
+const isUpload = ({ variables }) => Object.values(variables).some(isFile);
+
+const uploadLink = new createUploadLink({
+  uri: DEV_ENDPOINT, // Server URL (must be absolute)
+  fetchOptions: {
+    credentials: "include", // Additional fetch() options like `credentials` or `headers`,
+  },
+});
+
+const wsLink = process.browser
+  ? new WebSocketLink({
+      // if you instantiate in the server, the error will be thrown
+      uri: `ws://localhost:5000/graphql`,
+      options: {
+        reconnect: true,
+      },
+    })
+  : null;
+
+const link = process.browser
+  ? split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      wsLink,
+      uploadLink
+    )
+  : uploadLink;
+
+const terminalLink = split(isUpload, uploadLink, link);
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: createUploadLink({
-      uri: DEV_ENDPOINT, // Server URL (must be absolute)
-      fetchOptions: {
-        credentials: "include", // Additional fetch() options like `credentials` or `headers`,
-      },
-    }),
+    link: terminalLink,
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -39,7 +77,10 @@ function createApolloClient() {
                 let existingCursor;
                 let incomingCursor;
 
-                if (existing.pageInfo.endCursor) {
+                if (
+                  existing.pageInfo.endCursor &&
+                  incoming.pageInfo.endCursor !== NEW_QUOTE
+                ) {
                   existingCursor = decodeCursor(existing.pageInfo.endCursor);
 
                   incomingCursor = decodeCursor(incoming.pageInfo.endCursor);
@@ -51,10 +92,24 @@ function createApolloClient() {
 
                 const newQuotes = incoming.quotes;
 
+                let update;
+
+                if (incoming.pageInfo.endCursor === NEW_QUOTE) {
+                  update = {
+                    pageInfo: existing.pageInfo,
+                    quotes: [...newQuotes, ...existing.quotes],
+                    totalCount: incoming.totalCount,
+                  };
+                } else {
+                  update = {
+                    quotes: [...existing.quotes, ...newQuotes],
+                  };
+                }
+
                 return newQuotes.length > 0
                   ? {
                       ...incoming,
-                      quotes: [...existing.quotes, ...newQuotes],
+                      ...update,
                     }
                   : existing;
               },

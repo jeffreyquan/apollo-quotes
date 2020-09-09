@@ -7,6 +7,7 @@ import { Waypoint } from "react-waypoint";
 import { Quote } from "../components/Quote";
 import { AuthContext } from "./Auth";
 import { Message } from "./Message";
+import { NEW_QUOTE } from "../lib/withApollo";
 
 export const ALL_QUOTES_QUERY = gql`
   query ALL_QUOTES_QUERY(
@@ -54,6 +55,60 @@ export const ALL_QUOTES_QUERY = gql`
   }
 `;
 
+const QUOTES_SUBSCRIPTION = gql`
+  subscription NewQuote {
+    newQuote {
+      id
+      author
+      content
+      image
+      largeImage
+      submittedBy {
+        id
+      }
+      tags {
+        id
+        name
+      }
+      likes {
+        id
+        user {
+          id
+          username
+        }
+      }
+      slug
+    }
+  }
+`;
+
+const subscribeToNewQuotes = (subscribeToMore) => {
+  subscribeToMore({
+    document: QUOTES_SUBSCRIPTION,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) return;
+      const newQuote = subscriptionData.data.newQuote;
+      const exists = prev.quotes.quotes.find(({ id }) => id === newQuote.id);
+      if (exists) return;
+
+      return Object.assign(
+        {},
+        {
+          quotes: {
+            pageInfo: {
+              ...prev.quotes.pageInfo,
+              endCursor: NEW_QUOTE,
+            },
+            quotes: [newQuote],
+            totalCount: prev.quotes.totalCount + 1,
+            __typename: prev.quotes.__typename,
+          },
+        }
+      );
+    },
+  });
+};
+
 const QuotesList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30rem, 100rem));
@@ -84,9 +139,16 @@ export const Quotes: React.FC<QuotesProps> = ({
   const [prevCursor, setPrevCursor] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
 
-  const { data, loading, error, fetchMore } = useQuery(ALL_QUOTES_QUERY, {
-    variables: { tag, limit, cursor, submittedBy, likedBy },
-  });
+  const { data, loading, error, fetchMore, subscribeToMore } = useQuery(
+    ALL_QUOTES_QUERY,
+    {
+      variables: { tag, limit, cursor, submittedBy, likedBy },
+    }
+  );
+
+  useEffect(() => {
+    subscribeToNewQuotes(subscribeToMore);
+  }, [subscribeToMore]);
 
   const router = useRouter();
 

@@ -1,4 +1,14 @@
+import { pubsub } from "../index";
+import Quote from "../models/Quote";
+
+const NEW_QUOTE = "NEW_QUOTE";
+
 export const resolvers = {
+  Subscription: {
+    newQuote: {
+      subscribe: () => pubsub.asyncIterator([NEW_QUOTE]),
+    },
+  },
   Query: {
     quote: async (parent, { slug }, { dataSources }) => {
       const quote = await dataSources.quoteAPI.fetchQuote({
@@ -33,6 +43,23 @@ export const resolvers = {
         author,
         image,
         tags,
+      });
+
+      pubsub.publish(NEW_QUOTE, {
+        newQuote: {
+          id: quote._id,
+          author: quote.author,
+          content: quote.content,
+          submittedBy: {
+            id: quote.submittedBy._id,
+            username: quote.submittedBy.username,
+          },
+          tags: quote.tags.map((tag) => {
+            return { id: tag._id, name: tag.name };
+          }),
+          likes: [],
+          slug: quote.slug,
+        },
       });
 
       return quote;
