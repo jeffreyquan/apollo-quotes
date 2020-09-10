@@ -11,27 +11,27 @@ import { Quote as QuoteType } from "../types";
 import { AuthContext } from "./Auth";
 import { DeleteQuote } from "./DeleteQuote";
 
-const QuoteBody = styled.div`
+export const QuoteBody = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-gap: 1rem;
 `;
 
-const QuoteImg = styled.div`
+export const QuoteImg = styled.div`
   grid-column: 1 / 4;
 `;
 
-const QuoteContent = styled.div`
+export const QuoteContent = styled.div`
   grid-column: 4 / 9;
 `;
 
-const QuoteFooter = styled.div`
+export const QuoteFooter = styled.div`
   display: flex;
   align-items: center;
   margin-right: auto;
 `;
 
-const Controls = styled.div`
+export const Controls = styled.div`
   display: flex;
   align-items: center;
 
@@ -50,7 +50,7 @@ const TagList = styled.div`
   margin-right: auto;
 `;
 
-const LIKE_MUTATION = gql`
+export const LIKE_MUTATION = gql`
   mutation LIKE_MUTATION($quoteId: ID!) {
     likeQuote(quoteId: $quoteId) {
       id
@@ -153,8 +153,12 @@ export const Quote = ({ quote }) => {
           </QuoteImg>
         )}
         <QuoteContent>
-          <p>&#8220;{content}&#8221;</p>
-          <p>&mdash; {author}</p>
+          <p>
+            &#8220;<span>{content}</span>&#8221;
+          </p>
+          <p>
+            &mdash; <span>{author}</span>
+          </p>
         </QuoteContent>
       </QuoteBody>
       <QuoteFooter>
@@ -170,11 +174,11 @@ export const Quote = ({ quote }) => {
         </TagList>
         <Controls>
           <div>
-            {likes.length > 0 && likes.length}{" "}
+            <span>{likes.length > 0 && likes.length}</span>
             {liked ? (
-              <BsHeartFill onClick={(e) => likeQuote(e)} />
+              <BsHeartFill data-test="like-btn" onClick={(e) => likeQuote(e)} />
             ) : (
-              <BsHeart onClick={(e) => likeQuote(e)} />
+              <BsHeart data-test="like-btn" onClick={(e) => likeQuote(e)} />
             )}
           </div>
           {submitted && (
