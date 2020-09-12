@@ -16,7 +16,7 @@ jest.mock("next/router", () => ({
   }),
 }));
 
-describe("<Quote />", () => {
+describe("Quote", () => {
   it("renders the image properly", () => {
     render(
       <MockedProvider>
