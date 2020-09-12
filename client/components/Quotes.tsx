@@ -147,7 +147,9 @@ export const Quotes: React.FC<QuotesProps> = ({
   );
 
   useEffect(() => {
-    subscribeToNewQuotes(subscribeToMore);
+    if (subscribeToMore) {
+      subscribeToNewQuotes(subscribeToMore);
+    }
   }, [subscribeToMore]);
 
   const router = useRouter();
