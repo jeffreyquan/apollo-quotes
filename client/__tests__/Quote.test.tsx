@@ -1,9 +1,20 @@
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
+import { useRouter } from "next/router";
 import { Quote, LIKE_MUTATION } from "../components/Quote";
 import { SINGLE_QUOTE_QUERY } from "../components/SingleQuote";
 import { testCache, testQuote } from "../lib/testUtils";
+
+const mockRouterPush = jest.fn();
+
+jest.mock("next/router", () => ({
+  ...jest.requireActual("next/router"),
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
+}));
 
 describe("<Quote />", () => {
   it("renders the image properly", () => {
@@ -157,5 +168,28 @@ describe("<Quote />", () => {
     await waitFor(() => {
       expect(getByText("3")).toBeInTheDocument();
     });
+  });
+
+  it("navigates to correct route when tags are clicked", async () => {
+    const { getByText } = render(
+      <MockedProvider>
+        <Quote quote={testQuote} />
+      </MockedProvider>
+    );
+
+    for (let i = 0; i < testQuote.tags.length; i++) {
+      const tag = getByText(testQuote.tags[i].name);
+
+      const router = useRouter();
+
+      await userEvent.click(tag);
+
+      await waitFor(() =>
+        expect(router.push).toHaveBeenCalledWith({
+          pathname: "/quotes",
+          query: { tag: testQuote.tags[i].name },
+        })
+      );
+    }
   });
 });
