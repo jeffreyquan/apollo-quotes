@@ -92,6 +92,7 @@ export const Quote = ({ quote }) => {
       });
       const updatedLikes = likedQuote.likes;
       const foundLike = updatedLikes.some((like) => like.id === likeQuote.id);
+
       if (!foundLike) {
         cache.evict({
           id: `Like:${likeQuote.id}`,
@@ -154,10 +155,10 @@ export const Quote = ({ quote }) => {
         )}
         <QuoteContent>
           <p>
-            &#8220;<span>{content}</span>&#8221;
+            &#8220;<span data-testid="quoteContent">{content}</span>&#8221;
           </p>
           <p>
-            &mdash; <span>{author}</span>
+            &mdash; <span data-testid="quoteAuthor">{author}</span>
           </p>
         </QuoteContent>
       </QuoteBody>
@@ -167,6 +168,7 @@ export const Quote = ({ quote }) => {
             <QuoteTag
               key={tag.id}
               onClick={(e) => fetchQuoteWithTag(e, tag.name)}
+              data-testid="quoteTag"
             >
               {tag.name}
             </QuoteTag>
@@ -174,11 +176,16 @@ export const Quote = ({ quote }) => {
         </TagList>
         <Controls>
           <div>
-            <span>{likes.length > 0 && likes.length}</span>
+            <span data-testid="likeCount">
+              {likes.length > 0 && likes.length}
+            </span>
             {liked ? (
-              <BsHeartFill data-test="like-btn" onClick={(e) => likeQuote(e)} />
+              <BsHeartFill
+                data-testid="unlikeButton"
+                onClick={(e) => likeQuote(e)}
+              />
             ) : (
-              <BsHeart data-test="like-btn" onClick={(e) => likeQuote(e)} />
+              <BsHeart data-testid="likeButton" onClick={(e) => likeQuote(e)} />
             )}
           </div>
           {submitted && (

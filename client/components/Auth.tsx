@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
 
-const CURRENT_USER_QUERY = gql`
+export const CURRENT_USER_QUERY = gql`
   query {
     userProfile {
       id

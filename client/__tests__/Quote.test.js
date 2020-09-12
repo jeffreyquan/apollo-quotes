@@ -1,100 +1,90 @@
-import { ApolloConsumer } from "@apollo/client";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
-import { mount } from "enzyme";
-import {
-  Quote,
-  QuoteContent,
-  Controls,
-  LIKE_MUTATION,
-} from "../components/Quote";
-
-const testQuote = {
-  id: "aioerojwo432",
-  author: "Forrest Gump, Forrest Gump",
-  content:
-    "Life was like a box of chocolates. You never know what you're gonna get.",
-  image: "https://www.fillmurray.com/200/300",
-  likes: [
-    { id: "abc", user: { id: "abd123", username: "John" } },
-    { id: "abd", user: { id: "abe123", username: "Ben" } },
-  ],
-  tags: [
-    { id: "abe", name: "movie" },
-    { id: "abf", name: "life" },
-  ],
-};
+import { Quote, LIKE_MUTATION } from "../components/Quote";
+import { SINGLE_QUOTE_QUERY } from "../components/SingleQuote";
+import { testCache, testQuote } from "../lib/testUtils";
 
 describe("<Quote />", () => {
   it("renders the image properly", () => {
-    const wrapper = mount(
+    render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
-    const img = wrapper.find("img");
-    expect(img.props().src).toBe(testQuote.image);
-    expect(img.props().alt).toBe(testQuote.author);
+    const img = screen.getByAltText(testQuote.author);
+    expect(img).toBeInTheDocument();
   });
 
   it("renders the content", () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
-    expect(wrapper.find(QuoteContent).find("p").at(0).find("span").text()).toBe(
-      testQuote.content
-    );
+
+    expect(getByTestId("quoteContent")).toHaveTextContent(testQuote.content);
   });
 
   it("renders the author", () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
 
-    expect(wrapper.find(QuoteContent).find("p").at(1).find("span").text()).toBe(
-      testQuote.author
-    );
+    expect(getByTestId("quoteAuthor")).toHaveTextContent(testQuote.author);
   });
 
   it("renders the right number of tags", () => {
-    const wrapper = mount(
+    const { getAllByTestId } = render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
-    expect(wrapper.find("QuoteTag")).toHaveLength(2);
+
+    expect(getAllByTestId("quoteTag")).toHaveLength(2);
   });
 
   it("renders the tags properly", () => {
-    const wrapper = mount(
+    const { getAllByTestId } = render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
     for (let i = 0; i < testQuote.tags.length; i++) {
-      expect(wrapper.find("QuoteTag").at(i).text()).toBe(
-        testQuote.tags[i].name
-      );
+      const quoteTags = getAllByTestId("quoteTag");
+      expect(quoteTags[i]).toHaveTextContent(testQuote.tags[i].name);
     }
   });
 
   it("renders the correct number of likes", () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <MockedProvider>
         <Quote quote={testQuote} />
       </MockedProvider>
     );
 
-    expect(wrapper.find(Controls).find("div span").text()).toBe(
+    expect(getByTestId("likeCount")).toHaveTextContent(
       `${testQuote.likes.length}`
     );
   });
 
-  // TODO: get this test working
   it("increases the like count by 1 when quote is liked", async () => {
+    const cache = testCache;
+
+    cache.writeQuery({
+      query: SINGLE_QUOTE_QUERY,
+      variables: { slug: "forrest-gump" },
+      data: {
+        quote: {
+          ...testQuote,
+        },
+      },
+    });
+
+    let mutationWasCalled = false;
+
     const mocks = [
       {
         request: {
@@ -103,56 +93,69 @@ describe("<Quote />", () => {
             quoteId: testQuote.id,
           },
         },
-        result: {
-          data: {
-            likeQuote: {
-              id: "abg",
-              quote: {
-                id: testQuote.id,
-                likes: [
-                  ...testQuote.likes,
-                  {
-                    id: "like123",
-                    user: { id: "abc123", username: "jeffrey" },
-                  },
-                ],
+        result: () => {
+          mutationWasCalled = true;
+
+          return {
+            data: {
+              likeQuote: {
+                id: "like123",
+                quote: {
+                  id: testQuote.id,
+                  likes: [
+                    {
+                      id: "like123",
+                      user: {
+                        id: "abc123",
+                        username: "jeffrey",
+                        __typename: "User",
+                      },
+                      __typename: "Like",
+                    },
+                    ...testQuote.likes,
+                  ],
+                  __typename: "Quote",
+                },
+                user: {
+                  id: "abc123",
+                  username: "jeffrey",
+                  __typename: "User",
+                },
+                __typename: "Like",
               },
-              user: {
-                id: "abc123",
-                username: "jeffrey",
-              },
-              __typename: "Like",
             },
-          },
+          };
         },
       },
     ];
 
-    let apolloClient;
-
-    const wrapper = mount(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <ApolloConsumer>
-          {(client) => {
-            apolloClient = client;
-            return <Quote quote={testQuote} />;
-          }}
-        </ApolloConsumer>
+    const { getByTestId, getByText, rerender } = render(
+      <MockedProvider mocks={mocks} cache={cache}>
+        <Quote quote={testQuote} />
       </MockedProvider>
     );
 
-    const likeBtn = wrapper.find('svg[data-test="like-btn"]');
+    const likeButton = getByTestId("likeButton");
 
-    expect(likeBtn).toHaveLength(1);
+    await userEvent.click(likeButton);
 
-    likeBtn.simulate("click");
+    await waitFor(() => {
+      expect(mutationWasCalled).toBe(true);
+    });
 
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    const { quote } = cache.readQuery({
+      query: SINGLE_QUOTE_QUERY,
+      variables: { slug: "forrest-gump" },
+    });
 
-    wrapper.update();
-
-    expect(wrapper.find(Controls).find("div span").text()).toBe(
-      `${testQuote.likes.length + 1}`
+    rerender(
+      <MockedProvider mocks={mocks} cache={cache}>
+        <Quote quote={quote} />
+      </MockedProvider>
     );
+
+    await waitFor(() => {
+      expect(getByText("3")).toBeInTheDocument();
+    });
   });
 });

@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Quote } from "../components/Quote";
 
-const SINGLE_QUOTE_QUERY = gql`
+export const SINGLE_QUOTE_QUERY = gql`
   query SINGLE_QUOTE_QUERY($slug: String!) {
     quote(slug: $slug) {
       id
@@ -18,6 +18,7 @@ const SINGLE_QUOTE_QUERY = gql`
         name
       }
       likes {
+        id
         user {
           username
         }
