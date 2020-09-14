@@ -109,4 +109,18 @@ const testCache = new InMemoryCache({
   },
 });
 
-export { testCache, testQuote };
+const testNewQuote = {
+  id: "abcd123",
+  author: "CS",
+  content: "Hello World",
+  image: "",
+  largeImage: "",
+  tags: [
+    { id: "tag123", name: "power" },
+    { id: "tag124", name: "life" },
+  ],
+  likes: [],
+  slug: "hello-world-cs",
+};
+
+export { testCache, testQuote, testNewQuote };
