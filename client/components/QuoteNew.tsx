@@ -9,7 +9,7 @@ import { FormContainer } from "../styles/FormContainer";
 import { QuoteTag } from "../styles/QuoteTag";
 import { AddIconStyles } from "../styles/AddIconStyles";
 
-const CREATE_QUOTE_MUTATION = gql`
+export const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
     $content: String!
     $author: String!
@@ -153,46 +153,44 @@ export const QuoteNew = () => {
       <Form onSubmit={handleSubmit}>
         <FormTitle>Submit a new quote</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
-          <label htmlFor="content">
-            Content
-            <textarea
-              name="content"
-              placeholder="When nothing goes right, go left."
-              rows={4}
-              value={content}
-              onChange={handleChange}
-            />
-          </label>
-          <label htmlFor="author">
-            Author
-            <input
-              type="text"
-              name="author"
-              placeholder="JR Smith"
-              value={author}
-              onChange={handleChange}
-            />
-          </label>
-          <label htmlFor="file">
-            Image
-            <input
-              type="file"
-              id="file"
-              name="image"
-              placeholder="Upload an image"
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>Tags</label>
+          <label htmlFor="content">Content</label>
+          <textarea
+            id="content"
+            name="content"
+            placeholder="When nothing goes right, go left."
+            rows={4}
+            value={content}
+            onChange={handleChange}
+          />
+          <label htmlFor="author">Author</label>
+          <input
+            id="author"
+            type="text"
+            name="author"
+            placeholder="JR Smith"
+            value={author}
+            onChange={handleChange}
+          />
+          <label htmlFor="file">Image</label>
+          <input
+            type="file"
+            id="file"
+            name="image"
+            placeholder="Upload an image"
+            onChange={handleChange}
+            required
+          />
+          <label htmlFor="tag">Tags</label>
           <div className="input__group">
             <input
-              type="text"
+              id="tag"
               name="tag"
+              type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
+              placeholder="power"
             />
-            <AddIconStyles onClick={() => addTag()}>
+            <AddIconStyles data-testid="addTag" onClick={() => addTag()}>
               <MdAddCircle />
             </AddIconStyles>
           </div>
