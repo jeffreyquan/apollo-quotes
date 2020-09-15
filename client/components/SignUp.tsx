@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "./Auth";
@@ -116,64 +115,61 @@ export const SignUp = () => {
       <Form onSubmit={handleSubmit}>
         <FormTitle>Join the Apollo Quotes community</FormTitle>
         <fieldset>
-          <label htmlFor="name">
-            Name
-            <input
-              type="text"
-              name="name"
-              placeholder="John Smith"
-              value={name}
-              onChange={handleChange}
-              autoComplete="name"
-              autoFocus
-              required
-            />
-          </label>
+          <label htmlFor="signUpName">Name</label>
+          <input
+            id="signUpName"
+            name="name"
+            type="text"
+            placeholder="John Smith"
+            value={name}
+            onChange={handleChange}
+            autoComplete="name"
+            autoFocus
+            required
+          />
           <p>{errors.name && errors.name}</p>
-          <label htmlFor="username">
-            Username
-            <input
-              type="text"
-              name="username"
-              placeholder="jsmith"
-              value={username}
-              onChange={handleChange}
-              autoComplete="username"
-              required
-            />
-          </label>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            placeholder="jsmith"
+            value={username}
+            onChange={handleChange}
+            autoComplete="username"
+            required
+          />
           <p>{errors.username && errors.username}</p>
-          <label htmlFor="email">
-            Email
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={handleChange}
-              autoComplete="email"
-              required
-            />
-          </label>
+          <label htmlFor="signUpEmail">Email</label>
+          <input
+            id="signUpEmail"
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleChange}
+            autoComplete="email"
+            required
+          />
           <p>{errors.email && errors.email}</p>
-          <label htmlFor="password">
-            Password
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={handleChange}
-              autoComplete="new-password"
-              required
-            />
-          </label>
+          <label htmlFor="signUpPassword">Password</label>
+          <input
+            id="signUpPassword"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handleChange}
+            autoComplete="new-password"
+            required
+          />
           <p>{errors.password && errors.password}</p>
-          <label htmlFor="password">
+          <label htmlFor="confirmationPassword">
             Confirm Password
             <input
-              type="password"
+              id="confirmationPassword"
               name="confirmationPassword"
+              type="password"
               placeholder="Confirmaton Password"
               value={confirmationPassword}
               onChange={handleChange}
