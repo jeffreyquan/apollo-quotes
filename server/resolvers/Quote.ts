@@ -45,22 +45,24 @@ export const resolvers = {
         tags,
       });
 
-      pubsub.publish(NEW_QUOTE, {
-        newQuote: {
-          id: quote._id,
-          author: quote.author,
-          content: quote.content,
-          submittedBy: {
-            id: quote.submittedBy._id,
-            username: quote.submittedBy.username,
+      if (quote._id) {
+        pubsub.publish(NEW_QUOTE, {
+          newQuote: {
+            id: quote._id,
+            author: quote.author,
+            content: quote.content,
+            submittedBy: {
+              id: quote.submittedBy._id,
+              username: quote.submittedBy.username,
+            },
+            tags: quote.tags.map((tag) => {
+              return { id: tag._id, name: tag.name };
+            }),
+            likes: [],
+            slug: quote.slug,
           },
-          tags: quote.tags.map((tag) => {
-            return { id: tag._id, name: tag.name };
-          }),
-          likes: [],
-          slug: quote.slug,
-        },
-      });
+        });
+      }
 
       return quote;
     },
