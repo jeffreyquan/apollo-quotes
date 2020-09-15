@@ -32,6 +32,7 @@ const StyledHeader = styled.header`
 
   transition: all 0.3s ease-in-out;
   line-height: ${(props) => (props.sticky ? "3rem" : "5rem")};
+  z-index: 10;
 
   div {
     display: flex;
