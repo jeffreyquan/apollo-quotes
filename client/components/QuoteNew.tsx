@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { MdAddCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
@@ -8,6 +8,7 @@ import { FormTitle } from "../styles/FormTitle";
 import { FormContainer } from "../styles/FormContainer";
 import { QuoteTag } from "../styles/QuoteTag";
 import { AddIconStyles } from "../styles/AddIconStyles";
+import { Message } from "./Message";
 
 export const CREATE_QUOTE_MUTATION = gql`
   mutation CREATE_QUOTE_MUTATION(
@@ -52,6 +53,8 @@ export const QuoteNew = () => {
   });
 
   const [tagInput, setTagInput] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { content, author, image, tags } = inputs;
 
@@ -125,10 +128,19 @@ export const QuoteNew = () => {
       const slug = res.data.createQuote.slug;
       router.push("/quotes/[slug]", `/quotes/${slug}`);
     } catch (err) {
-      // TODO: handle error
-      console.log(err.message);
+      setErrorMessage(err.message);
     }
   };
+
+  const timeoutId = useRef<number>();
+
+  useEffect(() => {
+    if (errorMessage) {
+      timeoutId.current = window.setTimeout(function () {
+        setErrorMessage("");
+      }, 3000);
+    }
+  }, [errorMessage]);
 
   const addTag = () => {
     const tagName = tagInput.toLowerCase();
@@ -150,6 +162,7 @@ export const QuoteNew = () => {
 
   return (
     <FormContainer>
+      {errorMessage && <Message error>{errorMessage}</Message>}
       <Form onSubmit={handleSubmit}>
         <FormTitle>Submit a new quote</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
