@@ -108,6 +108,16 @@ describe("QuoteNew", () => {
 
     await userEvent.click(screen.getByTestId("addTag"));
 
+    await userEvent.type(getByPlaceholderText("power"), "chicken");
+
+    await userEvent.click(screen.getByTestId("addTag"));
+
+    expect(screen.getByText("chicken")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByText("chicken"));
+
+    expect(screen.queryByText("chicken")).not.toBeInTheDocument();
+
     await userEvent.click(getByRole("button", { name: "Submit" }));
 
     await waitFor(() =>
