@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 const MessageStyles = styled.div`
   position: absolute;
   top: 9rem;
+  max-width: 60rem;
   width: 100%;
   display: flex;
   align-items: center;
@@ -13,7 +14,7 @@ const MessageStyles = styled.div`
   ${(props) =>
     props.error &&
     css`
-      border: 1px solid red;
+      border: 1px solid ${(props) => props.theme.btnbg};
       border-radius: 4px;
     `}
 `;
