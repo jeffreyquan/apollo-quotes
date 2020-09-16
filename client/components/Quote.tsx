@@ -90,6 +90,7 @@ export const Quote = ({ quote }) => {
           }
         `,
       });
+
       const updatedLikes = likedQuote.likes;
       const foundLike = updatedLikes.some((like) => like.id === likeQuote.id);
 
@@ -190,7 +191,11 @@ export const Quote = ({ quote }) => {
           </div>
           {submitted && (
             <>
-              <EditLink href="/quotes/[...slug]" as={`/quotes/${slug}/edit`}>
+              <EditLink
+                data-testid="editButton"
+                href="/quotes/[...slug]"
+                as={`/quotes/${slug}/edit`}
+              >
                 <FiEdit />
               </EditLink>
 

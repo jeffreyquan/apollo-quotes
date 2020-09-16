@@ -57,6 +57,7 @@ export const DeleteQuote = ({ id, children }) => {
 
   return (
     <div
+      data-testid="deleteButton"
       onClick={(e) => {
         if (confirm("Please confirm you want to delete this quote.")) {
           handleClick(e);
