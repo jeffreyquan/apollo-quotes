@@ -50,22 +50,29 @@ const userNotSignedInMocks = [
 
 describe("Navbar", () => {
   it("shows home and sign in icons when not signed in", async () => {
-    const { getByText, queryByText } = render(
+    const { container, getByText, queryByText } = render(
       <MockedProvider mocks={userNotSignedInMocks}>
         <Navbar />
       </MockedProvider>
     );
 
+    expect(container).toMatchSnapshot();
+
     expect(getByText("Quotes")).toBeInTheDocument();
+
     expect(getByText("Sign In")).toBeInTheDocument();
+
     expect(queryByText("My Quotes")).not.toBeInTheDocument();
+
     expect(queryByText("Likes")).not.toBeInTheDocument();
+
     expect(queryByText("New")).not.toBeInTheDocument();
+
     expect(queryByText("Log out")).not.toBeInTheDocument();
   });
 
   it("shows home, my quotes, likes, new and logout icons whened not signed in", async () => {
-    const { getByText, queryByText } = render(
+    const { container, getByText, queryByText } = render(
       <MockedProvider mocks={userSignedInMocks}>
         <AuthProvider>
           <Navbar />
@@ -73,17 +80,22 @@ describe("Navbar", () => {
       </MockedProvider>
     );
 
+    expect(getByText("Quotes")).toBeInTheDocument();
+
     await waitFor(() => {
       expect(mutationWasCalled).toBe(true);
     });
 
-    expect(getByText("Quotes")).toBeInTheDocument();
-
     await waitFor(() => expect(queryByText("Sign In")).not.toBeInTheDocument());
 
+    expect(container).toMatchSnapshot();
+
     expect(getByText("My Quotes")).toBeInTheDocument();
+
     expect(getByText("Likes")).toBeInTheDocument();
+
     expect(getByText("New")).toBeInTheDocument();
+
     expect(screen.getByText("Log out")).toBeInTheDocument();
   });
   // TODO: work out how to test route changes

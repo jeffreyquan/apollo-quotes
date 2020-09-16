@@ -4,9 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
 import { useRouter } from "next/router";
 import { CREATE_QUOTE_MUTATION, QuoteNew } from "../components/QuoteNew";
-import { testNewQuote } from "../lib/testUtils";
+import { fakeNewQuote } from "../lib/testUtils";
 
 const mockRouterPush = jest.fn();
+
+const newQuote = fakeNewQuote();
 
 jest.mock("next/router", () => ({
   ...jest.requireActual("next/router"),
@@ -49,11 +51,13 @@ const mocks = [
 
 describe("QuoteNew", () => {
   it("renders all inputs and labels", () => {
-    const { getByRole, getByLabelText } = render(
+    const { container, getByRole, getByLabelText } = render(
       <MockedProvider>
         <QuoteNew />
       </MockedProvider>
     );
+
+    expect(container).toMatchSnapshot();
 
     expect(
       getByRole("heading", { name: "Submit a new quote" })
@@ -89,22 +93,16 @@ describe("QuoteNew", () => {
 
     await userEvent.type(
       getByPlaceholderText("When nothing goes right, go left."),
-      testNewQuote.content
+      newQuote.content
     );
 
-    await userEvent.type(getByPlaceholderText("JR Smith"), testNewQuote.author);
+    await userEvent.type(getByPlaceholderText("JR Smith"), newQuote.author);
 
-    await userEvent.type(
-      getByPlaceholderText("power"),
-      testNewQuote.tags[0].name
-    );
+    await userEvent.type(getByPlaceholderText("power"), newQuote.tags[0].name);
 
     await userEvent.click(screen.getByTestId("addTag"));
 
-    await userEvent.type(
-      getByPlaceholderText("power"),
-      testNewQuote.tags[1].name
-    );
+    await userEvent.type(getByPlaceholderText("power"), newQuote.tags[1].name);
 
     await userEvent.click(screen.getByTestId("addTag"));
 
@@ -123,7 +121,7 @@ describe("QuoteNew", () => {
     await waitFor(() =>
       expect(router.push).toHaveBeenCalledWith(
         "/quotes/[slug]",
-        `/quotes/${testNewQuote.slug}`
+        `/quotes/${newQuote.slug}`
       )
     );
   });
