@@ -20,6 +20,7 @@ export const SINGLE_QUOTE_QUERY = gql`
       likes {
         id
         user {
+          id
           username
         }
       }
