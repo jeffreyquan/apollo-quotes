@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuoteNew renders all inputs and labels 1`] = `
+<div>
+  <div
+    class="FormContainer-sc-1xw7mz9-0 dlcJGT"
+  >
+    
+    <form
+      class="Form-sc-1stku61-0 jaHlPk"
+    >
+      <h3
+        class="FormTitle-i1lio3-0 bihtdU"
+      >
+        Submit a new quote
+      </h3>
+      <fieldset
+        aria-busy="false"
+      >
+        <label
+          for="content"
+        >
+          Content
+        </label>
+        <textarea
+          id="content"
+          name="content"
+          placeholder="When nothing goes right, go left."
+          rows="4"
+        />
+        <label
+          for="author"
+        >
+          Author
+        </label>
+        <input
+          id="author"
+          name="author"
+          placeholder="JR Smith"
+          type="text"
+          value=""
+        />
+        <label
+          for="file"
+        >
+          Image
+        </label>
+        <input
+          id="file"
+          name="image"
+          placeholder="Upload an image"
+          required=""
+          type="file"
+        />
+        <label
+          for="tag"
+        >
+          Tags
+        </label>
+        <div
+          class="input__group"
+        >
+          <input
+            id="tag"
+            name="tag"
+            placeholder="power"
+            type="text"
+            value=""
+          />
+          <div
+            class="AddIconStyles-sc-3fm2p2-0 buLSIj"
+            data-testid="addTag"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div />
+        <input
+          type="submit"
+          value="Submit"
+        />
+      </fieldset>
+    </form>
+  </div>
+</div>
+`;

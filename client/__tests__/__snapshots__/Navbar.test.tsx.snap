@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar shows home and sign in icons when not signed in 1`] = `
+<div>
+  <nav
+    class="Navbar__NavbarStyles-sc-188tfqd-1 ijharB"
+  >
+    <ul>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M8 3.293l6 6V13.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z"
+              fill-rule="evenodd"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <p>
+            Quotes
+          </p>
+        </div>
+      </a>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+              <path
+                d="M10 11H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h6v3l5-4-5-4v3z"
+              />
+            </g>
+          </svg>
+          <p>
+            Sign In
+          </p>
+        </div>
+      </a>
+    </ul>
+  </nav>
+</div>
+`;
+
+exports[`Navbar shows home, my quotes, likes, new and logout icons whened not signed in 1`] = `
+<div>
+  <nav
+    class="Navbar__NavbarStyles-sc-188tfqd-1 ijharB"
+  >
+    <ul>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M8 3.293l6 6V13.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z"
+              fill-rule="evenodd"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <p>
+            Quotes
+          </p>
+        </div>
+      </a>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              height="10"
+              rx="1.5"
+              transform="matrix(1 0 0 -1 0 14.5)"
+              width="16"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <p>
+            My Quotes
+          </p>
+        </div>
+      </a>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <p>
+            Likes
+          </p>
+        </div>
+      </a>
+      <a>
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M16 8A8 8 0 110 8a8 8 0 0116 0zM8.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <p>
+            New
+          </p>
+        </div>
+      </a>
+      <div
+        class="Logout__LogoutButton-sc-1yl6k4f-0 dyZEYj"
+        type="button"
+      >
+        <div
+          class="Navbar__IconStyles-sc-188tfqd-0 ctkHDn"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+              <path
+                d="M5 22a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5zm10-6l5-4-5-4v3H9v2h6v3z"
+              />
+            </g>
+          </svg>
+          <p>
+            Log out
+          </p>
+        </div>
+      </div>
+    </ul>
+  </nav>
+</div>
+`;

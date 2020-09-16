@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Quote renders and matches snapshot when user is not signed in 1`] = `
+<div>
+  <div
+    class="QuoteStyles-sc-17p689u-0 cEqKCH"
+    loading="true"
+  >
+    <div
+      class="Quote__QuoteBody-sc-1h9v3ld-0 cnXFty"
+    >
+      <div
+        class="Quote__QuoteImg-sc-1h9v3ld-1 llufdZ"
+      >
+        <img
+          alt="Forrest Gump, Forrest Gump"
+          src="https://www.fillmurray.com/200/300"
+        />
+      </div>
+      <div
+        class="Quote__QuoteContent-sc-1h9v3ld-2 jqRyuo"
+      >
+        <p>
+          “
+          <span
+            data-testid="quoteContent"
+          >
+            Life was like a box of chocolates. You never know what you're gonna get.
+          </span>
+          ”
+        </p>
+        <p>
+          — 
+          <span
+            data-testid="quoteAuthor"
+          >
+            Forrest Gump, Forrest Gump
+          </span>
+        </p>
+      </div>
+    </div>
+    <div
+      class="Quote__QuoteFooter-sc-1h9v3ld-3 iQBsdY"
+    >
+      <div
+        class="Quote__TagList-sc-1h9v3ld-5 drKxMP"
+      >
+        <div
+          class="QuoteTag-sc-4kw1b-0 kwroDf"
+          data-testid="quoteTag"
+        >
+          movie
+        </div>
+        <div
+          class="QuoteTag-sc-4kw1b-0 kwroDf"
+          data-testid="quoteTag"
+        >
+          life
+        </div>
+      </div>
+      <div
+        class="Quote__Controls-sc-1h9v3ld-4 wBSRR"
+      >
+        <div>
+          <span
+            data-testid="likeCount"
+          >
+            2
+          </span>
+          <svg
+            data-testid="likeButton"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 01.176-.17C12.72-3.042 23.333 4.867 8 15z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Quote renders and matches snapshot when user is signed in and quote belongs to user 1`] = `
+<div>
+  <div
+    class="QuoteStyles-sc-17p689u-0 cEqKCH"
+    loading="true"
+  >
+    <div
+      class="Quote__QuoteBody-sc-1h9v3ld-0 cnXFty"
+    >
+      <div
+        class="Quote__QuoteImg-sc-1h9v3ld-1 llufdZ"
+      >
+        <img
+          alt="Forrest Gump, Forrest Gump"
+          src="https://www.fillmurray.com/200/300"
+        />
+      </div>
+      <div
+        class="Quote__QuoteContent-sc-1h9v3ld-2 jqRyuo"
+      >
+        <p>
+          “
+          <span
+            data-testid="quoteContent"
+          >
+            Life was like a box of chocolates. You never know what you're gonna get.
+          </span>
+          ”
+        </p>
+        <p>
+          — 
+          <span
+            data-testid="quoteAuthor"
+          >
+            Forrest Gump, Forrest Gump
+          </span>
+        </p>
+      </div>
+    </div>
+    <div
+      class="Quote__QuoteFooter-sc-1h9v3ld-3 iQBsdY"
+    >
+      <div
+        class="Quote__TagList-sc-1h9v3ld-5 drKxMP"
+      >
+        <div
+          class="QuoteTag-sc-4kw1b-0 kwroDf"
+          data-testid="quoteTag"
+        >
+          movie
+        </div>
+        <div
+          class="QuoteTag-sc-4kw1b-0 kwroDf"
+          data-testid="quoteTag"
+        >
+          life
+        </div>
+      </div>
+      <div
+        class="Quote__Controls-sc-1h9v3ld-4 wBSRR"
+      >
+        <div>
+          <span
+            data-testid="likeCount"
+          >
+            2
+          </span>
+          <svg
+            data-testid="likeButton"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 01.176-.17C12.72-3.042 23.333 4.867 8 15z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          data-testid="editButton"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+            />
+            <path
+              d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+            />
+          </svg>
+        </div>
+        <div
+          data-testid="deleteButton"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"
+            />
+            <line
+              x1="18"
+              x2="12"
+              y1="9"
+              y2="15"
+            />
+            <line
+              x1="12"
+              x2="18"
+              y1="9"
+              y2="15"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
