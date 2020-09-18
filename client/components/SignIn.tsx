@@ -97,32 +97,30 @@ export const SignIn = () => {
       <Form onSubmit={handleSubmit}>
         <FormTitle>Welcome to Apollo Quotes</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
-          <label htmlFor="email">
-            Email
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={handleChange}
-              autoComplete="email"
-              autoFocus
-              required
-            />
-          </label>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleChange}
+            autoComplete="email"
+            autoFocus
+            required
+          />
           <p>{errors.email && errors.email}</p>
-          <label htmlFor="password">
-            Password
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={handleChange}
-              autoComplete="current-password"
-              required
-            />
-          </label>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handleChange}
+            autoComplete="current-password"
+            required
+          />
           <p>{errors.password && errors.password}</p>
           <input type="submit" value="Sign In" disabled={disabled} />
         </fieldset>
