@@ -38,7 +38,7 @@ export const Logout = ({ children }) => {
   };
 
   return (
-    <LogoutButton type="button" onClick={logoutUser}>
+    <LogoutButton id="logoutButton" type="button" onClick={logoutUser}>
       {children}
     </LogoutButton>
   );
