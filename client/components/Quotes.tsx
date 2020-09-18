@@ -83,30 +83,62 @@ const QUOTES_SUBSCRIPTION = gql`
 `;
 
 const subscribeToNewQuotes = (subscribeToMore) => {
-  subscribeToMore({
-    document: QUOTES_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData.data) return;
-      const newQuote = subscriptionData.data.newQuote;
-      const exists = prev.quotes.quotes.find(({ id }) => id === newQuote.id);
-      if (exists) return;
+  if (subscribeToMore) {
+    subscribeToMore({
+      document: QUOTES_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return;
+        const newQuote = subscriptionData.data.newQuote;
+        const exists = prev.quotes.quotes.find(({ id }) => id === newQuote.id);
+        if (exists) return;
 
-      return Object.assign(
-        {},
-        {
-          quotes: {
-            pageInfo: {
-              ...prev.quotes.pageInfo,
-              endCursor: NEW_QUOTE,
+        return Object.assign(
+          {},
+          {
+            quotes: {
+              pageInfo: {
+                ...prev.quotes.pageInfo,
+                endCursor: NEW_QUOTE,
+              },
+              quotes: [newQuote],
+              totalCount: prev.quotes.totalCount + 1,
+              __typename: prev.quotes.__typename,
             },
-            quotes: [newQuote],
-            totalCount: prev.quotes.totalCount + 1,
-            __typename: prev.quotes.__typename,
-          },
+          }
+        );
+      },
+    });
+  }
+};
+
+const LIKES_SUBSCRIPTION = gql`
+  subscription NewLike {
+    newLike {
+      id
+      quote {
+        id
+        likes {
+          id
+          user {
+            id
+            username
+          }
         }
-      );
-    },
-  });
+      }
+      user {
+        id
+        username
+      }
+    }
+  }
+`;
+
+const subscribeToNewLikes = (subscribeToMore) => {
+  if (subscribeToMore) {
+    subscribeToMore({
+      document: LIKES_SUBSCRIPTION,
+    });
+  }
 };
 
 const Container = styled.div`
@@ -155,6 +187,7 @@ export const Quotes: React.FC<QuotesProps> = ({
   useEffect(() => {
     if (subscribeToMore) {
       subscribeToNewQuotes(subscribeToMore);
+      subscribeToNewLikes(subscribeToMore);
     }
   }, [subscribeToMore]);
 
