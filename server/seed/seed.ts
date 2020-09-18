@@ -5,7 +5,6 @@ import Quote from "../models/Quote";
 import Tag from "../models/Tag";
 import Like from "../models/Like";
 import { items } from "./items";
-import { nextTick } from "process";
 
 dotenv.config();
 
@@ -53,11 +52,21 @@ const initializeSeed = async () => {
     name: "John",
     username: "john",
     email: process.env.EMAIL_TWO,
-    password: process.env.PASSWORD,
+    password: process.env.PASSWORD_TWO,
+  });
+
+  const testUser = new User({
+    name: "Test",
+    username: "test",
+    email: process.env.TEST_EMAIL,
+    password: process.env.TEST_PASSWORD,
   });
 
   await secondUser.save();
   console.log(`New user, ${secondUser.name}, created`);
+
+  await testUser.save();
+  console.log(`New user, ${testUser.name}, created`);
 
   const createNewQuotes = async () => {
     for (const [index, item] of items.entries()) {
