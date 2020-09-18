@@ -109,6 +109,12 @@ const subscribeToNewQuotes = (subscribeToMore) => {
   });
 };
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
 const QuotesList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30rem, 100rem));
@@ -137,7 +143,7 @@ export const Quotes: React.FC<QuotesProps> = ({
   likedBy,
 }) => {
   const [prevCursor, setPrevCursor] = useState(null);
-  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const { data, loading, error, fetchMore, subscribeToMore } = useQuery(
     ALL_QUOTES_QUERY,
@@ -172,7 +178,7 @@ export const Quotes: React.FC<QuotesProps> = ({
 
   useEffect(() => {
     if (router.query.delete === "success") {
-      setShowMessage(true);
+      setMessage(true);
     }
 
     return () => {
@@ -181,13 +187,13 @@ export const Quotes: React.FC<QuotesProps> = ({
   }, [router.query]);
 
   useEffect(() => {
-    if (showMessage) {
+    if (message) {
       timeoutId.current = window.setTimeout(function () {
-        setShowMessage(false);
+        setMessage(null);
         router.push("/");
       }, 3000);
     }
-  }, [showMessage]);
+  }, [message]);
 
   const loadMore = async () => {
     const { endCursor } = data.quotes.pageInfo;
@@ -219,25 +225,31 @@ export const Quotes: React.FC<QuotesProps> = ({
   }
 
   return (
-    <QuotesList>
-      <Message>{showMessage ? "Successfully deleted quote" : null}</Message>
-      {quotes &&
-        quotes.map((quote, index) => (
-          <React.Fragment key={quote.id}>
-            <Link href="/quotes/[...slug]" as={`/quotes/${quote.slug}`}>
-              <a>
-                <Quote quote={quote} />
-              </a>
-            </Link>
-            {hasMore && index === quotes.length - 2 && (
-              <Waypoint
-                onEnter={() => {
-                  loadMore();
-                }}
-              />
-            )}
-          </React.Fragment>
-        ))}
-    </QuotesList>
+    <Container>
+      <Message>{message}</Message>
+      <QuotesList>
+        {quotes.length > 0 &&
+          quotes.map((quote, index) => (
+            <React.Fragment key={quote.id}>
+              <Link href="/quotes/[...slug]" as={`/quotes/${quote.slug}`}>
+                <a>
+                  <Quote quote={quote} />
+                </a>
+              </Link>
+              {hasMore && index === quotes.length - 2 && (
+                <Waypoint
+                  onEnter={() => {
+                    loadMore();
+                  }}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        {quotes.length === 0 && likedBy && <Message>No quotes liked</Message>}
+        {quotes.length === 0 && submittedBy && (
+          <Message>No quotes submitted</Message>
+        )}
+      </QuotesList>
+    </Container>
   );
 };

@@ -162,7 +162,9 @@ export const QuoteNew = () => {
 
   return (
     <FormContainer>
-      {errorMessage && <Message error>{errorMessage}</Message>}
+      <Message error={errorMessage ? "true" : undefined}>
+        {errorMessage}
+      </Message>
       <Form onSubmit={handleSubmit}>
         <FormTitle>Submit a new quote</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
