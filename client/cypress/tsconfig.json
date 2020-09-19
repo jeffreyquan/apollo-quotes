@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "../node_modules",
     "target": "es5",
-    "types": ["cypress", "@testing-library/cypress"],
+    "types": ["cypress", "@testing-library/cypress", "cypress-file-upload"],
     "isolatedModules": false
   },
   "include": ["**/*.ts"]
