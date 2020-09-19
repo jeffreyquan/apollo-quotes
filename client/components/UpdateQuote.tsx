@@ -178,35 +178,38 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
         <Form onSubmit={handleSubmit}>
           <FormTitle>Edit quote</FormTitle>
           <fieldset>
-            <label htmlFor="content">
-              Content
-              <textarea
-                name="content"
-                placeholder="When nothing goes right, go left."
-                rows={4}
-                value={content}
-                onChange={handleChange}
-              />
-            </label>
-            <label htmlFor="author">
-              Author
-              <input
-                type="text"
-                name="author"
-                placeholder="JR Smith"
-                value={author}
-                onChange={handleChange}
-              />
-            </label>
+            <label htmlFor="updateContent">Content</label>
+            <textarea
+              id="updateContent"
+              name="content"
+              placeholder="When nothing goes right, go left."
+              rows={4}
+              value={content}
+              onChange={handleChange}
+            />
+            <label htmlFor="updateAuthor">Author</label>
+            <input
+              id="updateAuthor"
+              type="text"
+              name="author"
+              placeholder="JR Smith"
+              value={author}
+              onChange={handleChange}
+            />
             <label>Tags</label>
             <div className="input__group">
               <input
+                id="updateTag"
                 type="text"
                 name="tagInput"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
               />
-              <AddIconStyles type="button" onClick={() => addTag()}>
+              <AddIconStyles
+                data-testid="updateTags"
+                type="button"
+                onClick={() => addTag()}
+              >
                 <MdAddCircle />
               </AddIconStyles>
             </div>
