@@ -216,7 +216,6 @@ class QuoteAPI extends DataSource {
 
       if (image) {
         images = await this.uploadImage(image);
-        console.log(images);
       }
 
       const newQuote = await new Quote({
