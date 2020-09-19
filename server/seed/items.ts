@@ -188,8 +188,10 @@ export const items = [
     author: "Dr Seuss",
     content:
       "I like nonsense, it wakes up the brain cells. Fantasy is a necessary ingredient in living.",
-    image: "",
-    largeImage: "",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274161/apollo-quotes/m3kwemryo9tarh7jmhjc.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274161/apollo-quotes/m3kwemryo9tarh7jmhjc.jpg",
     tags: ["fantasy"],
   },
   {
