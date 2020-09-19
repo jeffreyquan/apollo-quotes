@@ -429,6 +429,20 @@ class QuoteAPI extends DataSource {
         return new ForbiddenError("Quote does not belong to user");
       }
 
+      const imageURL = quote.image;
+
+      const publicId = imageURL
+        .match(/apollo-quotes\/(.*)/)[0]
+        .match(/(.*).jpg/)[1];
+
+      console.log(publicId);
+
+      cloudinary.v2.uploader.destroy(publicId, function (err, res) {
+        if (err) console.log(err);
+
+        if (res) console.log(res);
+      });
+
       const deletedQuote = await quote.deleteOne();
 
       return deletedQuote;
