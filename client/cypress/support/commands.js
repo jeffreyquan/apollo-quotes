@@ -26,6 +26,8 @@
 
 import "@testing-library/cypress/add-commands";
 
+import "cypress-file-upload";
+
 const EMAIL = "test@abc.com";
 const PASSWORD = "fjord1234";
 
