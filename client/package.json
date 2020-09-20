@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
+    "@babel/runtime": "^7.11.2",
     "apollo-upload-client": "^14.1.1",
     "babel-plugin-styled-components": "^1.11.0",
     "graphql": "^15.3.0",
@@ -20,11 +21,13 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-icons": "^3.11.0",
+    "react-spinners": "^0.9.0",
     "react-waypoint": "^9.0.3",
     "styled-components": "^5.1.1",
     "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.11.5",
     "@graphql-codegen/cli": "^1.17.7",
     "@graphql-codegen/typescript": "^1.17.7",
     "@testing-library/cypress": "^7.0.0",
@@ -62,7 +65,15 @@
     "env": {
       "development": {
         "presets": [
-          "next/babel"
+          [
+            "next/babel"
+          ],
+          [
+            "@babel/preset-react"
+          ],
+          [
+            "@babel/preset-env"
+          ]
         ],
         "plugins": [
           [
@@ -70,12 +81,26 @@
             {
               "ssr": true
             }
+          ],
+          [
+            "emotion"
+          ],
+          [
+            "@babel/plugin-transform-runtime"
           ]
         ]
       },
       "production": {
         "presets": [
-          "next/babel"
+          [
+            "next/babel"
+          ],
+          [
+            "@babel/preset-react"
+          ],
+          [
+            "@babel/preset-env"
+          ]
         ],
         "plugins": [
           [
@@ -83,12 +108,26 @@
             {
               "ssr": true
             }
+          ],
+          [
+            "emotion"
+          ],
+          [
+            "@babel/plugin-transform-runtime"
           ]
         ]
       },
       "test": {
         "presets": [
-          "next/babel"
+          [
+            "next/babel"
+          ],
+          [
+            "@babel/preset-react"
+          ],
+          [
+            "@babel/preset-env"
+          ]
         ],
         "plugins": [
           [
@@ -96,6 +135,12 @@
             {
               "ssr": true
             }
+          ],
+          [
+            "emotion"
+          ],
+          [
+            "@babel/plugin-transform-runtime"
           ]
         ]
       }

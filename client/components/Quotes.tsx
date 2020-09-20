@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import { Waypoint } from "react-waypoint";
+import { PageLoader } from "./PageLoader";
 import { Quote } from "../components/Quote";
 import { AuthContext } from "./Auth";
 import { Message } from "./Message";
@@ -246,7 +247,7 @@ export const Quotes: React.FC<QuotesProps> = ({
     });
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <PageLoader />;
   if (error) return <div>Error...</div>;
 
   let quotes;

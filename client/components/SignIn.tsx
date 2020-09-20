@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
+import { PageLoader } from "./PageLoader";
 import { AuthContext } from "./Auth";
 import { useForm, validateInputs } from "../lib/useForm";
 import { Form } from "../styles/Form";
@@ -132,6 +133,8 @@ export const SignIn = () => {
       </Form>
     </FormContainer>
   ) : (
-    <div>Loading....</div>
+    <div>
+      <PageLoader />
+    </div>
   );
 };

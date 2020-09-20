@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
+import { PageLoader } from "./PageLoader";
 import { Quote } from "../components/Quote";
 
 export const SINGLE_QUOTE_QUERY = gql`
@@ -48,7 +49,7 @@ export const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
     },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <PageLoader />;
   if (error) return <div>Error...</div>;
 
   const updatedQuote = { ...data.quote };

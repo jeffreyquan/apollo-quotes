@@ -4,6 +4,7 @@ import { useTheme } from "../lib/useTheme";
 import { AuthContext } from "./Auth";
 import { Header } from "./Header";
 import { Meta } from "./Meta";
+import { PageLoader } from "./PageLoader";
 
 const darkTheme = {
   bg: "#282e34",
@@ -25,6 +26,7 @@ const darkTheme = {
   formtext: "#000000",
   formbtntext: "#ffffff",
   errortext: "#ff9999",
+  loader: "#d54473",
   white: "#ffffff",
   black: "#000000",
   smallbp: "600px",
@@ -52,6 +54,7 @@ const lightTheme = {
   formtext: "#020826",
   formbtntext: "#fffffe",
   errortext: "#ff9999",
+  loader: "#8c7851",
   white: "#ffffff",
   black: "#000000",
   smallbp: "600px",
@@ -105,7 +108,14 @@ export const Page = ({ children }) => {
   const [theme, toggleTheme, mounted] = useTheme();
   const selectedTheme = theme === "light" ? lightTheme : darkTheme;
 
-  if (!mounted) return <div>Loading...</div>;
+  if (!mounted)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", height: "100vh" }}
+      >
+        Loading...
+      </div>
+    );
 
   return (
     <ThemeProvider theme={selectedTheme}>
@@ -114,7 +124,9 @@ export const Page = ({ children }) => {
         <Meta />
         <Header theme={theme} toggleTheme={toggleTheme} />
         {checkingAuth ? (
-          <InnerDiv loading="true">Loading...</InnerDiv>
+          <InnerDiv loading="true">
+            <PageLoader />
+          </InnerDiv>
         ) : (
           <>
             <InnerDiv>{children}</InnerDiv>

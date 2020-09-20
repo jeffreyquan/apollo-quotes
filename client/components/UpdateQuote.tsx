@@ -3,6 +3,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useContext } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { useRouter } from "next/router";
+import { PageLoader } from "./PageLoader";
 import { AuthContext } from "./Auth";
 import { Message } from "./Message";
 import { useForm } from "../lib/useForm";
@@ -135,7 +136,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   if (singleQuoteError) return <div>Error...</div>;
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <PageLoader />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,9 +170,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const { content, author, tags } = inputs;
 
-  return loadingPage ? (
-    <div>Loading...</div>
-  ) : (
+  return !loadingPage ? (
     <div>
       {errorMessage && <Message error>{errorMessage}</Message>}
       <FormContainer>
@@ -231,6 +230,10 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
           </fieldset>
         </Form>
       </FormContainer>
+    </div>
+  ) : (
+    <div>
+      <PageLoader />
     </div>
   );
 };

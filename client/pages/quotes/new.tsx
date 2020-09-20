@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
+import { PageLoader } from "../../components/PageLoader";
 import { AuthContext } from "../../components/Auth";
 import { QuoteNew } from "../../components/QuoteNew";
 
@@ -19,7 +20,13 @@ const NewQuotePage = () => {
     }
   }, [user]);
 
-  return !loadingPage ? <QuoteNew /> : <div>Loading...</div>;
+  return !loadingPage ? (
+    <QuoteNew />
+  ) : (
+    <div>
+      <PageLoader />
+    </div>
+  );
 };
 
 export default NewQuotePage;
