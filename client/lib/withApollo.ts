@@ -114,6 +114,12 @@ function createApolloClient() {
                   : existing;
               },
             },
+            likes: {
+              keyArgs: ["id"],
+              merge(existing = [], incoming: any) {
+                return incoming;
+              },
+            },
           },
         },
         Quote: {
