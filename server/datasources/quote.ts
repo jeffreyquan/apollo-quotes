@@ -17,6 +17,28 @@ class QuoteAPI extends DataSource {
     this.context = config.context;
   }
 
+  async fetchLikesForQuote(id) {
+    const likes = await Quote.findById(id)
+      .populate({
+        path: "likes",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "_id username",
+        },
+      })
+      .select("likes -_id")
+      .exec();
+
+    return likes.likes;
+  }
+
+  async fetchPaths() {
+    const paths = await Quote.find({}).select("slug").exec();
+
+    return paths;
+  }
+
   async fetchQuote({ slug }) {
     const quote = await Quote.findOne({ slug })
       .populate({
@@ -434,8 +456,6 @@ class QuoteAPI extends DataSource {
       const publicId = imageURL
         .match(/apollo-quotes\/(.*)/)[0]
         .match(/(.*).jpg/)[1];
-
-      console.log(publicId);
 
       cloudinary.v2.uploader.destroy(publicId, function (err, res) {
         if (err) console.log(err);
