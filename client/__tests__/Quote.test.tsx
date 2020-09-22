@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
 import { useRouter } from "next/router";
 import { Quote, LIKE_MUTATION } from "../components/Quote";
-import { SINGLE_QUOTE_QUERY } from "../components/SingleQuote";
+import { SINGLE_QUOTE_QUERY } from "../pages/quotes/[...slug]";
 import { AuthProvider } from "../components/Auth";
 import { CURRENT_USER_QUERY } from "../components/Auth";
 import {
