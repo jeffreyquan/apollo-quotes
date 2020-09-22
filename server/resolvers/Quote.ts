@@ -10,6 +10,16 @@ export const resolvers = {
     },
   },
   Query: {
+    likes: async (parent, { id }, { dataSources }) => {
+      const likes = await dataSources.quoteAPI.fetchLikesForQuote(id);
+
+      return likes;
+    },
+    paths: async (parent, args, { dataSources }) => {
+      const paths = await dataSources.quoteAPI.fetchPaths();
+
+      return paths;
+    },
     quote: async (parent, { slug }, { dataSources }) => {
       const quote = await dataSources.quoteAPI.fetchQuote({
         slug,
