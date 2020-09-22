@@ -1,31 +1,39 @@
+import { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { PageLoader } from "./PageLoader";
 import { Quote } from "../components/Quote";
+import { Quote as QuoteType } from "../types";
 
-export const SINGLE_QUOTE_QUERY = gql`
-  query SINGLE_QUOTE_QUERY($slug: String!) {
-    quote(slug: $slug) {
+export const LIKES_QUERY = gql`
+  query LIKES_QUERY($id: ID!) {
+    likes(id: $id) {
       id
-      author
-      content
-      image
-      largeImage
-      submittedBy {
+      user {
         id
+        username
       }
-      tags {
+    }
+  }
+`;
+
+const LIKE_SUBSCRIPTION = gql`
+  subscription NewLikeOnQuote($id: ID!) {
+    newLikeOnQuote(id: $id) {
+      id
+      quote {
         id
-        name
-      }
-      likes {
-        id
-        user {
+        likes {
           id
-          username
+          user {
+            id
+            username
+          }
         }
       }
-      slug
+      user {
+        id
+        username
+      }
     }
   }
 `;
@@ -38,22 +46,57 @@ const SingleQuoteStyles = styled.div`
   margin: 0 auto;
 `;
 
+const subscribeToNewLikeOnQuote = (subscribeToMore, quoteId) => {
+  if (subscribeToMore) {
+    subscribeToMore({
+      document: LIKE_SUBSCRIPTION,
+      variables: {
+        id: quoteId,
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return;
+        const newLike = subscriptionData.data.newLikeOnQuote;
+        const exists = prev.likes.find((like) => like.id === newLike.id);
+        if (exists) {
+          const updatedLikes = prev.likes.filter(
+            (like) => like.id !== newLike.id
+          );
+
+          return Object.assign({}, { likes: [...updatedLikes] });
+        }
+        return Object.assign(
+          {},
+          {
+            likes: [newLike, ...prev.likes],
+          }
+        );
+      },
+    });
+  }
+};
+
 interface SingleQuoteProps {
-  slug: string;
+  quote: QuoteType;
 }
 
-export const SingleQuote: React.FC<SingleQuoteProps> = ({ slug }) => {
-  const { data, loading, error } = useQuery(SINGLE_QUOTE_QUERY, {
+export const SingleQuote: React.FC<SingleQuoteProps> = ({ quote }) => {
+  const { data, loading, error, subscribeToMore } = useQuery(LIKES_QUERY, {
     variables: {
-      slug,
+      id: quote.id,
     },
   });
 
-  if (loading) return <PageLoader />;
-  if (error) return <div>Error...</div>;
+  useEffect(() => {
+    if (subscribeToMore) {
+      subscribeToNewLikeOnQuote(subscribeToMore, quote.id);
+    }
+  }, [subscribeToMore]);
 
-  const updatedQuote = { ...data.quote };
-  updatedQuote.image = updatedQuote.largeImage;
+  let updatedQuote = { ...quote, image: quote.largeImage };
+
+  if (data) {
+    updatedQuote = { ...updatedQuote, likes: data.likes };
+  }
 
   return (
     <SingleQuoteStyles>
