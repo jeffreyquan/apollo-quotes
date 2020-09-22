@@ -7,6 +7,7 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
+import { LIKES_QUERY } from "./SingleQuote";
 import { Quote as QuoteType } from "../types";
 import { AuthContext } from "./Auth";
 import { DeleteQuote } from "./DeleteQuote";
@@ -79,6 +80,14 @@ export const Quote = ({ quote }) => {
     variables: {
       quoteId: id,
     },
+    // refetchQueries: [
+    //   {
+    //     query: LIKES_QUERY,
+    //     variables: {
+    //       id,
+    //     },
+    //   },
+    // ],
     update(cache, { data: { likeQuote } }) {
       const likedQuote: QuoteType = cache.readFragment({
         id: `Quote:${id}`,
