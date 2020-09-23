@@ -183,6 +183,7 @@ exports[`Navbar shows home, my quotes, likes, new and logout icons whened not si
       </a>
       <div
         class="Logout__LogoutButton-sc-1yl6k4f-0 dyZEYj"
+        id="logoutButton"
         type="button"
       >
         <div

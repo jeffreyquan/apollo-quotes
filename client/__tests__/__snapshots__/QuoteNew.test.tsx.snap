@@ -3,9 +3,11 @@
 exports[`QuoteNew renders all inputs and labels 1`] = `
 <div>
   <div
-    class="FormContainer-sc-1xw7mz9-0 dlcJGT"
+    class="FormContainer-sc-1xw7mz9-0 gTcmkT"
   >
-    
+    <div
+      class="Message__MessageStyles-sc-1wz8v68-0 kcegBB"
+    />
     <form
       class="Form-sc-1stku61-0 jaHlPk"
     >

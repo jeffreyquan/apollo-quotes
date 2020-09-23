@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "generate": "graphql-codegen",
-    "test": "NODE_ENV=test jest --coverage",
+    "test": "NODE_ENV=test jest ./__tests__",
     "cypress:open": "cypress open"
   },
   "dependencies": {
@@ -54,7 +54,7 @@
       }
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
+      "./jest.setup.js"
     ],
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
@@ -121,12 +121,6 @@
         "presets": [
           [
             "next/babel"
-          ],
-          [
-            "@babel/preset-react"
-          ],
-          [
-            "@babel/preset-env"
           ]
         ],
         "plugins": [
@@ -135,12 +129,6 @@
             {
               "ssr": true
             }
-          ],
-          [
-            "emotion"
-          ],
-          [
-            "@babel/plugin-transform-runtime"
           ]
         ]
       }
