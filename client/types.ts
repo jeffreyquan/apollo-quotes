@@ -13,9 +13,16 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  likes?: Maybe<Array<Maybe<Like>>>;
+  paths?: Maybe<Array<Maybe<Slug>>>;
   quote?: Maybe<Quote>;
   quotes: QuotesConnection;
   userProfile: User;
+};
+
+
+export type QueryLikesArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -28,6 +35,8 @@ export type QueryQuotesArgs = {
   tag?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   cursor?: Maybe<Scalars['String']>;
+  submittedBy?: Maybe<Scalars['ID']>;
+  likedBy?: Maybe<Scalars['ID']>;
 };
 
 export type Mutation = {
@@ -73,7 +82,6 @@ export type MutationUpdateQuoteArgs = {
   id: Scalars['ID'];
   content?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
   tags?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
@@ -86,6 +94,12 @@ export type Subscription = {
   __typename?: 'Subscription';
   newQuote?: Maybe<Quote>;
   newLike?: Maybe<Like>;
+  newLikeOnQuote?: Maybe<Like>;
+};
+
+
+export type SubscriptionNewLikeOnQuoteArgs = {
+  id: Scalars['ID'];
 };
 
 export type Quote = {
@@ -129,7 +143,7 @@ export type Tag = {
 export type Like = {
   __typename?: 'Like';
   id: Scalars['ID'];
-  quote: Quote;
+  quote?: Maybe<Quote>;
   user: User;
 };
 
@@ -149,6 +163,11 @@ export type PageInfo = {
 export type Message = {
   __typename?: 'Message';
   message?: Maybe<Scalars['String']>;
+};
+
+export type Slug = {
+  __typename?: 'Slug';
+  slug?: Maybe<Scalars['String']>;
 };
 
 export enum CacheControlScope {
