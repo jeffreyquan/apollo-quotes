@@ -2,6 +2,8 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Query {
+    likes(id: ID!): [Like]
+    paths: [Slug]
     quote(slug: String!): Quote
     quotes(
       tag: String
@@ -36,6 +38,7 @@ export const typeDefs = gql`
   type Subscription {
     newQuote: Quote
     newLike: Like
+    newLikeOnQuote(id: ID!): Like
   }
 
   type Quote {
@@ -75,7 +78,7 @@ export const typeDefs = gql`
 
   type Like {
     id: ID!
-    quote: Quote!
+    quote: Quote
     user: User!
   }
 
@@ -92,5 +95,9 @@ export const typeDefs = gql`
 
   type Message {
     message: String
+  }
+
+  type Slug {
+    slug: String
   }
 `;

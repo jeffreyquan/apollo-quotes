@@ -1,11 +1,21 @@
 import { pubsub } from "../index";
+import { withFilter } from "apollo-server";
 
 const NEW_LIKE = "NEW_LIKE";
+const NEW_LIKE_ON_QUOTE = "NEW_LIKE_ON_QUOTE";
 
 export const resolvers = {
   Subscription: {
     newLike: {
       subscribe: () => pubsub.asyncIterator([NEW_LIKE]),
+    },
+    newLikeOnQuote: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(NEW_LIKE_ON_QUOTE),
+        (payload, variables) => {
+          return payload.newLikeOnQuote.quote.id.toString() === variables.id;
+        }
+      ),
     },
   },
   Mutation: {
@@ -13,8 +23,8 @@ export const resolvers = {
       const newLike = await dataSources.quoteAPI.likeQuote(quoteId);
 
       if (newLike._id) {
-        pubsub.publish(NEW_LIKE, {
-          newLike: {
+        const like = (name) => ({
+          [name]: {
             id: newLike._id,
             quote: {
               id: newLike.quote._id,
@@ -26,6 +36,10 @@ export const resolvers = {
             },
           },
         });
+
+        pubsub.publish(NEW_LIKE, like("newLike"));
+
+        pubsub.publish(NEW_LIKE_ON_QUOTE, like("newLikeOnQuote"));
       }
 
       return newLike;
