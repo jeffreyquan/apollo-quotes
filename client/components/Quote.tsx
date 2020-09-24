@@ -80,7 +80,7 @@ interface QuoteProps {
 export const Quote: React.FC<QuoteProps> = ({ quote }) => {
   const { id, author, content, image, tags, likes, submittedBy, slug } = quote;
 
-  const [like, { error }] = useMutation(LIKE_MUTATION, {
+  const [like] = useMutation(LIKE_MUTATION, {
     variables: {
       quoteId: id,
     },
@@ -118,8 +118,6 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const [likeError, setLikeError] = useState<boolean>(false);
-
-  if (error) setLikeError(true);
 
   const timeoutId = useRef<number>();
 
@@ -164,7 +162,11 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
 
   const likeQuote = async (e) => {
     e.preventDefault();
-    await like();
+    try {
+      await like();
+    } catch (err) {
+      setLikeError(true);
+    }
   };
 
   const EditLink = ({ children, href, as, ...props }) => (
@@ -214,7 +216,12 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
                 onClick={(e) => likeQuote(e)}
               />
             ) : (
-              <BsHeart data-testid="likeButton" onClick={(e) => likeQuote(e)} />
+              !likeError && (
+                <BsHeart
+                  data-testid="likeButton"
+                  onClick={(e) => likeQuote(e)}
+                />
+              )
             )}
           </div>
           {submitted && (
