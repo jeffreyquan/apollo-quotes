@@ -69,25 +69,9 @@ export const SignIn: React.FC = () => {
     }
   }, [inputs]);
 
-  const timeoutId = useRef<number>();
-
-  useEffect(() => {
-    if (serverError) {
-      timeoutId.current = window.setTimeout(function () {
-        setServerError(false);
-      }, 3000);
-    }
-
-    return () => {
-      clearTimeout(timeoutId.current);
-    };
-  }, [serverError]);
-
-  const [login, { error, loading }] = useMutation(LOGIN_MUTATION, {
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     variables: inputs,
   });
-
-  if (error) setServerError(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,6 +90,8 @@ export const SignIn: React.FC = () => {
           ...prevErrors,
           password: message,
         }));
+      } else {
+        setServerError(true);
       }
     }
   };
@@ -129,6 +115,7 @@ export const SignIn: React.FC = () => {
             placeholder="Email"
             value={email}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="email"
             autoFocus
             required
@@ -142,6 +129,7 @@ export const SignIn: React.FC = () => {
             placeholder="Password"
             value={password}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="current-password"
             required
           />
