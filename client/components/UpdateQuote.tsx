@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useContext } from "react";
 import { MdAddCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 import { PageLoader } from "./PageLoader";
+import { ActionLoader } from "./ActionLoader";
 import { AuthContext } from "./Auth";
 import { Message } from "./Message";
 import { useForm } from "../lib/useForm";
@@ -78,21 +79,6 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const timeoutId = useRef<number>();
-
-  useEffect(() => {
-    if (errorMessage) {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = window.setTimeout(function () {
-        setErrorMessage(null);
-      }, 3000);
-    }
-
-    return () => {
-      clearTimeout(timeoutId.current);
-    };
-  }, [errorMessage]);
-
   const [tagInput, setTagInput] = useState("");
 
   const { loading, error: singleQuoteError } = useQuery(SINGLE_QUOTE_QUERY, {
@@ -122,7 +108,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
     },
   });
 
-  const [updateQuote, { loading: updating, error: updateError }] = useMutation(
+  const [updateQuote, { loading: updating }] = useMutation(
     UPDATE_QUOTE_MUTATION,
     {
       variables: { ...inputs },
@@ -131,9 +117,9 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const router = useRouter();
 
-  if (singleQuoteError || updateError) return <div>Error...</div>;
+  if (singleQuoteError) return <div>Error...</div>;
 
-  if (loading || updating) return <PageLoader />;
+  if (loading) return <PageLoader />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,8 +128,12 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
       const slug = res.data.updateQuote.slug;
       router.push(`/quotes/${slug}`);
     } catch (err) {
-      // TODO: handle error
-      setErrorMessage(err.message);
+      const { message } = err;
+      if (message === "Failed to fetch") {
+        setErrorMessage("Quote was unable to be updated. Please try again.");
+      } else {
+        setErrorMessage(err.message);
+      }
     }
   };
 
@@ -169,11 +159,11 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   return !loadingPage ? (
     <div>
-      {errorMessage && <Message error>{errorMessage}</Message>}
       <FormContainer>
+        <Message error={errorMessage ? true : false}>{errorMessage}</Message>
         <Form onSubmit={handleSubmit}>
           <FormTitle>Edit quote</FormTitle>
-          <fieldset>
+          <fieldset disabled={updating} aria-busy={updating}>
             <label htmlFor="updateContent">Content</label>
             <textarea
               id="updateContent"
@@ -182,6 +172,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
               rows={4}
               value={content}
               onChange={handleChange}
+              onFocus={() => setErrorMessage(null)}
             />
             <label htmlFor="updateAuthor">Author</label>
             <input
@@ -191,6 +182,7 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
               placeholder="JR Smith"
               value={author}
               onChange={handleChange}
+              onFocus={() => setErrorMessage(null)}
             />
             <label>Tags</label>
             <div className="input__group">
@@ -200,11 +192,15 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
                 name="tagInput"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
+                onFocus={() => setErrorMessage(null)}
               />
               <AddIconStyles
                 data-testid="updateTags"
                 type="button"
-                onClick={() => addTag()}
+                onClick={() => {
+                  setErrorMessage(null);
+                  addTag();
+                }}
               >
                 <MdAddCircle />
               </AddIconStyles>
@@ -215,15 +211,21 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
                   <QuoteTag
                     key={`${tag}-${i}`}
                     className="edit"
-                    onClick={() => removeTag(i)}
+                    onClick={() => {
+                      setErrorMessage(null);
+                      removeTag(i);
+                    }}
                   >
                     {tag}
                   </QuoteTag>
                 );
               })}
             </div>
-
-            <input type="submit" value="Update" />
+            {updating ? (
+              <ActionLoader />
+            ) : (
+              <input type="submit" value="Update" />
+            )}
           </fieldset>
         </Form>
       </FormContainer>
