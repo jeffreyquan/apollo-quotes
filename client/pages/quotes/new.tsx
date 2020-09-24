@@ -1,12 +1,13 @@
+import { NextPage } from "next";
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { PageLoader } from "../../components/PageLoader";
 import { AuthContext } from "../../components/Auth";
 import { QuoteNew } from "../../components/QuoteNew";
 
-const NewQuotePage = () => {
+const NewQuotePage: NextPage = () => {
   const [loadingPage, setLoadingPage] = useState(true);
-  let { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {

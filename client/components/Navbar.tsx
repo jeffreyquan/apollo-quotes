@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { RiLoginBoxFill, RiLogoutBoxRFill } from "react-icons/ri";
@@ -50,11 +51,11 @@ const NavbarStyles = styled.nav`
   }
 `;
 
-const IconContainer = ({ children }) => {
+const IconContainer: React.FC = ({ children }) => {
   return <IconStyles>{children}</IconStyles>;
 };
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
   return (
     <AuthContext.Consumer>
       {({ user }) => (

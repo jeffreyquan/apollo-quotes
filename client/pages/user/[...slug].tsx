@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Quotes } from "../../components/Quotes";
 import { useRouter } from "next/router";
 import { AuthContext } from "../../components/Auth";
 
-const UserPage = () => {
+const UserPage: React.FC = () => {
   const router = useRouter();
-  let { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { slug, tag } = router.query;
 
   let submittedBy;

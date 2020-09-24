@@ -1,13 +1,19 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, split, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  split,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { DEV_ENDPOINT } from "../config";
+import { Like as LikeType } from "../types";
 
 export const NEW_QUOTE = "NEW_QUOTE";
 
-let apolloClient;
+let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 function decodeCursor(encodedCursor: string) {
   return Buffer.from(encodedCursor, "base64").toString("ascii");
@@ -116,7 +122,8 @@ function createApolloClient() {
             },
             likes: {
               keyArgs: ["id"],
-              merge(existing = [], incoming: any) {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              merge(existing = [], incoming: LikeType[]) {
                 return incoming;
               },
             },
@@ -125,7 +132,8 @@ function createApolloClient() {
         Quote: {
           fields: {
             likes: {
-              merge(existing = [], incoming: any) {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              merge(existing = [], incoming: LikeType[]) {
                 return incoming;
               },
             },
@@ -136,7 +144,9 @@ function createApolloClient() {
   });
 }
 
-export function initializeApollo(initialState = null) {
+export function initializeApollo(
+  initialState: NormalizedCacheObject = null
+): ApolloClient<NormalizedCacheObject> | null {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -152,7 +162,9 @@ export function initializeApollo(initialState = null) {
   return _apolloClient;
 }
 
-export function useApollo(initialState) {
+export function useApollo(
+  initialState: NormalizedCacheObject | null
+): ApolloClient<NormalizedCacheObject> | null {
   const store = useMemo(() => initializeApollo(initialState), [initialState]);
   return store;
 }

@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+// import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { RouterContext } from "next/dist/next-server/lib/router-context";
+// import { useRouter } from "next/router";
+// import Link from "next/link";
+// import { RouterContext } from "next/dist/next-server/lib/router-context";
 import { Navbar } from "../components/Navbar";
 import { AuthProvider } from "../components/Auth";
 import { CURRENT_USER_QUERY } from "../components/Auth";

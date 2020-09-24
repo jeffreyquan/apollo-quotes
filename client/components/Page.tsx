@@ -1,5 +1,5 @@
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useTheme } from "../lib/useTheme";
 import { AuthContext } from "./Auth";
 import { Header } from "./Header";
@@ -26,7 +26,8 @@ const darkTheme = {
   formtext: "#000000",
   formbtntext: "#ffffff",
   errortext: "#ff9999",
-  loader: "#d54473",
+  pageloader: "#d54473",
+  actionloader: "#ffffff",
   white: "#ffffff",
   black: "#000000",
   smallbp: "600px",
@@ -54,7 +55,8 @@ const lightTheme = {
   formtext: "#020826",
   formbtntext: "#fffffe",
   errortext: "#ff9999",
-  loader: "#8c7851",
+  pageloader: "#8c7851",
+  actionloader: "#716040",
   white: "#ffffff",
   black: "#000000",
   smallbp: "600px",
@@ -103,9 +105,9 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export const Page = ({ children }) => {
+export const Page: React.FC = ({ children }) => {
   const { checkingAuth } = useContext(AuthContext);
-  const [theme, toggleTheme, mounted] = useTheme();
+  const { theme, toggleTheme, mounted } = useTheme();
   const selectedTheme = theme === "light" ? lightTheme : darkTheme;
 
   if (!mounted)

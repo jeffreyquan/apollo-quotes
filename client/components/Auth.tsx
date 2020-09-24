@@ -21,11 +21,11 @@ const initialAuthState = {
 
 export const AuthContext = createContext(initialAuthState);
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [user, setUser] = useState(null);
 
-  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+  const { data, error } = useQuery(CURRENT_USER_QUERY);
 
   useEffect(() => {
     if (error) {

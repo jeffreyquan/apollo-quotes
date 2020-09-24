@@ -6,6 +6,7 @@ import { Quote, LIKE_MUTATION } from "../components/Quote";
 import { SINGLE_QUOTE_QUERY } from "../pages/quotes/[...slug]";
 import { AuthProvider } from "../components/Auth";
 import { CURRENT_USER_QUERY } from "../components/Auth";
+import { Quote as QuoteType } from "../types";
 import {
   fakeCache,
   fakeQuoteWithoutUserLike,
@@ -29,7 +30,7 @@ describe("Quote", () => {
   it("renders and matches snapshot when user is not signed in", () => {
     const { container } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
     expect(container).toMatchSnapshot();
@@ -62,7 +63,7 @@ describe("Quote", () => {
     const { container, getByTestId } = render(
       <MockedProvider mocks={mocks}>
         <AuthProvider>
-          <Quote quote={quoteWithoutUserLike} />
+          <Quote quote={quoteWithoutUserLike as QuoteType} />
         </AuthProvider>
       </MockedProvider>
     );
@@ -81,7 +82,7 @@ describe("Quote", () => {
   it("renders the image", () => {
     render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
     const img = screen.getByAltText(quoteWithoutUserLike.author);
@@ -91,7 +92,7 @@ describe("Quote", () => {
   it("renders the content", () => {
     const { getByTestId } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
 
@@ -103,7 +104,7 @@ describe("Quote", () => {
   it("renders the author", () => {
     const { getByTestId } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
 
@@ -115,7 +116,7 @@ describe("Quote", () => {
   it("renders the right number of tags", () => {
     const { getAllByTestId } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
 
@@ -125,7 +126,7 @@ describe("Quote", () => {
   it("renders the tags properly", () => {
     const { getAllByTestId } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
     for (let i = 0; i < quoteWithoutUserLike.tags.length; i++) {
@@ -137,7 +138,7 @@ describe("Quote", () => {
   it("renders the correct number of likes", () => {
     const { getByTestId } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
 
@@ -228,7 +229,7 @@ describe("Quote", () => {
     const { getByTestId, getByText, rerender } = render(
       <MockedProvider mocks={userLikedQuoteMocks} cache={cache}>
         <AuthProvider>
-          <Quote quote={quoteWithoutUserLike} />
+          <Quote quote={quoteWithoutUserLike as QuoteType} />
         </AuthProvider>
       </MockedProvider>
     );
@@ -340,7 +341,7 @@ describe("Quote", () => {
     const { getByTestId, getByText, rerender } = render(
       <MockedProvider mocks={userUnlikedQuoteMocks} cache={cache}>
         <AuthProvider>
-          <Quote quote={quoteWithUserLike} />
+          <Quote quote={quoteWithUserLike as QuoteType} />
         </AuthProvider>
       </MockedProvider>
     );
@@ -386,7 +387,7 @@ describe("Quote", () => {
   it("navigates to correct route when tags are clicked", async () => {
     const { getByText } = render(
       <MockedProvider>
-        <Quote quote={quoteWithoutUserLike} />
+        <Quote quote={quoteWithoutUserLike as QuoteType} />
       </MockedProvider>
     );
 

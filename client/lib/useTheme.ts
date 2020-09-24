@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 
-export const useTheme = () => {
-  const [theme, setTheme] = useState("light");
+export type Theme = "light" | "dark";
+
+interface UseTheme {
+  theme: Theme;
+  toggleTheme: () => void;
+  mounted: boolean;
+}
+
+export const useTheme = (): UseTheme => {
+  const [theme, setTheme] = useState<Theme>("light");
 
   const [mounted, setMounted] = useState(false);
 
@@ -16,9 +24,9 @@ export const useTheme = () => {
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem("theme");
-    localTheme ? setTheme(localTheme) : setMode("dark");
+    localTheme ? setTheme(localTheme as Theme) : setMode("dark");
     setMounted(true);
   }, []);
 
-  return [theme, toggleTheme, mounted];
+  return { theme, toggleTheme, mounted };
 };

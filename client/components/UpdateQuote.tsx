@@ -65,14 +65,14 @@ interface UpdateQuoteProps {
 }
 
 export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
-  const { inputs, handleChange, updateInputs, resetForm, clearForm } = useForm({
+  const { inputs, handleChange, updateInputs } = useForm({
     id: "",
     author: "",
     content: "",
     tags: [],
   });
 
-  let { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [loadingPage, setLoadingPage] = useState(true);
 
@@ -95,35 +95,32 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const [tagInput, setTagInput] = useState("");
 
-  const { data, loading, error: singleQuoteError } = useQuery(
-    SINGLE_QUOTE_QUERY,
-    {
-      variables: {
-        slug,
-      },
-      onCompleted: (data) => {
-        if (user.id !== data.quote.submittedBy.id) {
-          router.push({
-            pathname: `/quotes/${data.quote.slug}`,
-          });
-        } else {
-          const { id, author, content, tags } = data.quote;
+  const { loading, error: singleQuoteError } = useQuery(SINGLE_QUOTE_QUERY, {
+    variables: {
+      slug,
+    },
+    onCompleted: (data) => {
+      if (user.id !== data.quote.submittedBy.id) {
+        router.push({
+          pathname: `/quotes/${data.quote.slug}`,
+        });
+      } else {
+        const { id, author, content, tags } = data.quote;
 
-          const tagNames = tags.map((tag) => tag.name);
+        const tagNames = tags.map((tag) => tag.name);
 
-          const formInputs = {
-            id,
-            author,
-            content,
-            tags: tagNames,
-          };
+        const formInputs = {
+          id,
+          author,
+          content,
+          tags: tagNames,
+        };
 
-          updateInputs(formInputs);
-          setLoadingPage(false);
-        }
-      },
-    }
-  );
+        updateInputs(formInputs);
+        setLoadingPage(false);
+      }
+    },
+  });
 
   const [updateQuote, { loading: updating, error: updateError }] = useMutation(
     UPDATE_QUOTE_MUTATION,
@@ -134,9 +131,9 @@ export const UpdateQuote: React.FC<UpdateQuoteProps> = ({ slug }) => {
 
   const router = useRouter();
 
-  if (singleQuoteError) return <div>Error...</div>;
+  if (singleQuoteError || updateError) return <div>Error...</div>;
 
-  if (loading) return <PageLoader />;
+  if (loading || updating) return <PageLoader />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

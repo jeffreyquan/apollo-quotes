@@ -1,8 +1,8 @@
+import { NextPage } from "next";
 import { Quotes } from "../components/Quotes";
 import { useRouter } from "next/router";
-import { PageLoader } from "../components/PageLoader";
 
-const QuotesPage = (props) => {
+const QuotesPage: NextPage = () => {
   const router = useRouter();
   const { tag } = router.query;
 

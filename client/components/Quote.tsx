@@ -1,13 +1,13 @@
+import React, { useEffect, useRef } from "react";
 import { useContext, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { BsExclamationCircle, BsHeart, BsHeartFill } from "react-icons/bs";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { QuoteStyles } from "../styles/QuoteStyles";
 import { QuoteTag } from "../styles/QuoteTag";
-import { LIKES_QUERY } from "./SingleQuote";
 import { Quote as QuoteType } from "../types";
 import { AuthContext } from "./Auth";
 import { DeleteQuote } from "./DeleteQuote";
@@ -73,10 +73,14 @@ export const LIKE_MUTATION = gql`
   }
 `;
 
-export const Quote = ({ quote }) => {
+interface QuoteProps {
+  quote: QuoteType;
+}
+
+export const Quote: React.FC<QuoteProps> = ({ quote }) => {
   const { id, author, content, image, tags, likes, submittedBy, slug } = quote;
 
-  const [like] = useMutation(LIKE_MUTATION, {
+  const [like, { error }] = useMutation(LIKE_MUTATION, {
     variables: {
       quoteId: id,
     },
@@ -111,9 +115,27 @@ export const Quote = ({ quote }) => {
     },
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  let { user } = useContext(AuthContext);
+  const [likeError, setLikeError] = useState<boolean>(false);
+
+  if (error) setLikeError(true);
+
+  const timeoutId = useRef<number>();
+
+  useEffect(() => {
+    if (likeError) {
+      timeoutId.current = window.setTimeout(function () {
+        setLikeError(false);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, [likeError]);
+
+  const { user } = useContext(AuthContext);
 
   let liked;
 
@@ -142,11 +164,7 @@ export const Quote = ({ quote }) => {
 
   const likeQuote = async (e) => {
     e.preventDefault();
-    try {
-      await like();
-    } catch (e) {
-      console.log(e);
-    }
+    await like();
   };
 
   const EditLink = ({ children, href, as, ...props }) => (
@@ -189,7 +207,8 @@ export const Quote = ({ quote }) => {
             <span data-testid="likeCount">
               {likes.length > 0 && likes.length}
             </span>
-            {liked ? (
+            {likeError && <BsExclamationCircle />}
+            {liked && !likeError ? (
               <BsHeartFill
                 data-testid="unlikeButton"
                 onClick={(e) => likeQuote(e)}
