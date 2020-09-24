@@ -1,12 +1,13 @@
-import { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "./Auth";
-import { useForm, validateInputs } from "../lib/useForm";
+import { ErrorsType, useForm, validateInputs } from "../lib/useForm";
 import { Form } from "../styles/Form";
 import { FormContainer } from "../styles/FormContainer";
 import { FormTitle } from "../styles/FormTitle";
+import { Message } from "./Message";
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION(
@@ -29,8 +30,8 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
-export const SignUp = () => {
-  const { inputs, handleChange, resetForm } = useForm({
+export const SignUp: React.FC = () => {
+  const { inputs, handleChange } = useForm({
     name: "",
     username: "",
     email: "",
@@ -38,7 +39,23 @@ export const SignUp = () => {
     confirmationPassword: "",
   });
 
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<ErrorsType>({});
+
+  const [serverError, setServerError] = useState<boolean>(false);
+
+  const timeoutId = useRef<number>();
+
+  useEffect(() => {
+    if (serverError) {
+      timeoutId.current = window.setTimeout(function () {
+        setServerError(false);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, [serverError]);
 
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -46,7 +63,7 @@ export const SignUp = () => {
 
   const { name, username, email, password, confirmationPassword } = inputs;
 
-  let { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [loadingPage, setLoadingPage] = useState(true);
 
@@ -79,19 +96,21 @@ export const SignUp = () => {
     variables: request,
   });
 
+  if (error) setServerError(true);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await register();
     } catch (err) {
-      let errors: any = {};
+      const errors: ErrorsType = {};
       const { message } = err;
       if (message === "Username already exists") {
         errors.username = message;
       } else if (message === "Email already exists") {
         errors.email = message;
-      } else if (!!err.graphQLErrors[0].extensions.exception.errors) {
+      } else if (err.graphQLErrors[0].extensions.exception.errors) {
         const inputKeys = Object.keys(
           err.graphQLErrors[0].extensions.exception.errors
         );
@@ -112,9 +131,12 @@ export const SignUp = () => {
       <Head>
         <title>Apollo Quotes | Sign Up</title>
       </Head>
+      <Message error={serverError ? true : false}>
+        {serverError && "Sign up failed. Please try again."}
+      </Message>
       <Form onSubmit={handleSubmit}>
         <FormTitle>Join the Apollo Quotes community</FormTitle>
-        <fieldset>
+        <fieldset disabled={loading} aria-busy={loading}>
           <label htmlFor="signUpName">Name</label>
           <input
             id="signUpName"

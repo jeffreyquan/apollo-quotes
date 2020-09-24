@@ -1,5 +1,8 @@
+import React from "react";
 import { gql, useMutation } from "@apollo/client";
+import { BsExclamationCircle } from "react-icons/bs";
 import { useRouter } from "next/router";
+import { ActionLoader } from "./ActionLoader";
 
 const DELETE_QUOTE_MUTATION = gql`
   mutation DELETE_QUOTE_MUTATION($id: ID!) {
@@ -9,8 +12,12 @@ const DELETE_QUOTE_MUTATION = gql`
   }
 `;
 
-export const DeleteQuote = ({ id, children }) => {
-  const [deleteQuote, { error }] = useMutation(DELETE_QUOTE_MUTATION, {
+interface DeleteQuoteProps {
+  id: string;
+}
+
+export const DeleteQuote: React.FC<DeleteQuoteProps> = ({ id, children }) => {
+  const [deleteQuote, { error, loading }] = useMutation(DELETE_QUOTE_MUTATION, {
     variables: { id },
     update(cache, { data: { deleteQuote } }) {
       cache.modify({
@@ -40,6 +47,9 @@ export const DeleteQuote = ({ id, children }) => {
     },
   });
 
+  if (loading) return <ActionLoader />;
+  if (error) return <BsExclamationCircle />;
+
   const router = useRouter();
 
   const handleClick = async (e) => {
@@ -51,7 +61,7 @@ export const DeleteQuote = ({ id, children }) => {
         query: { delete: "success" },
       });
     } catch (err) {
-      console.log(err);
+      return <BsExclamationCircle />;
     }
   };
 

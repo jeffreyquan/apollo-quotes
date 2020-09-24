@@ -1,9 +1,11 @@
+import { NextPage } from "next";
+import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/withApollo";
 import { AuthProvider } from "../components/Auth";
 import { Page } from "../components/Page";
 
-const App = ({ Component, pageProps }) => {
+const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const client = useApollo(pageProps.initialApolloState);
 
   return (

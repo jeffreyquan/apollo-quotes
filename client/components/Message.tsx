@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 
 const MessageStyles = styled.div`
@@ -19,6 +20,10 @@ const MessageStyles = styled.div`
     `}
 `;
 
-export const Message = ({ children, ...props }) => {
-  return <MessageStyles {...props}>{children}</MessageStyles>;
+interface MessageProps {
+  error?: boolean;
+}
+
+export const Message: React.FC<MessageProps> = ({ children, error }) => {
+  return <MessageStyles error={error}>{children}</MessageStyles>;
 };

@@ -24,12 +24,14 @@ describe("Quote", () => {
 
     cy.findByText("life").click();
 
-    cy.get("input[type=submit]").click();
+    cy.get("input[type=submit]")
+      .click()
+      .then(() =>
+        cy.location("pathname").should("eq", "/quotes/test-author-test-content")
+      );
 
     // TODO: find a better way of waiting for graphql mutation to resolve before checking redirect
-    cy.wait(5000);
-
-    cy.location("pathname").should("eq", "/quotes/test-author-test-content");
+    // cy.wait(5000);
   });
 
   it("Likes a quote", () => {
@@ -65,15 +67,17 @@ describe("Quote", () => {
 
     cy.get('[data-testid="updateTags"]').click();
 
-    cy.get("input[type=submit]").click();
+    cy.get("input[type=submit]")
+      .click()
+      .then(() => {
+        cy.location("pathname").should(
+          "eq",
+          "/quotes/updated-author-updated-content"
+        );
+      });
 
     // TODO: find a better way of waiting for graphql mutation to resolve before checking redirect
-    cy.wait(5000);
-
-    cy.location("pathname").should(
-      "eq",
-      "/quotes/updated-author-updated-content"
-    );
+    // cy.wait(5000);
   });
 
   it("Deletes a quote", () => {

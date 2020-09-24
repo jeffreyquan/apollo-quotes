@@ -6,7 +6,39 @@ function decodeCursor(encodedCursor: string) {
   return Buffer.from(encodedCursor, "base64").toString("ascii");
 }
 
-const fakeQuoteWithoutUserLike = () => ({
+type FakeQuote = {
+  id: string;
+  author: string;
+  content: string;
+  image?: string;
+  largeImage?: string;
+  likes: FakeLike[];
+  tags: FakeTag[];
+  submittedBy?: FakeUser;
+  slug?: string;
+  __typename?: string;
+};
+
+type FakeLike = {
+  id: string;
+  user: FakeUser;
+  __typename?: string;
+};
+
+type FakeUser = {
+  id: string;
+  username?: string;
+  name?: string;
+  __typename?: string;
+};
+
+type FakeTag = {
+  id: string;
+  name: string;
+  __typename?: string;
+};
+
+const fakeQuoteWithoutUserLike = (): FakeQuote => ({
   id: "testquote123",
   author: "Forrest Gump, Forrest Gump",
   content:
@@ -37,7 +69,7 @@ const fakeQuoteWithoutUserLike = () => ({
   __typename: "Quote",
 });
 
-const fakeQuoteWithUserLike = () => ({
+const fakeQuoteWithUserLike = (): FakeQuote => ({
   id: "testquote124",
   author: "Forrest Gump, Forrest Gump",
   content:
@@ -73,7 +105,7 @@ const fakeQuoteWithUserLike = () => ({
   __typename: "Quote",
 });
 
-const fakeCache = () =>
+const fakeCache = (): InMemoryCache =>
   new InMemoryCache({
     typePolicies: {
       Query: {
@@ -137,6 +169,7 @@ const fakeCache = () =>
       Quote: {
         fields: {
           likes: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             merge(existing = [], incoming) {
               return incoming;
             },
@@ -146,7 +179,7 @@ const fakeCache = () =>
     },
   });
 
-const fakeNewQuote = () => ({
+const fakeNewQuote = (): FakeQuote => ({
   id: "abcd123",
   author: "CS",
   content: "Hello World",

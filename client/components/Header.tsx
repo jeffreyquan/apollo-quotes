@@ -1,9 +1,11 @@
+import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsMoon, BsSun } from "react-icons/bs";
 import { IoIosRocket } from "react-icons/io";
 import { Navbar } from "./Navbar";
+import { Theme } from "../lib/useTheme";
 
 const Logo = styled.div`
   font-size: 3rem;
@@ -113,7 +115,12 @@ const StyledSwitch = styled.label`
   }
 `;
 
-export const Header = ({ theme, toggleTheme }) => {
+type HeaderProps = {
+  theme: Theme;
+  toggleTheme: () => void;
+};
+
+export const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
   const [sticky, setSticky] = useState(false);
 
   useEffect(() => {

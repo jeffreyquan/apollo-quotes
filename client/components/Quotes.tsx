@@ -194,7 +194,7 @@ export const Quotes: React.FC<QuotesProps> = ({
 
   const router = useRouter();
 
-  let { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   if (submittedBy) {
     if (submittedBy !== user.id) {
@@ -262,7 +262,7 @@ export const Quotes: React.FC<QuotesProps> = ({
     <Container>
       <Message>{message}</Message>
       <QuotesList>
-        {quotes.length > 0 &&
+        {quotes?.length > 0 &&
           quotes.map((quote, index) => (
             <React.Fragment key={quote.id}>
               <Link href="/quotes/[...slug]" as={`/quotes/${quote.slug}`}>

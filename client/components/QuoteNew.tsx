@@ -1,3 +1,4 @@
+import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -44,8 +45,8 @@ export const CREATE_QUOTE_MUTATION = gql`
   }
 `;
 
-export const QuoteNew = () => {
-  const { inputs, handleChange, updateInputs, resetForm, clearForm } = useForm({
+export const QuoteNew: React.FC = () => {
+  const { inputs, handleChange, updateInputs } = useForm({
     content: "",
     author: "",
     image: "",
@@ -121,6 +122,9 @@ export const QuoteNew = () => {
     },
   });
 
+  if (error)
+    setErrorMessage("Quote was unsuccessfully created. Please try again.");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -162,9 +166,7 @@ export const QuoteNew = () => {
 
   return (
     <FormContainer>
-      <Message error={errorMessage ? "true" : undefined}>
-        {errorMessage}
-      </Message>
+      <Message error={errorMessage ? true : false}>{errorMessage}</Message>
       <Form onSubmit={handleSubmit}>
         <FormTitle>Submit a new quote</FormTitle>
         <fieldset disabled={loading} aria-busy={loading}>
@@ -193,6 +195,7 @@ export const QuoteNew = () => {
             name="image"
             placeholder="Upload an image"
             onChange={handleChange}
+            value={image}
             required
           />
           <label htmlFor="tag">Tags</label>

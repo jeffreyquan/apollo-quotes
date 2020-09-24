@@ -1,13 +1,31 @@
 import { useState } from "react";
 interface FormState {
-  [key: string]: any;
+  id?: string;
+  author?: string;
+  content?: string;
+  tags?: string[];
+  name?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmationPassword?: string;
+  image?: string | string[];
 }
 
-export const useForm = (initialState: FormState = {}) => {
+interface Form {
+  inputs: FormState;
+  handleChange: (e) => void;
+  updateInputs: (update) => void;
+  resetForm: () => void;
+  clearForm: () => void;
+}
+
+export const useForm = (initialState: FormState = {}): Form => {
   const [inputs, setInputs] = useState(initialState);
 
   function handleChange(e) {
-    let { value, name, type } = e.target;
+    const { name, type } = e.target;
+    let { value } = e.target;
 
     if (type === "file") {
       [value] = e.target.files;
@@ -46,12 +64,20 @@ export const useForm = (initialState: FormState = {}) => {
   };
 };
 
-export const validateInputs = (inputs) => {
-  let errors: any = {};
+export type ErrorsType = {
+  name?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmationPassword?: string;
+};
+
+export const validateInputs = (inputs: FormState): ErrorsType => {
+  const errors: ErrorsType = {};
 
   const { name, username, email, password, confirmationPassword } = inputs;
 
-  const nameRegex = /^[A-Za-z]+((\s)?((\'|\-|\.)?([A-Za-z])+))*$/;
+  const nameRegex = /^[A-Za-z]+((\s)?(('|-|\.)?([A-Za-z])+))*$/;
 
   if (!!name && name.length === 0) {
     errors.name = "Name cannot be empty";

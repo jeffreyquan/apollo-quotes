@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Quote } from "../components/Quote";
+import { PageLoader } from "../components/PageLoader";
 import { Quote as QuoteType } from "../types";
 
 export const LIKES_QUERY = gql`
@@ -91,6 +92,10 @@ export const SingleQuote: React.FC<SingleQuoteProps> = ({ quote }) => {
       subscribeToNewLikeOnQuote(subscribeToMore, quote.id);
     }
   }, [subscribeToMore]);
+
+  if (loading) return <PageLoader />;
+
+  if (error) return <div>Error...</div>;
 
   let updatedQuote = { ...quote, image: quote.largeImage };
 
