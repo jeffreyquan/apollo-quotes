@@ -43,20 +43,6 @@ export const SignUp: React.FC = () => {
 
   const [serverError, setServerError] = useState<boolean>(false);
 
-  const timeoutId = useRef<number>();
-
-  useEffect(() => {
-    if (serverError) {
-      timeoutId.current = window.setTimeout(function () {
-        setServerError(false);
-      }, 3000);
-    }
-
-    return () => {
-      clearTimeout(timeoutId.current);
-    };
-  }, [serverError]);
-
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const isMounted = useRef(false);
@@ -92,11 +78,9 @@ export const SignUp: React.FC = () => {
   const request = { ...inputs };
   delete request.confirmationPassword;
 
-  const [register, { error, loading }] = useMutation(REGISTER_MUTATION, {
+  const [register, { loading }] = useMutation(REGISTER_MUTATION, {
     variables: request,
   });
-
-  if (error) setServerError(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,9 +92,11 @@ export const SignUp: React.FC = () => {
       const { message } = err;
       if (message === "Username already exists") {
         errors.username = message;
+        setErrors(errors);
       } else if (message === "Email already exists") {
         errors.email = message;
-      } else if (err.graphQLErrors[0].extensions.exception.errors) {
+        setErrors(errors);
+      } else if (err.graphQLErrors[0]?.extensions.exception.errors) {
         const inputKeys = Object.keys(
           err.graphQLErrors[0].extensions.exception.errors
         );
@@ -121,8 +107,10 @@ export const SignUp: React.FC = () => {
                 key
               ].properties.message)
         );
+        setErrors(errors);
+      } else {
+        setServerError(true);
       }
-      setErrors(errors);
     }
   };
 
@@ -145,6 +133,7 @@ export const SignUp: React.FC = () => {
             placeholder="John Smith"
             value={name}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="name"
             autoFocus
             required
@@ -158,6 +147,7 @@ export const SignUp: React.FC = () => {
             placeholder="jsmith"
             value={username}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="username"
             required
           />
@@ -170,6 +160,7 @@ export const SignUp: React.FC = () => {
             placeholder="Email"
             value={email}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="email"
             required
           />
@@ -182,6 +173,7 @@ export const SignUp: React.FC = () => {
             placeholder="Password"
             value={password}
             onChange={handleChange}
+            onFocus={() => setServerError(false)}
             autoComplete="new-password"
             required
           />
@@ -195,6 +187,7 @@ export const SignUp: React.FC = () => {
               placeholder="Confirmaton Password"
               value={confirmationPassword}
               onChange={handleChange}
+              onFocus={() => setServerError(false)}
               autoComplete="new-password"
               required
             />
