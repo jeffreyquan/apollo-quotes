@@ -1,6 +1,6 @@
 import React from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { MdAddCircle } from "react-icons/md";
 import { useForm } from "../lib/useForm";
@@ -57,7 +57,7 @@ export const QuoteNew: React.FC = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { content, author, image, tags } = inputs;
+  const { content, author, tags } = inputs;
 
   const router = useRouter();
 
@@ -122,9 +122,6 @@ export const QuoteNew: React.FC = () => {
     },
   });
 
-  if (error)
-    setErrorMessage("Quote was unsuccessfully created. Please try again.");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -132,19 +129,13 @@ export const QuoteNew: React.FC = () => {
       const slug = res.data.createQuote.slug;
       router.push("/quotes/[slug]", `/quotes/${slug}`);
     } catch (err) {
-      setErrorMessage(err.message);
+      if (err.message === "Failed to fetch") {
+        setErrorMessage("Quote was unable to be created. Please try again.");
+      } else {
+        setErrorMessage(err.message);
+      }
     }
   };
-
-  const timeoutId = useRef<number>();
-
-  useEffect(() => {
-    if (errorMessage) {
-      timeoutId.current = window.setTimeout(function () {
-        setErrorMessage("");
-      }, 3000);
-    }
-  }, [errorMessage]);
 
   const addTag = () => {
     const tagName = tagInput.toLowerCase();
@@ -178,6 +169,7 @@ export const QuoteNew: React.FC = () => {
             rows={4}
             value={content}
             onChange={handleChange}
+            onFocus={() => setErrorMessage(null)}
           />
           <label htmlFor="author">Author</label>
           <input
@@ -187,6 +179,7 @@ export const QuoteNew: React.FC = () => {
             placeholder="JR Smith"
             value={author}
             onChange={handleChange}
+            onFocus={() => setErrorMessage(null)}
           />
           <label htmlFor="file">Image</label>
           <input
@@ -195,7 +188,7 @@ export const QuoteNew: React.FC = () => {
             name="image"
             placeholder="Upload an image"
             onChange={handleChange}
-            value={image}
+            onFocus={() => setErrorMessage(null)}
             required
           />
           <label htmlFor="tag">Tags</label>
@@ -206,6 +199,7 @@ export const QuoteNew: React.FC = () => {
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
+              onFocus={() => setErrorMessage(null)}
               placeholder="power"
             />
             <AddIconStyles data-testid="addTag" onClick={() => addTag()}>
