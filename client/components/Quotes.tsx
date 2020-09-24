@@ -212,7 +212,7 @@ export const Quotes: React.FC<QuotesProps> = ({
 
   useEffect(() => {
     if (router.query.delete === "success") {
-      setMessage(true);
+      setMessage("Quote successfully deleted");
     }
 
     return () => {
@@ -224,7 +224,7 @@ export const Quotes: React.FC<QuotesProps> = ({
     if (message) {
       timeoutId.current = window.setTimeout(function () {
         setMessage(null);
-        router.push("/");
+        router.push("/quotes");
       }, 3000);
     }
   }, [message]);

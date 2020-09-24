@@ -57,7 +57,7 @@ export const SignUp: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push("/quotes");
     } else {
       setLoadingPage(false);
     }

@@ -57,7 +57,7 @@ export const DeleteQuote: React.FC<DeleteQuoteProps> = ({ id, children }) => {
     try {
       await deleteQuote();
       router.push({
-        pathname: "/",
+        pathname: "/quotes",
         query: { delete: "success" },
       });
     } catch (err) {

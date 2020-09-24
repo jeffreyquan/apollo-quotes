@@ -50,7 +50,7 @@ export const SignIn: React.FC = () => {
       if (router.query.redirect) {
         router.back();
       } else {
-        router.push("/");
+        router.push("/quotes");
       }
     } else {
       setLoadingPage(false);

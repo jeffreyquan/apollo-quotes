@@ -62,7 +62,7 @@ export const QuoteNew: React.FC = () => {
   const router = useRouter();
 
   // TODO: refetch all quotes after mutation
-  const [createQuote, { error, loading }] = useMutation(CREATE_QUOTE_MUTATION, {
+  const [createQuote, { loading }] = useMutation(CREATE_QUOTE_MUTATION, {
     variables: inputs,
     update(cache, { data: { createQuote } }) {
       cache.modify({
