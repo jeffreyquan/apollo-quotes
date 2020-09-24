@@ -460,7 +460,7 @@ class QuoteAPI extends DataSource {
       cloudinary.v2.uploader.destroy(publicId, function (err, res) {
         if (err) console.log(err);
 
-        if (res) console.log(res);
+        if (res) console.log("Image successfully deleted");
       });
 
       const deletedQuote = await quote.deleteOne();
