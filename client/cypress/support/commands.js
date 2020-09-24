@@ -54,9 +54,9 @@ Cypress.Commands.add("autoLogin", () => {
       },
     },
     failOnStatusCode: false,
+  }).then(() => {
+    cy.visit("/");
+
+    cy.get("#logoutButton").should("exist");
   });
-
-  cy.visit("/");
-
-  cy.get("#logoutButton").should("exist");
 });
