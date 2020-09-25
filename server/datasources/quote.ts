@@ -90,8 +90,13 @@ class QuoteAPI extends DataSource {
       filter = { ...filter, submittedBy };
     }
 
-    if (cursor)
-      filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
+    if (cursor) {
+      if (likedBy) {
+        filter = { ...filter, updatedAt: { $lt: this.decodeCursor(cursor) } };
+      } else {
+        filter = { ...filter, createdAt: { $lt: this.decodeCursor(cursor) } };
+      }
+    }
 
     if (likedBy) {
       if (!user) {
@@ -142,7 +147,11 @@ class QuoteAPI extends DataSource {
     quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
 
     if (quotes.length > 0) {
-      endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+      if (likedBy) {
+        endCursor = this.encodeCursor(quotes[quotes.length - 1].updatedAt);
+      } else {
+        endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+      }
     } else {
       endCursor = cursor;
     }
@@ -177,9 +186,9 @@ class QuoteAPI extends DataSource {
       .populate({
         path: "likes",
         select: "quote -_id",
-        createdAt: { ...filter },
+        updatedAt: { ...filter },
         options: {
-          sort: { createdAt: "descending", _id: "descending" },
+          sort: { updatedAt: "descending", _id: "descending" },
           limit: limit + 1,
         },
         populate: [
