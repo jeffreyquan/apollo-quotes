@@ -78,8 +78,13 @@ function createApolloClient() {
                   },
                   quotes: [],
                 },
-                incoming
+                incoming,
+                { args }
               ) => {
+                if (args.likedBy) {
+                  return { ...incoming };
+                }
+
                 let existingCursor;
                 let incomingCursor;
 

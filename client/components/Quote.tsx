@@ -11,6 +11,7 @@ import { QuoteTag } from "../styles/QuoteTag";
 import { Quote as QuoteType } from "../types";
 import { AuthContext } from "./Auth";
 import { DeleteQuote } from "./DeleteQuote";
+import { ALL_QUOTES_QUERY } from "./Quotes";
 
 export const QuoteBody = styled.div`
   display: grid;
@@ -80,18 +81,20 @@ interface QuoteProps {
 export const Quote: React.FC<QuoteProps> = ({ quote }) => {
   const { id, author, content, image, tags, likes, submittedBy, slug } = quote;
 
+  const { user } = useContext(AuthContext);
+
   const [like] = useMutation(LIKE_MUTATION, {
     variables: {
       quoteId: id,
     },
-    // refetchQueries: [
-    //   {
-    //     query: LIKES_QUERY,
-    //     variables: {
-    //       id,
-    //     },
-    //   },
-    // ],
+    refetchQueries: [
+      {
+        query: ALL_QUOTES_QUERY,
+        variables: {
+          likedBy: user.id,
+        },
+      },
+    ],
     update(cache, { data: { likeQuote } }) {
       const likedQuote: QuoteType = cache.readFragment({
         id: `Quote:${id}`,
@@ -132,8 +135,6 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
       clearTimeout(timeoutId.current);
     };
   }, [likeError]);
-
-  const { user } = useContext(AuthContext);
 
   let liked;
 
