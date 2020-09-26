@@ -262,4 +262,225 @@ export const items = [
       "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274195/apollo-quotes/siittgrbipj5mee1mflg.jpg",
     tags: ["inspiration", "yesterday", "humor"],
   },
+  {
+    author: "Abraham Lincoln",
+    content:
+      "In the end, it's not the years in your life that count. It's the life in your years.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601129108/apollo-quotes/j4fbpq2yyba3biccyasn.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601129108/apollo-quotes/j4fbpq2yyba3biccyasn.jpg",
+    tags: ["life"],
+  },
+  {
+    author: "Albert Einstein",
+    content:
+      "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    tags: ["stupidity", "universe", "infinity"],
+  },
+  {
+    author: "Marilyn Monroe",
+    content:
+      "I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601129206/apollo-quotes/vqtorqwptucu4yrdqbgt.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601129206/apollo-quotes/vqtorqwptucu4yrdqbgt.jpg",
+    tags: ["insecurity", "worst", "best"],
+  },
+  {
+    author: "J.K. Rowling, Harry Potter and the Goblet of Fire",
+    content:
+      "If you want to know what a man's like, take a good look at how he treats his inferiors, not his equals.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130881/apollo-quotes/tjo5uegbafszbmoyn6sd.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130881/apollo-quotes/tjo5uegbafszbmoyn6sd.jpg",
+    tags: ["harry potter"],
+  },
+  {
+    author: "William Shakespeare, As You Like It",
+    content:
+      "The fool doth think he is wise, but the wise man knows himself to be a fool.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130903/apollo-quotes/euzicigxeoajkjb0irqd.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130903/apollo-quotes/euzicigxeoajkjb0irqd.jpg",
+    tags: ["wisdom"],
+  },
+  {
+    author: "Albert Einstein",
+    content:
+      "If you can't explain it to a six year old, you don't understand it yourself.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    tags: ["understand", "simplicity"],
+  },
+  {
+    author: "George Bernard Shaw",
+    content:
+      "Life isn't about finding yourself. Life is about creating yourself.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130877/apollo-quotes/ygdoleeovmr3yk9u4pvn.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130877/apollo-quotes/ygdoleeovmr3yk9u4pvn.jpg",
+    tags: ["life", "creation"],
+  },
+  {
+    author: "Nicholas Sparks, A Walk to Remember",
+    content: "Love is like the wind, you can't see it but you can feel it.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274150/apollo-quotes/pw0kfxxl97vnpqcfqtee.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274150/apollo-quotes/pw0kfxxl97vnpqcfqtee.jpg",
+    tags: ["love"],
+  },
+  {
+    author: "Mahatma Gandhi",
+    content:
+      "Happiness is when what you think, what you say, and what you do are in harmony.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274181/apollo-quotes/nik9v3jbj5wm67xofuth.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274181/apollo-quotes/nik9v3jbj5wm67xofuth.jpg",
+    tags: ["happiness"],
+  },
+  {
+    author: "Mark Twain",
+    content:
+      "Keep away from people who try to belittle your ambitions. Small people always do that, but the really great make you feel that you, too, can become great.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1596388448/apollo-quotes/hc1crxfbzofyvlxicuq9.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1596388448/apollo-quotes/hc1crxfbzofyvlxicuq9.jpg",
+    tags: ["greatness"],
+  },
+  {
+    author: "Abraham Lincoln",
+    content: "Whatever you are, be a good one.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601129108/apollo-quotes/j4fbpq2yyba3biccyasn.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601129108/apollo-quotes/j4fbpq2yyba3biccyasn.jpg",
+    tags: ["inspiration"],
+  },
+  {
+    author: "Oscar Wilde",
+    content: "A good friend will always stab you in the front.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274191/apollo-quotes/qsxuym54znwvwpszkjhp.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274191/apollo-quotes/qsxuym54znwvwpszkjhp.jpg",
+    tags: ["betrayal"],
+  },
+  {
+    author: "Albert Einstein",
+    content: "I have no special talents. I am only passionately curious.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
+    tags: ["passion", "curiosity"],
+  },
+  {
+    author: "Ralph Waldo Emerson",
+    content: "Always do what you are afraid to do.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130890/apollo-quotes/epil8qtaluvh1wvf1sqv.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130890/apollo-quotes/epil8qtaluvh1wvf1sqv.jpg",
+    tags: ["inspiration"],
+  },
+  {
+    author: "Coco Chanel",
+    content: "The most courageous act is still to think for yourself. Aloud.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130875/apollo-quotes/higctchjuv059zrwt2aj.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130875/apollo-quotes/higctchjuv059zrwt2aj.jpg",
+    tags: ["courage", "inspiration", "empowerment"],
+  },
+  {
+    author: "Haruki Murakami, Norwegian Wood",
+    content:
+      "If you only read the books that everyone else is reading, you can only think what everyone else is thinking.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130877/apollo-quotes/pe1ghjkycntpffjnbqa4.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130877/apollo-quotes/pe1ghjkycntpffjnbqa4.jpg",
+    tags: ["books"],
+  },
+  {
+    author: "Robert Frost",
+    content: "If we couldn't laugh we would all go insane.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130890/apollo-quotes/k2asbu7cjekqbotvgaxx.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130890/apollo-quotes/k2asbu7cjekqbotvgaxx.jpg",
+    tags: ["laughter"],
+  },
+  {
+    author: "Haruki Murakami, Kafka on the Shore",
+    content:
+      "Memories warm you up from the inside. But they also tear you apart.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130877/apollo-quotes/pe1ghjkycntpffjnbqa4.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130877/apollo-quotes/pe1ghjkycntpffjnbqa4.jpg",
+    tags: ["memories"],
+  },
+  {
+    author: "Johnny Depp",
+    content:
+      "If someone were to harm my family or a friend or somebody I love, I would eat them. I might end up in jail for 500 years, but I would eat them.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130885/apollo-quotes/woasbizakfgrfjp1ugcs.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130885/apollo-quotes/woasbizakfgrfjp1ugcs.jpg",
+    tags: ["humour", "love"],
+  },
+  {
+    author: "Oprah Winfrey",
+    content: "You can have it all. Just not all at once.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130896/apollo-quotes/jpakwbhh2fz6xbfarial.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130896/apollo-quotes/jpakwbhh2fz6xbfarial.jpg",
+    tags: ["dreams", "life"],
+  },
+  {
+    author: "Lao Tzu",
+    content:
+      "Life is a series of natural and spontaneous changes. Don't resist them; that only creates sorrow. Let reality be reality. Let things flow naturally forward in whatever way they like.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601131470/apollo-quotes/t34hb7tq2ez34dtcim4v.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601131470/apollo-quotes/t34hb7tq2ez34dtcim4v.jpg",
+    tags: ["acceptance", "life"],
+  },
+  {
+    author: "Stephen King",
+    content:
+      "If you want to be a writer, you must do two things above all others: read a lot and write a lot.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130891/apollo-quotes/waw6gvwjyiqzmzifqj5x.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130891/apollo-quotes/waw6gvwjyiqzmzifqj5x.jpg",
+    tags: ["writing"],
+  },
+  {
+    author: "Voltaire",
+    content: "Judge a man by his questions rather than by his answers.",
+    image:
+      "https://res.cloudinary.com/jq/image/upload/v1601130895/apollo-quotes/neuskhldoyegptu7dczt.jpg",
+    largeImage:
+      "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1601130895/apollo-quotes/neuskhldoyegptu7dczt.jpg",
+    tags: ["character"],
+  },
 ];
