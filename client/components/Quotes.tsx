@@ -49,6 +49,7 @@ export const ALL_QUOTES_QUERY = gql`
             id
             username
           }
+          createdAt
         }
         slug
       }
@@ -77,6 +78,7 @@ const QUOTES_SUBSCRIPTION = gql`
           id
           username
         }
+        createdAt
       }
       slug
     }
@@ -130,6 +132,7 @@ const LIKES_SUBSCRIPTION = gql`
         id
         username
       }
+      createdAt
     }
   }
 `;
@@ -146,6 +149,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 10rem;
+  @media only screen and (max-width: ${(props) => props.theme.smallbp}) {
+    margin-bottom: 2.4rem;
+  }
 `;
 
 const QuotesList = styled.div`
@@ -176,6 +183,7 @@ export const Quotes: React.FC<QuotesProps> = ({
   likedBy,
 }) => {
   const [prevCursor, setPrevCursor] = useState(null);
+
   const [message, setMessage] = useState(null);
 
   const { data, loading, error, fetchMore, subscribeToMore } = useQuery(
@@ -248,9 +256,11 @@ export const Quotes: React.FC<QuotesProps> = ({
   };
 
   if (loading) return <PageLoader />;
+
   if (error) return <div>Error...</div>;
 
   let quotes;
+
   let hasMore;
 
   if (data) {

@@ -37,6 +37,7 @@ export const SINGLE_QUOTE_QUERY = gql`
           id
           username
         }
+        createdAt
       }
       slug
     }

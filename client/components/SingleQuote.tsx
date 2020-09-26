@@ -35,6 +35,7 @@ const LIKE_SUBSCRIPTION = gql`
         id
         username
       }
+      createdAt
     }
   }
 `;

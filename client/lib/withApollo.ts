@@ -12,11 +12,16 @@ import { DEV_ENDPOINT } from "../config";
 import { Like as LikeType } from "../types";
 
 export const NEW_QUOTE = "NEW_QUOTE";
+export const NEW_LIKE = "NEW_LIKE";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 function decodeCursor(encodedCursor: string) {
   return Buffer.from(encodedCursor, "base64").toString("ascii");
+}
+
+function encodeCursor(date: number) {
+  return Buffer.from(date.toString()).toString("base64");
 }
 
 const isFile = (value) =>
@@ -82,7 +87,62 @@ function createApolloClient() {
                 { args }
               ) => {
                 if (args.likedBy) {
-                  return { ...incoming };
+                  if (existing.quotes.length === 0) {
+                    if (incoming.totalCount === -2) {
+                      return existing;
+                    }
+
+                    if (incoming.totalCount === -1) {
+                      return {
+                        ...incoming,
+                        totalCount: 1,
+                        pageInfo: {
+                          endCursor: encodeCursor(incoming.pageInfo.endCursor),
+                          hasMore: true,
+                        },
+                      };
+                    }
+
+                    return incoming;
+                  }
+
+                  if (incoming.totalCount === -2) {
+                    const exists = existing.quotes.some(
+                      (quote) => quote.__ref === incoming.quotes[0].__ref
+                    );
+
+                    let updatedQuotes;
+
+                    if (exists) {
+                      updatedQuotes = existing.quotes.filter(
+                        (quote) => quote.__ref !== incoming.quotes[0].__ref
+                      );
+                    } else {
+                      updatedQuotes = existing.quotes;
+                    }
+
+                    return {
+                      ...existing,
+                      quotes: [...updatedQuotes],
+                    };
+                  }
+
+                  if (incoming.totalCount === -1) {
+                    const updatedQuotes = [
+                      incoming.quotes[0],
+                      ...existing.quotes,
+                    ];
+
+                    return {
+                      ...existing,
+                      quotes: [...updatedQuotes],
+                    };
+                  }
+
+                  return {
+                    ...incoming,
+                    quotes: [...existing.quotes, ...incoming.quotes],
+                  };
                 }
 
                 let existingCursor;

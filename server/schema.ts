@@ -1,6 +1,8 @@
 import { gql } from "apollo-server";
 
 export const typeDefs = gql`
+  scalar BigInt
+
   type Query {
     likes(id: ID!): [Like]
     paths: [Slug]
@@ -80,6 +82,7 @@ export const typeDefs = gql`
     id: ID!
     quote: Quote
     user: User!
+    createdAt: BigInt!
   }
 
   type QuotesConnection {

@@ -34,6 +34,7 @@ export const resolvers = {
               id: newLike.user._id,
               username: newLike.user.username,
             },
+            createdAt: newLike.createdAt,
           },
         });
 

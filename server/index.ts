@@ -6,6 +6,7 @@ import cloudinary from "cloudinary";
 import { ApolloServer, PubSub } from "apollo-server-express";
 import cookieParser from "cookie-parser";
 import { merge } from "lodash";
+import { BigIntTypeDefinition, BigIntResolver } from "graphql-scalars";
 import { typeDefs } from "./schema";
 import { resolvers as quoteResolvers } from "./resolvers/Quote";
 import { resolvers as userResolvers } from "./resolvers/User";
@@ -34,6 +35,8 @@ app.use("*", async function (req: AuthRequest, res, next) {
   next();
 });
 
+const resolverMap = { BigInt: BigIntResolver };
+
 const connectDatabase = () => {
   try {
     mongoose.set("useFindAndModify", false);
@@ -55,8 +58,14 @@ cloudinary.v2.config({
 });
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers: merge(authResolvers, quoteResolvers, userResolvers, likeResolvers),
+  typeDefs: merge(BigIntTypeDefinition, typeDefs),
+  resolvers: merge(
+    resolverMap,
+    authResolvers,
+    quoteResolvers,
+    userResolvers,
+    likeResolvers
+  ),
   context: async ({ req, res }) => ({
     req,
     res,

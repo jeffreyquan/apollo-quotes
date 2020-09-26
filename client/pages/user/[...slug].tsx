@@ -24,9 +24,7 @@ const UserPage: React.FC = () => {
       {slug[1] === "quotes" && (
         <Quotes tag={tag as string} limit={4} submittedBy={submittedBy} />
       )}
-      {slug[1] === "likes" && (
-        <Quotes tag={tag as string} limit={4} likedBy={likedBy} />
-      )}
+      {slug[1] === "likes" && <Quotes tag={tag as string} likedBy={likedBy} />}
     </div>
   );
 };

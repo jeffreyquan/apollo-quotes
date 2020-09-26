@@ -21,7 +21,7 @@ class QuoteAPI extends DataSource {
     const likes = await Quote.findById(id)
       .populate({
         path: "likes",
-        select: "_id user",
+        select: "_id user createdAt",
         populate: {
           path: "user",
           select: "_id username",
@@ -47,7 +47,7 @@ class QuoteAPI extends DataSource {
       })
       .populate({
         path: "likes",
-        select: "_id user",
+        select: "_id user createdAt",
         populate: {
           path: "user",
           select: "_id username",
@@ -67,6 +67,7 @@ class QuoteAPI extends DataSource {
     let quotes = [];
     let endCursor = "";
     let filter = {};
+    let type = "feed";
 
     if (tag) {
       const fetchedTag = await Tag.findOne({ name: tag }).exec();
@@ -111,7 +112,21 @@ class QuoteAPI extends DataSource {
       totalCount = await (await User.findById(user._id).select("likes").exec())
         .likes.length;
 
-      quotes = res.likes.map((x) => x.quote);
+      const { likes } = res;
+
+      quotes = likes.map((x) => x.quote);
+
+      type = "likes";
+
+      const updatedLikes = likes.length > limit ? likes.slice(0, -1) : likes;
+
+      if (updatedLikes.length > 0) {
+        endCursor = this.encodeCursor(
+          updatedLikes[updatedLikes.length - 1].createdAt
+        );
+      } else {
+        endCursor = cursor;
+      }
     } else {
       quotes = await Quote.find(filter)
         .sort({ createdAt: "descending", _id: "descending" })
@@ -122,7 +137,7 @@ class QuoteAPI extends DataSource {
         })
         .populate({
           path: "likes",
-          select: "_id user",
+          select: "_id user createdAt",
           populate: {
             path: "user",
             select: "_id username",
@@ -139,14 +154,15 @@ class QuoteAPI extends DataSource {
 
     const hasMore = quotes.length > limit;
 
-    quotes = hasMore ? (quotes = quotes.slice(0, -1)) : quotes;
+    quotes = hasMore ? quotes.slice(0, -1) : quotes;
 
-    if (quotes.length > 0) {
-      endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
-    } else {
-      endCursor = cursor;
+    if (type === "feed") {
+      if (quotes.length > 0) {
+        endCursor = this.encodeCursor(quotes[quotes.length - 1].createdAt);
+      } else {
+        endCursor = cursor;
+      }
     }
-
     return {
       totalCount,
       pageInfo: {
@@ -168,7 +184,7 @@ class QuoteAPI extends DataSource {
 
     if (cursor) {
       filter = {
-        $lt: this.decodeCursor(cursor),
+        createdAt: { $lt: parseInt(this.decodeCursor(cursor)) },
       };
     }
 
@@ -176,11 +192,13 @@ class QuoteAPI extends DataSource {
       .select("likes")
       .populate({
         path: "likes",
-        select: "quote -_id",
-        createdAt: { ...filter },
+        select: "createdAt quote -_id",
         options: {
           sort: { createdAt: "descending", _id: "descending" },
           limit: limit + 1,
+        },
+        match: {
+          ...filter,
         },
         populate: [
           {
@@ -188,7 +206,7 @@ class QuoteAPI extends DataSource {
             populate: [
               {
                 path: "likes",
-                select: "_id user",
+                select: "_id user createdAt",
                 populate: {
                   path: "user",
                   select: "_id username",
@@ -275,7 +293,7 @@ class QuoteAPI extends DataSource {
         })
         .populate({
           path: "likes",
-          select: "_id user",
+          select: "_id user createdAt",
           populate: {
             path: "user",
             select: "_id username",

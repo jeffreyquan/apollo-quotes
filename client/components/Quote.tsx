@@ -70,6 +70,7 @@ export const LIKE_MUTATION = gql`
         id
         username
       }
+      createdAt
     }
   }
 `;
@@ -87,26 +88,35 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
     variables: {
       quoteId: id,
     },
-    refetchQueries: [
-      {
-        query: ALL_QUOTES_QUERY,
-        variables: {
-          likedBy: user.id,
-        },
-      },
-    ],
     update(cache, { data: { likeQuote } }) {
       const likedQuote: QuoteType = cache.readFragment({
         id: `Quote:${id}`,
         fragment: gql`
           fragment Like on Quote {
-            likes {
+            id
+            author
+            content
+            image
+            largeImage
+            submittedBy {
               id
             }
+            tags {
+              id
+              name
+            }
+            likes {
+              id
+              user {
+                id
+                username
+              }
+              createdAt
+            }
+            slug
           }
         `,
       });
-
       const updatedLikes = likedQuote.likes;
       const foundLike = updatedLikes.some((like) => like.id === likeQuote.id);
 
@@ -115,6 +125,26 @@ export const Quote: React.FC<QuoteProps> = ({ quote }) => {
           id: `Like:${likeQuote.id}`,
         });
       }
+
+      const count = foundLike ? -1 : -2;
+
+      cache.writeQuery({
+        query: ALL_QUOTES_QUERY,
+        variables: {
+          likedBy: user.id,
+        },
+        data: {
+          quotes: {
+            __typename: "QuotesConnection",
+            totalCount: count,
+            pageInfo: {
+              endCursor: parseInt(likeQuote.createdAt),
+              hasMore: true,
+            },
+            quotes: [likedQuote],
+          },
+        },
+      });
     },
   });
 
