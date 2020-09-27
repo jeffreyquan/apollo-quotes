@@ -29,7 +29,7 @@ import "@testing-library/cypress/add-commands";
 import "cypress-file-upload";
 
 const EMAIL = "test@abc.com";
-const PASSWORD = "fjord1234";
+const PASSWORD = "test123";
 
 const LOGIN_MUTATION = `
   mutation LOGIN_MUTATION($email: String!, $password: String!) {

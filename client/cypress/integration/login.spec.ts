@@ -1,6 +1,6 @@
 describe("Login", () => {
   const EMAIL = "test@abc.com";
-  const PASSWORD = "fjord1234";
+  const PASSWORD = "test123";
 
   it("Navigates successfully to home page and redirects to quote page", () => {
     cy.visit("/");
