@@ -8,7 +8,7 @@ import {
 import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { DEV_ENDPOINT } from "../config";
+import { DEV_ENDPOINT, DEV_WS_ENDPOINT } from "../config";
 import { Like as LikeType } from "../types";
 
 export const NEW_QUOTE = "NEW_QUOTE";
@@ -31,7 +31,10 @@ const isFile = (value) =>
 const isUpload = ({ variables }) => Object.values(variables).some(isFile);
 
 const uploadLink = new createUploadLink({
-  uri: DEV_ENDPOINT, // Server URL (must be absolute)
+  uri:
+    process.env.NODE_ENV === "development"
+      ? DEV_ENDPOINT
+      : process.env.PROD_ENDPOINT, // Server URL (must be absolute)
   fetchOptions: {
     credentials: "include", // Additional fetch() options like `credentials` or `headers`,
   },
@@ -40,7 +43,10 @@ const uploadLink = new createUploadLink({
 const wsLink = process.browser
   ? new WebSocketLink({
       // if you instantiate in the server, the error will be thrown
-      uri: `ws://localhost:5000/graphql`,
+      uri:
+        process.env.NODE_ENV === "development"
+          ? DEV_WS_ENDPOINT
+          : process.env.PROD_WS_ENDPOINT,
       options: {
         reconnect: true,
       },
