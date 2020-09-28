@@ -34,7 +34,7 @@ const uploadLink = new createUploadLink({
   uri:
     process.env.NODE_ENV === "development"
       ? DEV_ENDPOINT
-      : process.env.PROD_ENDPOINT, // Server URL (must be absolute)
+      : process.env.NEXT_PUBLIC_PROD_ENDPOINT, // Server URL (must be absolute)
   fetchOptions: {
     credentials: "include", // Additional fetch() options like `credentials` or `headers`,
   },
@@ -46,7 +46,7 @@ const wsLink = process.browser
       uri:
         process.env.NODE_ENV === "development"
           ? DEV_WS_ENDPOINT
-          : process.env.PROD_WS_ENDPOINT,
+          : process.env.NEXT_PUBLIC_PROD_WS_ENDPOINT,
       options: {
         reconnect: true,
       },
