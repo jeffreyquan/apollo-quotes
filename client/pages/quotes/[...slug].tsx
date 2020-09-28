@@ -77,7 +77,6 @@ export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
     props: {
       quote,
     },
-    unstable_revalidate: 1,
   };
 };
 
