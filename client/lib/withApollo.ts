@@ -8,7 +8,6 @@ import {
 import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import ws from "websocket";
 import { DEV_ENDPOINT, DEV_WS_ENDPOINT } from "../config";
 import { Like as LikeType } from "../types";
 
@@ -51,7 +50,6 @@ const wsLink = process.browser
       options: {
         reconnect: true,
       },
-      webSocketImpl: ws.client,
     })
   : null;
 
