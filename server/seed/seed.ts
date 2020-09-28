@@ -10,6 +10,10 @@ dotenv.config();
 
 const db = process.env.MONGO_URI;
 
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const initializeSeed = async () => {
   try {
     mongoose.set("useFindAndModify", false);
@@ -18,7 +22,6 @@ const initializeSeed = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log(db);
     console.log("DB connected.");
   } catch (error) {
     console.log(error);
@@ -92,6 +95,8 @@ const initializeSeed = async () => {
         tags,
         ...quoteSubmittedBy,
       });
+
+      await sleep(500);
 
       if (newQuote) {
         console.log(`${index + 1}. Quote by ${author} created`);
