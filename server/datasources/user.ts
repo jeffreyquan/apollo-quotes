@@ -59,6 +59,8 @@ class UserAPI extends DataSource {
 
       this.context.res.cookie("token", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
         maxAge: 1000 * 60 * 60 * 24 * 165,
       });
 
@@ -91,6 +93,8 @@ class UserAPI extends DataSource {
 
     this.context.res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 165,
     });
 
@@ -98,7 +102,11 @@ class UserAPI extends DataSource {
   }
 
   async logoutUser() {
-    this.context.res.clearCookie("token");
+    this.context.res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     return { message: "Successfully logged out" };
   }
 
