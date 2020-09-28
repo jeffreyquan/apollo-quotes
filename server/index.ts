@@ -34,6 +34,7 @@ app.use("*", async function (req: AuthRequest, res, next) {
   req.user = user;
   next();
 });
+app.enable("trust proxy");
 
 const resolverMap = { BigInt: BigIntResolver };
 
