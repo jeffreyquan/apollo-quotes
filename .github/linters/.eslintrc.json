@@ -1,9 +1,8 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "prettier", "cypress"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "extends": [
-    "plugin:cypress/recommended",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
