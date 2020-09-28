@@ -275,12 +275,12 @@ export const items = [
   {
     author: "Albert Einstein",
     content:
-      "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+      "Life is like riding a bicycle. To keep your balance, you must keep moving.",
     image:
       "https://res.cloudinary.com/jq/image/upload/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
     largeImage:
       "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274217/apollo-quotes/qwjbzg92r9e8cc0e3pfh.jpg",
-    tags: ["stupidity", "universe", "infinity"],
+    tags: ["life"],
   },
   {
     author: "Marilyn Monroe",
@@ -334,12 +334,13 @@ export const items = [
   },
   {
     author: "Nicholas Sparks, A Walk to Remember",
-    content: "Love is like the wind, you can't see it but you can feel it.",
+    content:
+      "Just when you think it can't get any worse, it can. And just when you think it can't get any better, it can.",
     image:
       "https://res.cloudinary.com/jq/image/upload/v1598274150/apollo-quotes/pw0kfxxl97vnpqcfqtee.jpg",
     largeImage:
       "https://res.cloudinary.com/jq/image/upload/c_scale,h_600,q_auto:best/v1598274150/apollo-quotes/pw0kfxxl97vnpqcfqtee.jpg",
-    tags: ["love"],
+    tags: ["life", "love"],
   },
   {
     author: "Mahatma Gandhi",
