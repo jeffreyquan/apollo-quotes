@@ -4,7 +4,9 @@
   "description": "Apollo Quotes - Server",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon -L ./ --exec ts-node --project ./tsconfig.json ./index.ts",
+    "start": "node ./build/index.js",
+    "dev": "nodemon -L ./ --exec ts-node --project ./tsconfig.json ./index.ts",
+    "build": "tsc",
     "seed": "ts-node ./seed/seed.ts",
     "start:seed": "npm-run-all seed start"
   },
