@@ -27,7 +27,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    need: setup
+    needs: setup
     steps:
       - run: npm run lint
         shell: bash
