@@ -3,33 +3,32 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-    setup:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Use Node.js
-          uses: actions/setup-node@v1
-          with:
-            node-version: "12.x"
-        - run: npm install
-          shell: bash
-          working-directory: client
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: npm install
+        shell: bash
+        working-directory: client
 
-    test:
-      needs: setup
-      runs-on: ubuntu-latest
-      steps:
-        - run: npm test
-          shell: bash
-          working-directory: client
-          env:
-            CI: true
+  test:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - run: npm test
+        shell: bash
+        working-directory: client
+        env:
+          CI: true
 
-    lint:
-      need: setup
-      runs-on: ubuntu-latest
-      steps:
-        - run: npm run lint
-          shell: bash
-          working-directory: client
+  lint:
+    runs-on: ubuntu-latest
+    need: setup
+    steps:
+      - run: npm run lint
+        shell: bash
+        working-directory: client
