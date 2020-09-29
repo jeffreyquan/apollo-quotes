@@ -49,6 +49,9 @@ const wsLink = process.browser
           : process.env.NEXT_PUBLIC_PROD_WS_ENDPOINT,
       options: {
         reconnect: true,
+        minTimeout: 10000,
+        timeout: 30000,
+        lazy: true,
       },
     })
   : null;
