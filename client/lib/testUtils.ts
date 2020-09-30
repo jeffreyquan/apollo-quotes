@@ -6,6 +6,10 @@ function decodeCursor(encodedCursor: string) {
   return Buffer.from(encodedCursor, "base64").toString("ascii");
 }
 
+function encodeCursor(date: number) {
+  return Buffer.from(date.toString()).toString("base64");
+}
+
 type FakeQuote = {
   id: string;
   author: string;
@@ -22,6 +26,7 @@ type FakeQuote = {
 type FakeLike = {
   id: string;
   user: FakeUser;
+  createdAt: string;
   __typename?: string;
 };
 
@@ -49,11 +54,13 @@ const fakeQuoteWithoutUserLike = (): FakeQuote => ({
     {
       id: "abc",
       user: { id: "abd123", username: "John", __typename: "User" },
+      createdAt: "123456789",
       __typename: "Like",
     },
     {
       id: "abd",
       user: { id: "abe123", username: "Ben", __typename: "User" },
+      createdAt: "123456789",
       __typename: "Like",
     },
   ],
@@ -80,16 +87,19 @@ const fakeQuoteWithUserLike = (): FakeQuote => ({
     {
       id: "abd",
       user: { id: "abc123", username: "jeffrey", __typename: "User" },
+      createdAt: "123456789",
       __typename: "Like",
     },
     {
       id: "abc",
       user: { id: "abd123", username: "John", __typename: "User" },
+      createdAt: "123456789",
       __typename: "Like",
     },
     {
       id: "abd",
       user: { id: "abe123", username: "Ben", __typename: "User" },
+      createdAt: "123456789",
       __typename: "Like",
     },
   ],
@@ -122,8 +132,68 @@ const fakeCache = (): InMemoryCache =>
                 },
                 quotes: [],
               },
-              incoming
+              incoming,
+              { args }
             ) => {
+              if (args.likedBy) {
+                if (existing.quotes.length === 0) {
+                  if (incoming.totalCount === -2) {
+                    return existing;
+                  }
+
+                  if (incoming.totalCount === -1) {
+                    return {
+                      ...incoming,
+                      totalCount: 1,
+                      pageInfo: {
+                        endCursor: encodeCursor(incoming.pageInfo.endCursor),
+                        hasMore: true,
+                      },
+                    };
+                  }
+
+                  return incoming;
+                }
+
+                if (incoming.totalCount === -2) {
+                  const exists = existing.quotes.some(
+                    (quote) => quote.__ref === incoming.quotes[0].__ref
+                  );
+
+                  let updatedQuotes;
+
+                  if (exists) {
+                    updatedQuotes = existing.quotes.filter(
+                      (quote) => quote.__ref !== incoming.quotes[0].__ref
+                    );
+                  } else {
+                    updatedQuotes = existing.quotes;
+                  }
+
+                  return {
+                    ...existing,
+                    quotes: [...updatedQuotes],
+                  };
+                }
+
+                if (incoming.totalCount === -1) {
+                  const updatedQuotes = [
+                    incoming.quotes[0],
+                    ...existing.quotes,
+                  ];
+
+                  return {
+                    ...existing,
+                    quotes: [...updatedQuotes],
+                  };
+                }
+
+                return {
+                  ...incoming,
+                  quotes: [...existing.quotes, ...incoming.quotes],
+                };
+              }
+
               let existingCursor;
               let incomingCursor;
 
@@ -164,13 +234,20 @@ const fakeCache = (): InMemoryCache =>
                 : existing;
             },
           },
+          likes: {
+            keyArgs: ["id"],
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            merge(existing = [], incoming: FakeLike[]) {
+              return incoming;
+            },
+          },
         },
       },
       Quote: {
         fields: {
           likes: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            merge(existing = [], incoming) {
+            merge(existing = [], incoming: FakeLike[]) {
               return incoming;
             },
           },

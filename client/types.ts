@@ -1,5 +1,5 @@
 import { FileUpload } from "graphql-upload";
-
+import { BigIntTypeDefinition } from "graphql-scalars";
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -11,6 +11,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
+  BigInt: typeof BigIntTypeDefinition;
   /** The `Upload` scalar type represents a file upload. */
   Upload: FileUpload;
 };
@@ -139,6 +141,7 @@ export type Like = {
   id: Scalars["ID"];
   quote?: Maybe<Quote>;
   user: User;
+  createdAt: Scalars["BigInt"];
 };
 
 export type QuotesConnection = {
