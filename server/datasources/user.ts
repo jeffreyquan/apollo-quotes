@@ -59,8 +59,8 @@ class UserAPI extends DataSource {
 
       this.context.res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" && "none",
         maxAge: 1000 * 60 * 60 * 24 * 165,
       });
 
@@ -93,8 +93,8 @@ class UserAPI extends DataSource {
 
     this.context.res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" && "none",
       maxAge: 1000 * 60 * 60 * 24 * 165,
     });
 
